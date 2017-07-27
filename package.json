@@ -1,0 +1,11 @@
+{
+  "name": "missioncontrol",
+  "version": "0.0.1",
+  "description": "Server coordinating delivery missions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tal Ater <tal@talater.com>",
+  "license": "ISC"
+}
