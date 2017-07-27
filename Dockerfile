@@ -1,11 +1,22 @@
-# Use node 8 alpine as a parent image
-FROM node:8-alpine
+# Use node 8 as a parent image
+FROM node:8.2.1
+
+# Add app user
+RUN useradd --user-group --create-home --shell /bin/false app
+
+# Set HOME environment variable
+ENV HOME=/home/app
+
+# Change to the new user
+USER app
+
+# Copy package files
+COPY package.json npm-shrinkwrap.json $HOME/missioncontrol/
 
 # Set working directory
-WORKDIR /usr/src/app
+WORKDIR $HOME/missioncontrol
 
 # Install app dependencies
-COPY package.json package-lock.json ./
 RUN npm install
 
 # Bundle app source

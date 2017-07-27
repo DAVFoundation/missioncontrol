@@ -1,0 +1,9 @@
+missioncontrol:
+  build: .
+  ports:
+    - '8099:8888'
+  volumes:
+    - .:/home/app/missioncontrol
+    - /home/app/missioncontrol/node_modules
+  environment:
+    NODE_ENV: development
