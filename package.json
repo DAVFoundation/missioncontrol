@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "thrift": "thrift -gen js:node -strict -out ./server/thrift ./server/idl/StatusReport.thrift"
   },
   "author": "Tal Ater <tal@talater.com>",
   "license": "MIT"
