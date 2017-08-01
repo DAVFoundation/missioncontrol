@@ -1,13 +1,14 @@
 {
   "name": "missioncontrol",
   "version": "0.0.1",
-  "description": "Server coordinating delivery missions",
+  "description": "Controls and orchestrates missions between DAV users and vehicles",
+  "license": "MIT",
+  "author": "Tal Ater <tal@talater.com>",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "thrift": "thrift -gen js:node -strict -out ./server/thrift ./server/idl/StatusReport.thrift"
   },
-  "author": "Tal Ater <tal@talater.com>",
-  "license": "MIT"
+  "dependencies": {}
 }
