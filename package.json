@@ -12,5 +12,9 @@
   },
   "dependencies": {
     "express": "^4.15.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^4.0.0"
   }
 }
