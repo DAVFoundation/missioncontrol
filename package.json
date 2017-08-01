@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-eslint": "^4.0.0"
+    "gulp-eslint": "^4.0.0",
+    "gulp-shell": "^0.6.3"
   }
 }
