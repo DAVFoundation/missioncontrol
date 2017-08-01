@@ -8,7 +8,7 @@ gulp.task('lint', () => {
     .pipe(eslint.failAfterError());
 });
 
-gulp.task('watch', ['default'], function() {
+gulp.task('watch', ['default'], () => {
   gulp.watch(['server/**/*.js', '!server/thrift/**'], ['lint']);
 });
 
