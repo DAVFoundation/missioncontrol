@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "thrift": "thrift -gen js:node -strict -out ./server/thrift ./server/idl/StatusReport.thrift"
+    "thrift": "thrift -gen js:node -strict -out ./server/thrift ./resources/idl/StatusReport.thrift"
   },
   "dependencies": {}
 }
