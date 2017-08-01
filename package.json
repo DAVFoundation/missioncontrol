@@ -6,8 +6,8 @@
   "author": "Tal Ater <tal@talater.com>",
   "main": "./server/index.js",
   "scripts": {
-    "start": "node ./server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp watch",
+    "test": "gulp",
     "thrift": "thrift -gen js:node -strict -out ./server/thrift ./resources/idl/StatusReport.thrift"
   },
   "dependencies": {
