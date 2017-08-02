@@ -15,7 +15,7 @@ gulp.task('thrift', shell.task('npm run thrift'));
 
 gulp.task('watch', ['default'], () =>
   nodemon({
-    script: 'server/index.js',
+    script: 'server/server-web.js',
     ext: 'js thrift',
     watch: ['server', 'resources/idl'],
     ignore: [

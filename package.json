@@ -4,7 +4,7 @@
   "description": "Controls and orchestrates missions between DAV users and vehicles",
   "license": "MIT",
   "author": "Tal Ater <tal@talater.com>",
-  "main": "./server/index.js",
+  "main": "./server/server-web.js",
   "scripts": {
     "start": "gulp watch",
     "test": "gulp",
