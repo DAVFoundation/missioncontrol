@@ -11,9 +11,9 @@ gulp.task('lint', () => {
     .pipe(eslint.failAfterError());
 });
 
-gulp.task('thrift', shell.task('npm run thrift'));
+gulp.task('thrift-build', shell.task('npm run thrift'));
 
-gulp.task('watch', ['default'], () =>
+gulp.task('watch', ['js', 'thrift'], () =>
   nodemon({
     script: 'server/server-web.js',
     ext: 'js thrift',
@@ -25,7 +25,7 @@ gulp.task('watch', ['default'], () =>
     tasks: (changedFiles) => {
       let tasks = [];
       changedFiles.forEach(file => {
-        if (path.extname(file) === '.js' && !tasks.includes('lint')) tasks.push('lint');
+        if (path.extname(file) === '.js' && !tasks.includes('js')) tasks.push('js');
         if (path.extname(file) === '.thrift' && !tasks.includes('thrift')) tasks.push('thrift');
       });
       return tasks;
@@ -33,4 +33,8 @@ gulp.task('watch', ['default'], () =>
   })
 );
 
-gulp.task('default', ['lint']);
+gulp.task('js', ['lint']);
+
+gulp.task('thrift', ['thrift-build']);
+
+gulp.task('default', ['js', 'thrift']);
