@@ -1,4 +1,5 @@
 const express = require('express');
+
 const app = express();
 const port = 8443;
 
@@ -11,6 +12,6 @@ app.get('/', function (req, res) {
 
 // Start the server
 app.listen(port, function() {
-  console.log(`Mission control server started.`);
+  console.log(`Mission Control web server started.`);
   console.log(`Listening on port ${port}`);
 });
