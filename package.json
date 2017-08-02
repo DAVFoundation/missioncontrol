@@ -8,7 +8,7 @@
   "scripts": {
     "start": "gulp watch",
     "test": "gulp",
-    "thrift": "thrift -gen js:node -strict -out ./server/thrift ./resources/idl/StatusReport.thrift"
+    "thrift": "thrift -gen js:node -strict -recurse -out ./server/thrift ./resources/idl/StatusReport.thrift"
   },
   "dependencies": {
     "express": "^4.15.3"
