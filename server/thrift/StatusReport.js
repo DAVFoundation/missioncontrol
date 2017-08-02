@@ -16,7 +16,7 @@ var Vehicle_ttypes = require('./Vehicle_types');
 var ttypes = require('./StatusReport_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
-var StatusReport_reportStatus_args = function(args) {
+var StatusReport_report_status_args = function(args) {
   this.authenticationToken = null;
   this.vehicleID = null;
   this.state = null;
@@ -32,8 +32,8 @@ var StatusReport_reportStatus_args = function(args) {
     }
   }
 };
-StatusReport_reportStatus_args.prototype = {};
-StatusReport_reportStatus_args.prototype.read = function(input) {
+StatusReport_report_status_args.prototype = {};
+StatusReport_report_status_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -78,8 +78,8 @@ StatusReport_reportStatus_args.prototype.read = function(input) {
   return;
 };
 
-StatusReport_reportStatus_args.prototype.write = function(output) {
-  output.writeStructBegin('StatusReport_reportStatus_args');
+StatusReport_report_status_args.prototype.write = function(output) {
+  output.writeStructBegin('StatusReport_report_status_args');
   if (this.authenticationToken !== null && this.authenticationToken !== undefined) {
     output.writeFieldBegin('authenticationToken', Thrift.Type.STRING, 1);
     output.writeString(this.authenticationToken);
@@ -100,10 +100,10 @@ StatusReport_reportStatus_args.prototype.write = function(output) {
   return;
 };
 
-var StatusReport_reportStatus_result = function(args) {
+var StatusReport_report_status_result = function(args) {
 };
-StatusReport_reportStatus_result.prototype = {};
-StatusReport_reportStatus_result.prototype.read = function(input) {
+StatusReport_report_status_result.prototype = {};
+StatusReport_report_status_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -121,8 +121,8 @@ StatusReport_reportStatus_result.prototype.read = function(input) {
   return;
 };
 
-StatusReport_reportStatus_result.prototype.write = function(output) {
-  output.writeStructBegin('StatusReport_reportStatus_result');
+StatusReport_report_status_result.prototype.write = function(output) {
+  output.writeStructBegin('StatusReport_report_status_result');
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -137,7 +137,7 @@ var StatusReportClient = exports.Client = function(output, pClass) {
 StatusReportClient.prototype = {};
 StatusReportClient.prototype.seqid = function() { return this._seqid; };
 StatusReportClient.prototype.new_seqid = function() { return this._seqid += 1; };
-StatusReportClient.prototype.reportStatus = function(authenticationToken, vehicleID, state, callback) {
+StatusReportClient.prototype.report_status = function(authenticationToken, vehicleID, state, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -148,18 +148,18 @@ StatusReportClient.prototype.reportStatus = function(authenticationToken, vehicl
         _defer.resolve(result);
       }
     };
-    this.send_reportStatus(authenticationToken, vehicleID, state);
+    this.send_report_status(authenticationToken, vehicleID, state);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_reportStatus(authenticationToken, vehicleID, state);
+    this.send_report_status(authenticationToken, vehicleID, state);
   }
 };
 
-StatusReportClient.prototype.send_reportStatus = function(authenticationToken, vehicleID, state) {
+StatusReportClient.prototype.send_report_status = function(authenticationToken, vehicleID, state) {
   var output = new this.pClass(this.output);
-  output.writeMessageBegin('reportStatus', Thrift.MessageType.CALL, this.seqid());
-  var args = new StatusReport_reportStatus_args();
+  output.writeMessageBegin('report_status', Thrift.MessageType.CALL, this.seqid());
+  var args = new StatusReport_report_status_args();
   args.authenticationToken = authenticationToken;
   args.vehicleID = vehicleID;
   args.state = state;
@@ -168,7 +168,7 @@ StatusReportClient.prototype.send_reportStatus = function(authenticationToken, v
   return this.output.flush();
 };
 
-StatusReportClient.prototype.recv_reportStatus = function(input,mtype,rseqid) {
+StatusReportClient.prototype.recv_report_status = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -177,7 +177,7 @@ StatusReportClient.prototype.recv_reportStatus = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new StatusReport_reportStatus_result();
+  var result = new StatusReport_report_status_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -202,35 +202,35 @@ StatusReportProcessor.prototype.process = function(input, output) {
   }
 }
 ;
-StatusReportProcessor.prototype.process_reportStatus = function(seqid, input, output) {
-  var args = new StatusReport_reportStatus_args();
+StatusReportProcessor.prototype.process_report_status = function(seqid, input, output) {
+  var args = new StatusReport_report_status_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.reportStatus.length === 3) {
-    Q.fcall(this._handler.reportStatus, args.authenticationToken, args.vehicleID, args.state)
+  if (this._handler.report_status.length === 3) {
+    Q.fcall(this._handler.report_status, args.authenticationToken, args.vehicleID, args.state)
       .then(function(result) {
-        var result_obj = new StatusReport_reportStatus_result({success: result});
-        output.writeMessageBegin("reportStatus", Thrift.MessageType.REPLY, seqid);
+        var result_obj = new StatusReport_report_status_result({success: result});
+        output.writeMessageBegin("report_status", Thrift.MessageType.REPLY, seqid);
         result_obj.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         var result;
         result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("reportStatus", Thrift.MessageType.EXCEPTION, seqid);
+        output.writeMessageBegin("report_status", Thrift.MessageType.EXCEPTION, seqid);
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       });
   } else {
-    this._handler.reportStatus(args.authenticationToken, args.vehicleID, args.state, function (err, result) {
+    this._handler.report_status(args.authenticationToken, args.vehicleID, args.state, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined')) {
-        result_obj = new StatusReport_reportStatus_result((err !== null || typeof err === 'undefined') ? err : {success: result});
-        output.writeMessageBegin("reportStatus", Thrift.MessageType.REPLY, seqid);
+        result_obj = new StatusReport_report_status_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("report_status", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("reportStatus", Thrift.MessageType.EXCEPTION, seqid);
+        output.writeMessageBegin("report_status", Thrift.MessageType.EXCEPTION, seqid);
       }
       result_obj.write(output);
       output.writeMessageEnd();
