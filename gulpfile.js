@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 const shell = require('gulp-shell');
 const nodemon = require('gulp-nodemon');
+const jest = require('gulp-jest').default;
 const path = require('path');
 
 gulp.task('lint', () => {
@@ -9,6 +10,11 @@ gulp.task('lint', () => {
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
+});
+
+gulp.task('jest', () => {
+  return gulp.src(['test/specs/**/*.spec.js'])
+    .pipe(jest());
 });
 
 gulp.task('thrift-build', shell.task('npm run thrift'));
@@ -33,8 +39,8 @@ gulp.task('watch', ['js', 'thrift'], () =>
   })
 );
 
-gulp.task('js', ['lint']);
+gulp.task('js', ['lint', 'jest']);
 
 gulp.task('thrift', ['thrift-build']);
 
-gulp.task('default', ['js', 'thrift']);
+gulp.task('default', ['thrift', 'js', 'jest']);
