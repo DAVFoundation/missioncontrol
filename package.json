@@ -11,7 +11,8 @@
     "thrift": "thrift -gen js:node -strict -recurse -out ./server/thrift ./resources/idl/StatusReport.thrift"
   },
   "dependencies": {
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "thrift": "^0.10.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
