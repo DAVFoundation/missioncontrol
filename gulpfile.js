@@ -39,7 +39,7 @@ gulp.task('watch', ['js', 'thrift'], () =>
   })
 );
 
-gulp.task('js', ['lint', 'jest']);
+gulp.task('js', ['lint']);
 
 gulp.task('thrift', ['thrift-build']);
 

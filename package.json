@@ -7,7 +7,7 @@
   "main": "./server/server-web.js",
   "scripts": {
     "start": "gulp watch",
-    "test": "gulp",
+    "test": "gulp jest",
     "thrift": "thrift -gen js:node -strict -recurse -out ./server/thrift ./resources/idl/StatusReport.thrift"
   },
   "dependencies": {
