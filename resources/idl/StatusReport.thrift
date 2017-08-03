@@ -12,9 +12,16 @@ include "Vehicle.thrift"
  * @TODO: Define exceptions it should throw in case of invalid authenticationToken
  */
 service StatusReport {
+
+    bool is_registered(
+        1: string authenticationToken,
+        2: DAVUser.DAVUser vehicleID,
+    )
+
     void report_status(
         1: string authenticationToken,
         2: DAVUser.DAVUser vehicleID,
         3: Vehicle.VehicleState state,
     )
+
 }
