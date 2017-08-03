@@ -1,3 +1,1 @@
-const thriftServer = require('./server-thrift.js');
-
-thriftServer.start();
+require('./server-thrift.js').start();
