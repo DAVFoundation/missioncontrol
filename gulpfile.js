@@ -43,4 +43,4 @@ gulp.task('js', ['lint', 'jest']);
 
 gulp.task('thrift', ['thrift-build']);
 
-gulp.task('default', ['thrift', 'js', 'jest']);
+gulp.task('default', ['thrift', 'js']);
