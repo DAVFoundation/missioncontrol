@@ -10,8 +10,12 @@ app.get('/', function (req, res) {
 });
 
 
-// Start the server
-app.listen(port, function() {
-  console.log(`Mission Control web server started.`);
-  console.log(`Listening on port ${port}`);
-});
+
+module.exports = {
+  start: () => {
+    // Start the server
+    app.listen(port, function() {
+      console.log(`Web server started. Listening on port ${port}`);
+    });
+  }
+};
