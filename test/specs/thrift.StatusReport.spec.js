@@ -1,5 +1,14 @@
 const client = require('../../server/client-thrift.js');
-const connection = client.start();
+let connection;
+
+beforeAll(() => {
+  connection = client.start();
+});
+
+afterAll(() => {
+  connection.end();
+});
+
 
 test('is_registered to return false', async () => {
   expect.assertions(1);
@@ -7,7 +16,6 @@ test('is_registered to return false', async () => {
     .getClient()
     .is_registered()
     .then(response => {
-      connection.end();
       expect(response).toBe(false);
     });
 });
