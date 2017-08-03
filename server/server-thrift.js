@@ -5,7 +5,7 @@ const StatusReport = require('./thrift/StatusReport.js');
 const server = thrift.createServer(StatusReport, {
 
   is_registered: (authenticationToken, vehicleID, result) => {
-    result(null, true);
+    result(null, false);
   },
 
   report_status: (authenticationToken, vehicleID, state, result) => {
