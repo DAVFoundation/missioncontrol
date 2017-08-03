@@ -23,7 +23,7 @@ gulp.task('watch', ['js', 'thrift'], () =>
   nodemon({
     script: 'server/start-server-web.js',
     ext: 'js thrift',
-    watch: ['server', 'resources/idl'],
+    watch: ['server', 'test', 'resources/idl'],
     ignore: [
       'server/thrift',
       'node_modules/'
