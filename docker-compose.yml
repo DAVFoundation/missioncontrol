@@ -1,9 +1,19 @@
-missioncontrol:
-  build: .
-  ports:
-    - '8099:8888'
-  volumes:
-    - .:/home/app/missioncontrol
-    - /home/app/missioncontrol/node_modules
-  environment:
-    NODE_ENV: development
+version: '3'
+
+services:
+  missioncontrol:
+    build: .
+    ports:
+      - '8888:8443'
+    environment:
+      NODE_ENV: development
+      SERVER_PORT: 8443
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    volumes:
+      - .:/app
+      - /app/node_modules
+    links:
+      - redis:redis
+  redis:
+    image: redis
