@@ -13,11 +13,6 @@ include "Vehicle.thrift"
  */
 service StatusReport {
 
-    bool is_registered(
-        1: string authenticationToken,
-        2: DAVUser.DAVUser vehicleID,
-    )
-
     void report_status(
         1: string authenticationToken,
         2: DAVUser.DAVUser vehicleID,

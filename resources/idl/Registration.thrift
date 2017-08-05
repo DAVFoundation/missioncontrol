@@ -21,4 +21,9 @@ service Registration {
         2: DAVUser.DAVUser vehicleID,
     )
 
+    bool vehicle_is_registered(
+        1: string authenticationToken,
+        2: DAVUser.DAVUser vehicleID,
+    )
+
 }

@@ -217,6 +217,126 @@ Registration_deregister_vehicle_result.prototype.write = function(output) {
   return;
 };
 
+var Registration_vehicle_is_registered_args = function(args) {
+  this.authenticationToken = null;
+  this.vehicleID = null;
+  if (args) {
+    if (args.authenticationToken !== undefined && args.authenticationToken !== null) {
+      this.authenticationToken = args.authenticationToken;
+    }
+    if (args.vehicleID !== undefined && args.vehicleID !== null) {
+      this.vehicleID = new DAVUser_ttypes.DAVUser(args.vehicleID);
+    }
+  }
+};
+Registration_vehicle_is_registered_args.prototype = {};
+Registration_vehicle_is_registered_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.authenticationToken = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.vehicleID = new DAVUser_ttypes.DAVUser();
+        this.vehicleID.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Registration_vehicle_is_registered_args.prototype.write = function(output) {
+  output.writeStructBegin('Registration_vehicle_is_registered_args');
+  if (this.authenticationToken !== null && this.authenticationToken !== undefined) {
+    output.writeFieldBegin('authenticationToken', Thrift.Type.STRING, 1);
+    output.writeString(this.authenticationToken);
+    output.writeFieldEnd();
+  }
+  if (this.vehicleID !== null && this.vehicleID !== undefined) {
+    output.writeFieldBegin('vehicleID', Thrift.Type.STRUCT, 2);
+    this.vehicleID.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var Registration_vehicle_is_registered_result = function(args) {
+  this.success = null;
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+  }
+};
+Registration_vehicle_is_registered_result.prototype = {};
+Registration_vehicle_is_registered_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Registration_vehicle_is_registered_result.prototype.write = function(output) {
+  output.writeStructBegin('Registration_vehicle_is_registered_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 var RegistrationClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
@@ -318,6 +438,54 @@ RegistrationClient.prototype.recv_deregister_vehicle = function(input,mtype,rseq
 
   callback(null);
 };
+RegistrationClient.prototype.vehicle_is_registered = function(authenticationToken, vehicleID, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_vehicle_is_registered(authenticationToken, vehicleID);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_vehicle_is_registered(authenticationToken, vehicleID);
+  }
+};
+
+RegistrationClient.prototype.send_vehicle_is_registered = function(authenticationToken, vehicleID) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('vehicle_is_registered', Thrift.MessageType.CALL, this.seqid());
+  var args = new Registration_vehicle_is_registered_args();
+  args.authenticationToken = authenticationToken;
+  args.vehicleID = vehicleID;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+RegistrationClient.prototype.recv_vehicle_is_registered = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new Registration_vehicle_is_registered_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('vehicle_is_registered failed: unknown result');
+};
 var RegistrationProcessor = exports.Processor = function(handler) {
   this._handler = handler;
 }
@@ -402,6 +570,42 @@ RegistrationProcessor.prototype.process_deregister_vehicle = function(seqid, inp
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("deregister_vehicle", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result_obj.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+};
+RegistrationProcessor.prototype.process_vehicle_is_registered = function(seqid, input, output) {
+  var args = new Registration_vehicle_is_registered_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.vehicle_is_registered.length === 2) {
+    Q.fcall(this._handler.vehicle_is_registered, args.authenticationToken, args.vehicleID)
+      .then(function(result) {
+        var result_obj = new Registration_vehicle_is_registered_result({success: result});
+        output.writeMessageBegin("vehicle_is_registered", Thrift.MessageType.REPLY, seqid);
+        result_obj.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result;
+        result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("vehicle_is_registered", Thrift.MessageType.EXCEPTION, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.vehicle_is_registered(args.authenticationToken, args.vehicleID, function (err, result) {
+      var result_obj;
+      if ((err === null || typeof err === 'undefined')) {
+        result_obj = new Registration_vehicle_is_registered_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("vehicle_is_registered", Thrift.MessageType.REPLY, seqid);
+      } else {
+        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("vehicle_is_registered", Thrift.MessageType.EXCEPTION, seqid);
       }
       result_obj.write(output);
       output.writeMessageEnd();

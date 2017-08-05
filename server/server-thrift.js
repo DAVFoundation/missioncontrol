@@ -11,13 +11,17 @@ MultiplexedProcessor.registerProcessor('Registration', new Registration.Processo
     result(null, 'token');
   },
 
+  deregister_vehicle: (vehicleID, result) => {
+    result(null, 'token');
+  },
+
+  vehicle_is_registered: (authenticationToken, vehicleID, result) => {
+    result(null, false);
+  },
+
 }));
 
 MultiplexedProcessor.registerProcessor('StatusReport', new StatusReport.Processor({
-
-  is_registered: (authenticationToken, vehicleID, result) => {
-    result(null, false);
-  },
 
   report_status: (authenticationToken, vehicleID, state, result) => {
     result(null);

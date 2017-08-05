@@ -10,11 +10,11 @@ afterAll(() => {
 });
 
 
-test('is_registered to return false', async () => {
+test('vehicle_is_registered to return false', async () => {
   expect.assertions(1);
   await client
-    .getClient('StatusReport')
-    .is_registered()
+    .getClient('Registration')
+    .vehicle_is_registered()
     .then(response => {
       expect(response).toBe(false);
     });
