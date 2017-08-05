@@ -3,6 +3,10 @@
  */
 typedef i64 Timestamp
 
+/*
+ * Authentication token
+ */
+typedef string AuthenticationToken
 
 /*
  * Standard UNIX timestamp

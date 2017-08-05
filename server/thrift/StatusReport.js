@@ -11,6 +11,7 @@ var Q = thrift.Q;
 
 var DAVUser_ttypes = require('./DAVUser_types');
 var Vehicle_ttypes = require('./Vehicle_types');
+var Types_ttypes = require('./Types_types');
 
 
 var ttypes = require('./StatusReport_types');

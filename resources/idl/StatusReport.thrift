@@ -5,6 +5,7 @@
 // Includes
 include "DAVUser.thrift"
 include "Vehicle.thrift"
+include "Types.thrift"
 
 /*
  * The StatusReport service is used by Captains to send updates to Mission Control
@@ -14,7 +15,7 @@ include "Vehicle.thrift"
 service StatusReport {
 
     void report_status(
-        1: string authenticationToken,
+        1: Types.AuthenticationToken authenticationToken,
         2: DAVUser.DAVUser vehicleID,
         3: Vehicle.VehicleState state,
     )

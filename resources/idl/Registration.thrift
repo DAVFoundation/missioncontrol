@@ -4,6 +4,7 @@
 
 // Includes
 include "DAVUser.thrift"
+include "Types.thrift"
 
 /*
  * The Registration service is used by Captains to register and deregister with Mission Control
@@ -17,12 +18,12 @@ service Registration {
     )
 
     void deregister_vehicle(
-        1: string authenticationToken,
+        1: Types.AuthenticationToken authenticationToken,
         2: DAVUser.DAVUser vehicleID,
     )
 
     bool vehicle_is_registered(
-        1: string authenticationToken,
+        1: Types.AuthenticationToken authenticationToken,
         2: DAVUser.DAVUser vehicleID,
     )
 
