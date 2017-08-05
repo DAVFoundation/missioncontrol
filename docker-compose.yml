@@ -7,7 +7,7 @@ services:
       - '8888:8443'
     environment:
       NODE_ENV: development
-      SERVER_PORT: 8443
+      WEB_SERVER_PORT: 8443
       REDIS_HOST: redis
       REDIS_PORT: 6379
     volumes:
