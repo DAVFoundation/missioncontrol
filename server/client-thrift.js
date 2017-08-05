@@ -1,13 +1,21 @@
 const thrift = require('thrift');
 const StatusReport = require('./thrift/StatusReport.js');
+const Registration = require('./thrift/Registration.js');
 // const StatusReport_types = require('./thrift/StatusReport_types.js');
+
+const services = {
+  Registration,
+  StatusReport,
+};
 
 // Connection settings
 const host = 'localhost';
 const transport = thrift.TBufferedTransport;
 const protocol = thrift.TBinaryProtocol;
 
+const mp = new thrift.Multiplexer();
 let connection;
+let clients = {};
 
 module.exports = {
   start: ({port = 9090} = {}) => {
@@ -23,5 +31,10 @@ module.exports = {
     return connection;
   },
 
-  getClient: () => thrift.createClient(StatusReport, connection),
+  getClient: (service) => {
+    if (!clients[service]) {
+      clients[service] = mp.createClient(service, services[service], connection);
+    }
+    return clients[service];
+  },
 };

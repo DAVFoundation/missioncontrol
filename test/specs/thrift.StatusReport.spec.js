@@ -13,7 +13,7 @@ afterAll(() => {
 test('is_registered to return false', async () => {
   expect.assertions(1);
   await client
-    .getClient()
+    .getClient('StatusReport')
     .is_registered()
     .then(response => {
       expect(response).toBe(false);
