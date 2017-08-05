@@ -6,7 +6,7 @@
   "author": "Tal Ater <tal@talater.com>",
   "main": "./server/server-web.js",
   "scripts": {
-    "start": "gulp watch",
+    "start": "node server/start-servers.js",
     "test": "gulp jest",
     "thrift": "thrift -gen js:node -strict -recurse -out ./server/thrift ./resources/idl/CaptainMissionControl.thrift"
   },
