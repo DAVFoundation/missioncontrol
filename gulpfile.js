@@ -39,6 +39,25 @@ gulp.task('watch', ['js', 'thrift'], () =>
   })
 );
 
+gulp.task('watch:js', ['js'], () =>
+  nodemon({
+    script: 'server/start-server-web.js',
+    ext: 'js',
+    watch: ['server', 'test'],
+    ignore: [
+      'server/thrift',
+      'node_modules/'
+    ],
+    tasks: (changedFiles) => {
+      let tasks = [];
+      changedFiles.forEach(file => {
+        if (path.extname(file) === '.js' && !tasks.includes('js')) tasks.push('js');
+      });
+      return tasks;
+    }
+  })
+);
+
 gulp.task('js', ['lint']);
 
 gulp.task('thrift', ['thrift-build']);
