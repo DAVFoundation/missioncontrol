@@ -1,9 +1,9 @@
-const { randomDavAddress } = require('./random');
+const { randomDavAddress, randomDroneModel } = require('./random');
 
 const generateRandom = () => {
   return {
     'id': randomDavAddress(),
-    'model': 'DJX CargoMate 3',
+    'model': randomDroneModel(),
     'coords': {lat: 32.069450, long: 34.772898},
     'rating': 4.9,
     'missions_completed': 36,
