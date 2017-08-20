@@ -7,6 +7,11 @@ const randomDavAddress = () => {
   });
 };
 
+const randomDroneModel = () => {
+  return 'DJX CargoMate 2';
+};
+
 module.exports = {
-  randomDavAddress
+  randomDavAddress,
+  randomDroneModel,
 };
