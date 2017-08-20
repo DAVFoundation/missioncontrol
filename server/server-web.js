@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/status', function (req, res) {
-  res.send({
+  res.json({
     vehicles: getVehicles({
       userId: req.query.id,
       coords: { lat: req.query.lat, long: req.query.long }
