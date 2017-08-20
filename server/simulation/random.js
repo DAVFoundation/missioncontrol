@@ -15,8 +15,13 @@ const randomRating = () => {
   return 4.8;
 };
 
+const randomCoords = ( /*{coords, distance}*/ ) => {
+  return {lat: 32.069450, long: 34.772898};
+};
+
 module.exports = {
   randomDavAddress,
   randomDroneModel,
   randomRating,
+  randomCoords,
 };
