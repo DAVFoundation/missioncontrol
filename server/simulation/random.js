@@ -1,5 +1,8 @@
 const randomstring = require('randomstring');
 
+const manufacturerNames = ['DJX', 'Parakeet', 'Gruff', 'Unique', 'FlyHawk'];
+const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship'];
+
 const randomDavAddress = () => {
   return '0x'+randomstring.generate({
     length: 40,
@@ -7,8 +10,16 @@ const randomDavAddress = () => {
   });
 };
 
+const randomManufacturerName = () => {
+  return manufacturerNames[Math.floor(Math.random()*manufacturerNames.length)];
+};
+
+const randomModelName = () => {
+  return modelNames[Math.floor(Math.random()*modelNames.length)];
+};
+
 const randomDroneModel = () => {
-  return 'DJX CargoMate 2';
+  return `${randomManufacturerName()} ${randomModelName()}`;
 };
 
 const randomRating = () => {
