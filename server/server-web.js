@@ -1,7 +1,7 @@
 const express = require('express');
 
 const app = express();
-const port = process.env.WEB_SERVER_PORT;
+const port = process.env.WEB_SERVER_PORT || 8888;
 
 
 // Define routes
