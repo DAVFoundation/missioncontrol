@@ -1,10 +1,10 @@
-const randomstring = require('randomstring');
+const randomString = require('randomstring');
 
 const manufacturerNames = ['DJX', 'Parakeet', 'Gruff', 'Unique', 'FlyHawk'];
 const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship'];
 
 const randomDavAddress = () => {
-  return '0x'+randomstring.generate({
+  return '0x'+randomString.generate({
     length: 40,
     charset: 'hex'
   });
