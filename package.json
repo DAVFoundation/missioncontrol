@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "express": "^4.15.3",
+    "random-float": "^1.0.0",
     "thrift": "^0.10.0"
   },
   "devDependencies": {
