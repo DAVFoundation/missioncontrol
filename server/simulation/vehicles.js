@@ -1,4 +1,4 @@
-const { generateRandom } = require('./simulation/drone');
+const { generateRandom } = require('./drone');
 
 const getVehicles = () => {
   const vehicleCount = 4;

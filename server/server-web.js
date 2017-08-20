@@ -1,5 +1,5 @@
 const express = require('express');
-const { getVehicles } = require('./vehicles');
+const { getVehicles } = require('./simulation/vehicles');
 
 const app = express();
 const port = process.env.WEB_SERVER_PORT || 8888;
