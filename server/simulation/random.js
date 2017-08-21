@@ -27,10 +27,11 @@ const randomRating = () => {
   return rating.toPrecision(2);
 };
 
-const randomCoords = ( /*{coords, distance}*/ ) => {
+const randomCoords = ( {coords, distance} ) => {
 
   var initialX = coords.long;
   var initialY = coords.lat;
+
   // Convert Radius from meters to degrees.
   var rd = distance/111300;
 
@@ -47,14 +48,6 @@ const randomCoords = ( /*{coords, distance}*/ ) => {
   return {lat: y+initialY, long: xp+initialX};
 };
 
-
-//// Randomize a location within ISRAEL
-//  lat: getRandomArbitrary(29.00,34.00),
-//  long: getRandomArbitrary(34.00,36.00)
-//
-// function getRandomArbitrary(min, max) {
-//   return Math.random() * (max - min) + min;
-// }
 
 module.exports = {
   randomDavAddress,
