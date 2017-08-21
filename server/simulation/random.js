@@ -23,7 +23,8 @@ const randomDroneModel = () => {
 };
 
 const randomRating = () => {
-  return 4.8;
+  var rating = (Math.random() * 4) + 1;
+  return rating.toPrecision(2);
 };
 
 const randomCoords = ( /*{coords, distance}*/ ) => {
