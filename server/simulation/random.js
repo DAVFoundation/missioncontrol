@@ -27,9 +27,27 @@ const randomRating = () => {
   return rating.toPrecision(2);
 };
 
-const randomCoords = ( /*{coords, distance}*/ ) => {
-  return {lat: 32.069450, long: 34.772898};
+const randomCoords = ( {coords, distance} ) => {
+
+  var initialX = coords.long;
+  var initialY = coords.lat;
+
+  // Convert Radius from meters to degrees.
+  var rd = distance/111300;
+
+  var u = Math.random();
+  var v = Math.random();
+
+  var w = rd * Math.sqrt(u);
+  var t = 2 * Math.PI * v;
+  var x = w * Math.cos(t);
+  var y = w * Math.sin(t);
+
+  var xp = x/Math.cos(initialY);
+
+  return {lat: y+initialY, long: xp+initialX};
 };
+
 
 module.exports = {
   randomDavAddress,
