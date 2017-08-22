@@ -63,7 +63,7 @@ gulp.task('watch:js', ['js'], () =>
   })
 );
 
-gulp.task('js', ['lint']);
+gulp.task('js', ['lint', 'jest']);
 
 gulp.task('thrift', ['thrift-build']);
 
