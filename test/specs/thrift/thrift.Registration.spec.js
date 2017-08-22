@@ -1,4 +1,4 @@
-const client = require('../../server/client-thrift.js');
+const client = require('../../../server/client-thrift.js');
 let connection;
 
 beforeAll(() => {
