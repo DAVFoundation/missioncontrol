@@ -31,7 +31,7 @@ const randomCoords = ({ coords, distance }) => {
   const angle = Math.random() * 2 * Math.PI;
   const radius = Math.random() * distance;
   const longDegreesPerMeter = 1 / 111321.377778; // longitude degrees per meter
-  const latDegreesPerMeter = 1 / 1111348.61111; // latitude degrees per meter
+  const latDegreesPerMeter = 1 / 111134.86111; // latitude degrees per meter
   const x = parseFloat((coords.lat + latDegreesPerMeter * radius * Math.cos(angle)).toFixed(6));
   const y = parseFloat((coords.long + longDegreesPerMeter * radius * Math.sin(angle)).toFixed(6));
   return { lat: x, long: y };
