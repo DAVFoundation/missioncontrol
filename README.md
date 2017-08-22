@@ -1,5 +1,7 @@
 # Mission Control
 
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/DAVFoundation/DAV-Contributors)
+
 <img src="./resources/images/logo-missioncontrol.jpg" align="right" />
 
 Mission Control is a service running on the DAV network, and serving as a marketplace connecting DAV users looking to ship packages, with drone owners.
