@@ -1,5 +1,4 @@
 const randomString = require('randomstring');
-const randomFloat = require('random-float');
 
 const manufacturerNames = ['DJX', 'Parakeet', 'Gruff', 'Unique', 'FlyHawk'];
 const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship'];
@@ -28,8 +27,14 @@ const randomRating = () => {
   return rating.toPrecision(2);
 };
 
-const randomCoords = ( /*{coords, distance}*/ ) => {
-  return {lat: randomFloat(32.064842, 32.072351), long: randomFloat(34.764905, 34.786234)};
+const randomCoords = ({ coords, distance }) => {
+  const angle = Math.random() * 2 * Math.PI;
+  const radius = Math.random() * distance;
+  const longDegreesPerMeter = 1 / 111321.377778; // longitude degrees per meter
+  const latDegreesPerMeter = 1 / 111134.86111; // latitude degrees per meter
+  const x = parseFloat((coords.lat + latDegreesPerMeter * radius * Math.cos(angle)).toFixed(6));
+  const y = parseFloat((coords.long + longDegreesPerMeter * radius * Math.sin(angle)).toFixed(6));
+  return { lat: x, long: y };
 };
 
 module.exports = {
