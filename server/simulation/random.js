@@ -1,4 +1,5 @@
 const randomString = require('randomstring');
+const randomFloat = require('random-float');
 
 const manufacturerNames = ['DJX', 'Parakeet', 'Gruff', 'Unique', 'FlyHawk'];
 const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship'];
@@ -28,7 +29,7 @@ const randomRating = () => {
 };
 
 const randomCoords = ( /*{coords, distance}*/ ) => {
-  return {lat: 32.069450, long: 34.772898};
+  return {lat: randomFloat(32.064842, 32.072351), long: randomFloat(34.764905, 34.786234)};
 };
 
 module.exports = {
