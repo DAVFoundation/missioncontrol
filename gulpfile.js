@@ -13,7 +13,12 @@ gulp.task('lint', () => {
 });
 
 gulp.task('jest', () => {
-  return gulp.src(['test/specs/**/*.spec.js'])
+  return gulp.src(['test/specs/**/*.spec.js', '!test/specs/thrift/**'])
+    .pipe(jest());
+});
+
+gulp.task('jest:thrift', () => {
+  return gulp.src(['test/specs/thrift/**/*.spec.js'])
     .pipe(jest());
 });
 
