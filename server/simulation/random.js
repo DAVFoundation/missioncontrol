@@ -22,11 +22,24 @@ const randomDroneModel = () => {
   return `${randomManufacturerName()} ${randomModelName()}`;
 };
 
+/**
+ * Returns a random rating between 1.0 and 5.0
+ *
+ * @returns {Number} A floating point number representing a rating between 1.0 and 5.0
+ */
 const randomRating = () => {
   const rating = (Math.random() * 4) + 1;
   return rating.toPrecision(2);
 };
 
+/**
+ * Returns random coordinates that are within a certain distance (in meters)
+ * of a given coordinates.
+ *
+ * @param {{lat: Number, long: Number}} coords - Origin coordinate to generate new random coordinate next to
+ * @param {Number} distance - Maximum distance in meters from origin coordinates to generate new coordinate
+ * @returns {{lat: Number, long: Number}} A new object containing latitude and longitude
+ */
 const randomCoords = ({ coords, distance }) => {
   const angle = Math.random() * 2 * Math.PI;
   const radius = Math.random() * distance;
