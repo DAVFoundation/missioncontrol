@@ -27,14 +27,14 @@ const randomRating = () => {
   return rating.toPrecision(2);
 };
 
-const randomCoords = ( {coords, distance} ) => {
-  let angle=Math.random()*2*Math.PI;
-  let radius=Math.random()*distance;
-  let Longpm=1/111321.377778; // degrees per meter
-  let Latpm=1/1111348.61111; // degrees per meter
-  let x=parseFloat((coords.lat+Latpm*radius*Math.cos(angle)).toFixed(6));
-  let y=parseFloat((coords.long+Longpm*radius*Math.sin(angle)).toFixed(6));
-  return {lat:x, long:y};
+const randomCoords = ({ coords, distance }) => {
+  const angle = Math.random() * 2 * Math.PI;
+  const radius = Math.random() * distance;
+  const longDegreesPerMeter = 1 / 111321.377778; // longitude degrees per meter
+  const latDegreesPerMeter = 1 / 1111348.61111; // latitude degrees per meter
+  const x = parseFloat((coords.lat + latDegreesPerMeter * radius * Math.cos(angle)).toFixed(6));
+  const y = parseFloat((coords.long + longDegreesPerMeter * radius * Math.sin(angle)).toFixed(6));
+  return { lat: x, long: y };
 };
 
 module.exports = {
