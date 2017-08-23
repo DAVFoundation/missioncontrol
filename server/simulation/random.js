@@ -33,10 +33,10 @@ const randomRating = () => {
 };
 
 const randomMissionsCompleted = () => {
-  const randomNumber = Math.random() * (90 - 4) + 4;
+  const missionsCompleted = Math.floor(Math.random() * (90 - 4) + 4);
   return {
-    missionsCompleted: Math.floor(randomNumber),
-    missionsCompleted7Days: Math.floor(Math.sqrt(randomNumber))
+    missionsCompleted: missionsCompleted,
+    missionsCompleted7Days: Math.floor(Math.sqrt(missionsCompleted))
   };
 };
 
