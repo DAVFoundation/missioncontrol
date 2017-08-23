@@ -32,6 +32,13 @@ const randomRating = () => {
   return parseFloat(rating);
 };
 
+const randomMissionsCompleted = () => {
+  return {
+    missionsCompleted: 27,
+    missionsCompleted7Days: 4
+  };
+};
+
 /**
  * Returns random coordinates that are within a certain distance (in meters)
  * of a given coordinates.
@@ -54,5 +61,6 @@ module.exports = {
   randomDavAddress,
   randomDroneModel,
   randomRating,
+  randomMissionsCompleted,
   randomCoords,
 };
