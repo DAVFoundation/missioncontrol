@@ -28,8 +28,8 @@ const randomDroneModel = () => {
  * @returns {Number} A floating point number representing a rating between 1.0 and 5.0
  */
 const randomRating = () => {
-  const rating = (Math.random() * 4) + 1;
-  return rating.toPrecision(2);
+  const rating = ((Math.random() * 4) + 1).toFixed(1);
+  return parseFloat(rating);
 };
 
 /**
