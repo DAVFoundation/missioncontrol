@@ -12,14 +12,12 @@
   },
   "dependencies": {
     "express": "^4.15.3",
-    "random-float": "^1.0.0",
     "randomstring": "^1.1.5",
     "thrift": "^0.10.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-eslint": "^4.0.0",
-    "gulp-jest": "^2.0.0",
     "gulp-nodemon": "^2.2.1",
     "gulp-shell": "^0.6.3",
     "jest-cli": "^20.0.4"

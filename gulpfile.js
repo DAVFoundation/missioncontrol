@@ -2,8 +2,13 @@ const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 const shell = require('gulp-shell');
 const nodemon = require('gulp-nodemon');
-const jest = require('gulp-jest').default;
 const path = require('path');
+const jest = require('jest-cli');
+
+const jestConfig = {
+  verbose: false,
+  rootDir: '.'
+};
 
 gulp.task('lint', () => {
   return gulp.src(['**/*.js', '!node_modules/**', '!server/thrift/**'])
@@ -12,14 +17,16 @@ gulp.task('lint', () => {
     .pipe(eslint.failAfterError());
 });
 
-gulp.task('jest', () => {
-  return gulp.src(['test/specs/**/*.spec.js', '!test/specs/thrift/**'])
-    .pipe(jest());
+gulp.task('jest', (done) => {
+  jest.runCLI({
+    config: Object.assign(jestConfig, { testMatch: ['**/test/specs/*.js'] })
+  }, '.', () => done());
 });
 
-gulp.task('jest:thrift', () => {
-  return gulp.src(['test/specs/thrift/**/*.spec.js'])
-    .pipe(jest());
+gulp.task('jest:thrift', (done) => {
+  jest.runCLI({
+    config: Object.assign(jestConfig, { testMatch: ['**/test/specs/thrift/*.js'] })
+  }, '.', () => done());
 });
 
 gulp.task('thrift-build', shell.task('npm run thrift'));
