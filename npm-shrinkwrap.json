@@ -3077,16 +3077,6 @@
         "gulp-util": "3.0.8"
       }
     },
-    "gulp-jest": {
-      "version": "2.0.0",
-      "resolved": "https://registry.npmjs.org/gulp-jest/-/gulp-jest-2.0.0.tgz",
-      "integrity": "sha1-IkJd25siSRPPt5XXtWcma+zk6KM=",
-      "dev": true,
-      "requires": {
-        "gulp-util": "3.0.8",
-        "through2": "2.0.3"
-      }
-    },
     "gulp-nodemon": {
       "version": "2.2.1",
       "resolved": "https://registry.npmjs.org/gulp-nodemon/-/gulp-nodemon-2.2.1.tgz",
