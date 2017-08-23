@@ -40,7 +40,7 @@ describe('randomMissionsCompleted()', () => {
     ).toBe('object');
   });
 
-  test('returns an integer that is between 4 and 90', () => {
+  test('returns an object containing missionsCompleted which is an integer between 4 and 90', () => {
     expect(
       Number.isInteger(randomMissionsCompleted().missionsCompleted)
     ).toBeTruthy();
