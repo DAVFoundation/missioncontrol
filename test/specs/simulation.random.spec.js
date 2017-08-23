@@ -1,4 +1,4 @@
-const { randomDroneModel, randomDavAddress } = require('../../server/simulation/random');
+const { randomDroneModel, randomDavAddress,randomMissionsCompleted } = require('../../server/simulation/random');
 
 describe('randomDroneModel()', () => {
 
@@ -28,6 +28,22 @@ describe('randomDavAddress()', () => {
     expect(
       randomDavAddress().length
     ).toEqual(42);
+  });
+
+});
+
+describe('randomMissionsCompleted()', () => {
+
+  test('returns an object', () => {
+    expect(
+      typeof randomMissionsCompleted()
+    ).toBe('object');
+  });
+
+  test('returns a  positive integer that is less than or equal to the value of missionsCompleted', () => {
+    expect(
+      randomMissionsCompleted().missionsCompleted7Days
+    ).toBeLessThanOrEqual(randomMissionsCompleted().missionsCompleted);
   });
 
 });
