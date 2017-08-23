@@ -4,11 +4,11 @@
   "description": "Controls and orchestrates missions between DAV users and vehicles",
   "license": "MIT",
   "author": "Tal Ater <tal@talater.com>",
+  "main": "./server/server-web.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/DAVFoundation/missioncontrol.git"
   },
-  "main": "./server/server-web.js",
   "scripts": {
     "start": "node server/start-servers.js",
     "test": "gulp jest",
