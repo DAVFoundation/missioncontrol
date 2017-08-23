@@ -42,8 +42,11 @@ describe('randomMissionsCompleted()', () => {
 
   test('returns a  positive integer that is less than or equal to the value of missionsCompleted', () => {
     expect(
-      randomMissionsCompleted().missionsCompleted7Days
-    ).toBeLessThanOrEqual(randomMissionsCompleted().missionsCompleted);
+      randomMissionsCompleted().missionsCompleted
+    ).toBeLessThanOrEqual(90); 
+    expect(
+      randomMissionsCompleted().missionsCompleted
+    ).toBeGreaterThanOrEqual(4);
   });
 
 });
