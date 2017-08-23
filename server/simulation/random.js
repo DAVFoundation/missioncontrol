@@ -33,8 +33,6 @@ const randomRating = () => {
 };
 
 const randomMissionsCompleted = () => {
-  const min = 4;
-  const max = 90;
   const randomNumber = Math.random() * (90 - 4) + 4;
   return {
     missionsCompleted: Math.floor(randomNumber),
