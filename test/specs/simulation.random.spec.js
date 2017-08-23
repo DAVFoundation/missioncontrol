@@ -1,4 +1,4 @@
-const { randomDroneModel, randomDavAddress,randomMissionsCompleted } = require('../../server/simulation/random');
+const { randomDroneModel, randomDavAddress, randomMissionsCompleted } = require('../../server/simulation/random');
 
 describe('randomDroneModel()', () => {
 
@@ -40,10 +40,13 @@ describe('randomMissionsCompleted()', () => {
     ).toBe('object');
   });
 
-  test('returns a  positive integer that is less than or equal to the value of missionsCompleted', () => {
+  test('returns an integer that is between 4 and 90', () => {
+    expect(
+      Number.isInteger(randomMissionsCompleted().missionsCompleted)
+    ).toBeTruthy();
     expect(
       randomMissionsCompleted().missionsCompleted
-    ).toBeLessThanOrEqual(90); 
+    ).toBeLessThanOrEqual(90);
     expect(
       randomMissionsCompleted().missionsCompleted
     ).toBeGreaterThanOrEqual(4);
