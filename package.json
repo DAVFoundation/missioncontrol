@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "node server/start-servers.js",
-    "test": "gulp jest",
+    "test": "gulp js",
     "thrift": "thrift -gen js:node -strict -recurse -out ./server/thrift ./resources/idl/CaptainMissionControl.thrift"
   },
   "dependencies": {
