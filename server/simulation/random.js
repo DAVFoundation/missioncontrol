@@ -33,9 +33,12 @@ const randomRating = () => {
 };
 
 const randomMissionsCompleted = () => {
+  const min = 4;
+  const max = 90;
+  const randomNumber = Math.random() * (90 - 4) + 4;
   return {
-    missionsCompleted: 27,
-    missionsCompleted7Days: 4
+    missionsCompleted: Math.floor(randomNumber),
+    missionsCompleted7Days: Math.floor(Math.sqrt(randomNumber))
   };
 };
 
