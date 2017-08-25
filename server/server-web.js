@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 app.get('/status', async function (req, res) {
   const vehicles = await getVehiclesInRange(
     { lat: parseFloat(req.query.lat), long: parseFloat(req.query.long) },
-    4000
+    7000
   );
   res.json({ vehicles });
 });

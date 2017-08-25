@@ -19,27 +19,37 @@ const addNewVehicle = vehicle => {
   // @TODO: Send new vehicles to Captain
 };
 
-const getVehiclesInRange = async (coords, radius) => {
-  // get list of known vehicles in range
-  const vehiclesInRange = await redis.georadiusAsync('positions', coords.long, coords.lat, radius, 'm');
-
-  // if not enough vehicles in range generate new ones, store them in redis, and send them to captain
-  if (vehiclesInRange.length < 20) {
-    const newVehicles = generateRandomVehicles(10, coords, 2000);
-    newVehicles.forEach(vehicle => {
+const generateAndAddVehicles = (count, coords, radius) =>
+  count > 0 && generateRandomVehicles(count, coords, radius)
+    .forEach(vehicle => {
       addNewVehicle(vehicle);
     });
-  }
 
-  // get details of registered vehicles in range
+
+const getVehiclesInRange = async (coords, radius) => {
+  const shortRangeRadius = radius/7;
+  const desiredVehicleCountInShortRange = 3;
+  const desiredVehicleCountInLongRange = 150;
+
+  // get list of known vehicles in short range
+  const vehiclesInShortRange = await redis.georadiusAsync('positions', coords.long, coords.lat, shortRangeRadius, 'm');
+  // if not enough vehicles in short range generate new ones
+  generateAndAddVehicles(desiredVehicleCountInShortRange - vehiclesInShortRange.length, coords, shortRangeRadius);
+
+  // get list of known vehicles in long range
+  const vehiclesInLongRange = await redis.georadiusAsync('positions', coords.long, coords.lat, radius, 'm');
+  // if not enough vehicles in long range generate new ones
+  generateAndAddVehicles(desiredVehicleCountInLongRange - vehiclesInLongRange.length, coords, radius);
+
+  // get details for vehicles in range
   let vehicles = await Promise.all(
-    vehiclesInRange.map(
+    vehiclesInLongRange.map(
       vehicleId => redis.hgetallAsync(`vehicles:${vehicleId}`)
     )
   );
 
-  // Go over vehicles
-  vehicles = vehicles
+  // Prepare response
+  return vehicles
     // filter vehicles
     .filter(vehicle => !!vehicle)
     // format response objects
@@ -54,8 +64,6 @@ const getVehiclesInRange = async (coords, radius) => {
         missions_completed_7_days: parseInt(vehicle.missions_completed_7_days),
       })
     );
-
-  return vehicles;
 };
 
 module.exports = {
