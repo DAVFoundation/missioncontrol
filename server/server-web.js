@@ -17,13 +17,12 @@ app.get('/', function (req, res) {
   res.send('hello world');
 });
 
-app.get('/status', function (req, res) {
-  res.json({
-    vehicles:getVehiclesInRange(
-      { lat: parseFloat(req.query.lat), long: parseFloat(req.query.long) },
-      2000
-    )
-  });
+app.get('/status', async function (req, res) {
+  const vehicles = await getVehiclesInRange(
+    { lat: parseFloat(req.query.lat), long: parseFloat(req.query.long) },
+    4000
+  );
+  res.json({ vehicles });
 });
 
 

@@ -1,9 +1,6 @@
 const { generateRandom } = require('./drone');
 
-const generateRandomVehicles = (coords, radius = 2000) => {
-  // Number of vehicles to generate
-  const vehicleCount = 4;
-
+const generateRandomVehicles = (vehicleCount = 4, coords, radius = 2000) => {
   let vehicles = [];
   for (let i = 0; i < vehicleCount; i++) {
     vehicles.push(generateRandom({coords, radius}));
