@@ -1,5 +1,9 @@
 const { generateRandomVehicles } = require('../simulation/vehicles');
 
-export const getVehiclesInRange = (coords) => {
-  return generateRandomVehicles(coords);
+const getVehiclesInRange = (coords, radius) => {
+  return generateRandomVehicles(coords, radius);
+};
+
+module.exports = {
+  getVehiclesInRange
 };

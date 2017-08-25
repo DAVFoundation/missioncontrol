@@ -45,16 +45,16 @@ const randomMissionsCompleted = () => {
  * of a given coordinates.
  *
  * @param {{lat: Number, long: Number}} coords - Origin coordinate to generate new random coordinate next to
- * @param {Number} distance - Maximum distance in meters from origin coordinates to generate new coordinate
+ * @param {Number} radius - Maximum distance in meters from origin coordinates to generate new coordinate
  * @returns {{lat: Number, long: Number}} A new object containing latitude and longitude
  */
-const randomCoords = ({ coords, distance }) => {
+const randomCoords = ({ coords, radius }) => {
   const angle = Math.random() * 2 * Math.PI;
-  const radius = Math.random() * distance;
+  const distance = Math.random() * radius;
   const longDegreesPerMeter = 1 / 111321.377778; // longitude degrees per meter
   const latDegreesPerMeter = 1 / 111134.86111; // latitude degrees per meter
-  const x = parseFloat((coords.lat + latDegreesPerMeter * radius * Math.cos(angle)).toFixed(6));
-  const y = parseFloat((coords.long + longDegreesPerMeter * radius * Math.sin(angle)).toFixed(6));
+  const x = parseFloat((coords.lat + latDegreesPerMeter * distance * Math.cos(angle)).toFixed(6));
+  const y = parseFloat((coords.long + longDegreesPerMeter * distance * Math.sin(angle)).toFixed(6));
   return { lat: x, long: y };
 };
 
