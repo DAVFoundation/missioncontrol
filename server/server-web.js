@@ -1,9 +1,9 @@
-const express = require('express');
 const { getVehiclesInRange } = require('./store/vehicles');
+const { hasStore } = require('./lib/environment');
 
+const express = require('express');
 const app = express();
 const port = process.env.WEB_SERVER_PORT || 8888;
-
 
 // Allow CORS
 app.use(function(req, res, next) {
@@ -18,6 +18,8 @@ app.get('/', function (req, res) {
 });
 
 app.get('/status', async function (req, res) {
+  if (!hasStore) return res.json({ vehicles: [] });
+
   const vehicles = await getVehiclesInRange(
     { lat: parseFloat(req.query.lat), long: parseFloat(req.query.long) },
     7000
