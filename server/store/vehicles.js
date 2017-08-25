@@ -29,7 +29,7 @@ const generateAndAddVehicles = (count, coords, radius) =>
 const getVehiclesInRange = async (coords, radius) => {
   const shortRangeRadius = radius/7;
   const desiredVehicleCountInShortRange = 3;
-  const desiredVehicleCountInLongRange = 150;
+  const desiredVehicleCountInLongRange = 100;
 
   // get list of known vehicles in short range
   const vehiclesInShortRange = await redis.georadiusAsync('positions', coords.long, coords.lat, shortRangeRadius, 'm');
