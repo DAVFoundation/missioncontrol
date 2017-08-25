@@ -1,5 +1,5 @@
 const express = require('express');
-const { getVehicles } = require('./simulation/vehicles');
+const { getVehiclesInRange } = require('./store/vehicles');
 
 const app = express();
 const port = process.env.WEB_SERVER_PORT || 8888;
@@ -19,10 +19,10 @@ app.get('/', function (req, res) {
 
 app.get('/status', function (req, res) {
   res.json({
-    vehicles: getVehicles({
-      userId: req.query.id,
-      coords: { lat: parseFloat(req.query.lat), long: parseFloat(req.query.long) }
-    })
+    vehicles:getVehiclesInRange(
+      { lat: parseFloat(req.query.lat), long: parseFloat(req.query.long) },
+      2000
+    )
   });
 });
 
