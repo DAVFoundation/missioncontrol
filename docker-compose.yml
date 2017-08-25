@@ -12,7 +12,6 @@ services:
       REDIS_PORT: 6379
     volumes:
       - .:/app
-      - /app/node_modules
     links:
       - redis:redis
   redis:
