@@ -25,7 +25,7 @@ const getVehiclesInRange = async (coords, radius) => {
 
   // if not enough vehicles in range generate new ones, store them in redis, and send them to captain
   if (vehiclesInRange.length < 20) {
-    const newVehicles = generateRandomVehicles(20, coords, 4000);
+    const newVehicles = generateRandomVehicles(10, coords, 2000);
     newVehicles.forEach(vehicle => {
       addNewVehicle(vehicle);
     });
