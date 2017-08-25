@@ -1,6 +1,6 @@
 {
   "name": "missioncontrol",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Controls and orchestrates missions between DAV users and vehicles",
   "license": "MIT",
   "author": "Tal Ater <tal@talater.com>",
