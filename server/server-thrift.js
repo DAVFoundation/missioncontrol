@@ -1,7 +1,6 @@
 const thrift = require('thrift');
 const StatusReport = require('./thrift/StatusReport.js');
 const Registration = require('./thrift/Registration.js');
-// const StatusReport_types = require('./thrift/StatusReport_types.js');
 
 const MultiplexedProcessor = new thrift.MultiplexedProcessor();
 
