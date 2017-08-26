@@ -8,7 +8,6 @@ const services = {
 };
 
 // Connection settings
-const host = 'localhost';
 const transport = thrift.TBufferedTransport;
 const protocol = thrift.TBinaryProtocol;
 
@@ -16,7 +15,7 @@ const mp = new thrift.Multiplexer();
 let connection;
 let clients = {};
 
-const start = ({port = 9090} = {}) => {
+const start = ({port = 9090, host = 'localhost'} = {}) => {
   connection = thrift.createConnection(host, port, {
     transport: transport,
     protocol: protocol,
