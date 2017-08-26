@@ -4,7 +4,7 @@
 
 // Includes
 include "DAVUser.thrift"
-include "Types.thrift"
+include "Vehicle.thrift"
 
 /*
  * The Registration service is used by Captains to register and deregister with Mission Control
@@ -12,7 +12,7 @@ include "Types.thrift"
 service Registration {
 
     string register_vehicle(
-        1: DAVUser.DAVUser vehicleID,
+        1: Vehicle.VehicleDetails vehicleDetails
     )
 
     void deregister_vehicle(
