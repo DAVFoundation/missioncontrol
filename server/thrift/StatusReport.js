@@ -23,9 +23,13 @@ var StatusReport_report_status_args = function(args) {
   if (args) {
     if (args.vehicleID !== undefined && args.vehicleID !== null) {
       this.vehicleID = new DAVUser_ttypes.DAVUser(args.vehicleID);
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field vehicleID is unset!');
     }
     if (args.state !== undefined && args.state !== null) {
       this.state = new Vehicle_ttypes.VehicleState(args.state);
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field state is unset!');
     }
   }
 };

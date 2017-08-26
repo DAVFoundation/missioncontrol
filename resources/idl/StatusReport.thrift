@@ -13,8 +13,8 @@ include "Types.thrift"
 service StatusReport {
 
     void report_status(
-        1: DAVUser.DAVUser vehicleID,
-        2: Vehicle.VehicleState state,
+        1: required DAVUser.DAVUser vehicleID,
+        2: required Vehicle.VehicleState state,
     )
 
 }

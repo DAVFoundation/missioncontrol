@@ -11,9 +11,9 @@ struct VehicleState {
 
 struct VehicleDetails {
   1: required DAVUser.DAVUser vehicleID,
-  2: string model,
-  3: Types.Coordinates coordinates,
-  4: double rating,
-  5: i16 missions_completed,
-  6: i16 missions_completed_7_days,
+  2: optional string model,
+  3: optional Types.Coordinates coordinates,
+  4: optional double rating,
+  5: optional i16 missions_completed,
+  6: optional i16 missions_completed_7_days,
 }

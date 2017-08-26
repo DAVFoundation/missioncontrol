@@ -12,15 +12,15 @@ include "Vehicle.thrift"
 service Registration {
 
     string register_vehicle(
-        1: Vehicle.VehicleDetails vehicleDetails
+        1: required Vehicle.VehicleDetails vehicleDetails
     )
 
     void deregister_vehicle(
-        1: DAVUser.DAVUser vehicleID,
+        1: required DAVUser.DAVUser vehicleID,
     )
 
     bool vehicle_is_registered(
-        1: DAVUser.DAVUser vehicleID,
+        1: required DAVUser.DAVUser vehicleID,
     )
 
 }

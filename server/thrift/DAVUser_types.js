@@ -16,6 +16,8 @@ var DAVUser = module.exports.DAVUser = function(args) {
   if (args) {
     if (args.UID !== undefined && args.UID !== null) {
       this.UID = args.UID;
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field UID is unset!');
     }
   }
 };

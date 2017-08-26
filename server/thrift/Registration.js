@@ -21,6 +21,8 @@ var Registration_register_vehicle_args = function(args) {
   if (args) {
     if (args.vehicleDetails !== undefined && args.vehicleDetails !== null) {
       this.vehicleDetails = new Vehicle_ttypes.VehicleDetails(args.vehicleDetails);
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field vehicleDetails is unset!');
     }
   }
 };
@@ -128,6 +130,8 @@ var Registration_deregister_vehicle_args = function(args) {
   if (args) {
     if (args.vehicleID !== undefined && args.vehicleID !== null) {
       this.vehicleID = new DAVUser_ttypes.DAVUser(args.vehicleID);
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field vehicleID is unset!');
     }
   }
 };
@@ -210,6 +214,8 @@ var Registration_vehicle_is_registered_args = function(args) {
   if (args) {
     if (args.vehicleID !== undefined && args.vehicleID !== null) {
       this.vehicleID = new DAVUser_ttypes.DAVUser(args.vehicleID);
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field vehicleID is unset!');
     }
   }
 };

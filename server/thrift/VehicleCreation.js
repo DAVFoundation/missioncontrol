@@ -20,6 +20,8 @@ var VehicleCreation_create_vehicle_args = function(args) {
   if (args) {
     if (args.vehicle !== undefined && args.vehicle !== null) {
       this.vehicle = new Vehicle_ttypes.VehicleDetails(args.vehicle);
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field vehicle is unset!');
     }
   }
 };

@@ -11,7 +11,7 @@ include "Vehicle.thrift"
 service VehicleCreation {
 
     string create_vehicle(
-        1: Vehicle.VehicleDetails vehicle
+        1: required Vehicle.VehicleDetails vehicle
     )
 
 }
