@@ -1,7 +1,8 @@
 const { getVehiclesInRange } = require('./store/vehicles');
 const { hasStore } = require('./lib/environment');
 
-require('./client-thrift').start();
+// Create thrift connection to Captain
+require('./client-thrift').start({port: 9090, host: 'localhost'});
 
 const express = require('express');
 const app = express();
