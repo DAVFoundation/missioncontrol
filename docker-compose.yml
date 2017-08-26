@@ -5,6 +5,7 @@ services:
     build: .
     ports:
       - '8888:8443'
+      - '9090:9090'
     environment:
       NODE_ENV: development
       DAV_ENV: simulated
