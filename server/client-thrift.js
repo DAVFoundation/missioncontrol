@@ -36,7 +36,12 @@ const getClient = (service) => {
   return clients[service];
 };
 
+const vehicleIsRegistered = () => {
+  return getClient('Registration')
+    .vehicle_is_registered();
+};
+
 module.exports = {
   start,
-  getClient,
+  vehicleIsRegistered,
 };
