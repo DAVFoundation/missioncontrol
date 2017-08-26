@@ -1,6 +1,7 @@
 const redis = require('./redis');
 
 const { generateRandomVehicles } = require('../simulation/vehicles');
+const { createVehicle } = require('../client-thrift');
 
 const addNewVehicle = vehicle => {
   // Add to positions
@@ -16,7 +17,8 @@ const addNewVehicle = vehicle => {
     'missions_completed', vehicle.missions_completed,
     'missions_completed_7_days', vehicle.missions_completed_7_days,
   );
-  // @TODO: Send new vehicles to Captain
+  // Send new vehicle to Captain
+  createVehicle(vehicle);
 };
 
 const generateAndAddVehicles = (count, coords, radius) =>

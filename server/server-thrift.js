@@ -1,6 +1,7 @@
 const thrift = require('thrift');
-const StatusReport = require('./thrift/StatusReport.js');
-const Registration = require('./thrift/Registration.js');
+const StatusReport = require('./thrift/StatusReport');
+const Registration = require('./thrift/Registration');
+const VehicleCreation = require('./thrift/VehicleCreation');
 
 const MultiplexedProcessor = new thrift.MultiplexedProcessor();
 
@@ -22,7 +23,16 @@ MultiplexedProcessor.registerProcessor('Registration', new Registration.Processo
 
 MultiplexedProcessor.registerProcessor('StatusReport', new StatusReport.Processor({
 
-  report_status: (authenticationToken, vehicleID, state, result) => {
+  report_status: (vehicleID, state, result) => {
+    result(null);
+  },
+
+}));
+
+MultiplexedProcessor.registerProcessor('VehicleCreation', new VehicleCreation.Processor({
+
+  create_vehicle: (vehicleDetails, result) => {
+    console.log('Mock thrift server received create_vehicle: ', vehicleDetails.vehicleId.UID);
     result(null);
   },
 
