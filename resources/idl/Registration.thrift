@@ -8,8 +8,6 @@ include "Types.thrift"
 
 /*
  * The Registration service is used by Captains to register and deregister with Mission Control
- *
- * @TODO: Define exceptions it should throw in case of invalid authenticationToken
  */
 service Registration {
 
@@ -18,13 +16,11 @@ service Registration {
     )
 
     void deregister_vehicle(
-        1: Types.AuthenticationToken authenticationToken,
-        2: DAVUser.DAVUser vehicleID,
+        1: DAVUser.DAVUser vehicleID,
     )
 
     bool vehicle_is_registered(
-        1: Types.AuthenticationToken authenticationToken,
-        2: DAVUser.DAVUser vehicleID,
+        1: DAVUser.DAVUser vehicleID,
     )
 
 }

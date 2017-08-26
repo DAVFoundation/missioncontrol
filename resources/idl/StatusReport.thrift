@@ -9,15 +9,12 @@ include "Types.thrift"
 
 /*
  * The StatusReport service is used by Captains to send updates to Mission Control
- *
- * @TODO: Define exceptions it should throw in case of invalid authenticationToken
  */
 service StatusReport {
 
     void report_status(
-        1: Types.AuthenticationToken authenticationToken,
-        2: DAVUser.DAVUser vehicleID,
-        3: Vehicle.VehicleState state,
+        1: DAVUser.DAVUser vehicleID,
+        2: Vehicle.VehicleState state,
     )
 
 }

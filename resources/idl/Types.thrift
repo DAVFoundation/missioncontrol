@@ -4,12 +4,7 @@
 typedef i64 Timestamp
 
 /*
- * Authentication token
- */
-typedef string AuthenticationToken
-
-/*
- * Standard UNIX timestamp
+ * Coordinates object containing latitude and longitude
  */
 struct Coordinates {
     1: required double latitude;

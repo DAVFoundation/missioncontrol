@@ -18,13 +18,9 @@ var ttypes = require('./StatusReport_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
 var StatusReport_report_status_args = function(args) {
-  this.authenticationToken = null;
   this.vehicleID = null;
   this.state = null;
   if (args) {
-    if (args.authenticationToken !== undefined && args.authenticationToken !== null) {
-      this.authenticationToken = args.authenticationToken;
-    }
     if (args.vehicleID !== undefined && args.vehicleID !== null) {
       this.vehicleID = new DAVUser_ttypes.DAVUser(args.vehicleID);
     }
@@ -48,13 +44,6 @@ StatusReport_report_status_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.authenticationToken = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
       if (ftype == Thrift.Type.STRUCT) {
         this.vehicleID = new DAVUser_ttypes.DAVUser();
         this.vehicleID.read(input);
@@ -62,7 +51,7 @@ StatusReport_report_status_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 3:
+      case 2:
       if (ftype == Thrift.Type.STRUCT) {
         this.state = new Vehicle_ttypes.VehicleState();
         this.state.read(input);
@@ -81,18 +70,13 @@ StatusReport_report_status_args.prototype.read = function(input) {
 
 StatusReport_report_status_args.prototype.write = function(output) {
   output.writeStructBegin('StatusReport_report_status_args');
-  if (this.authenticationToken !== null && this.authenticationToken !== undefined) {
-    output.writeFieldBegin('authenticationToken', Thrift.Type.STRING, 1);
-    output.writeString(this.authenticationToken);
-    output.writeFieldEnd();
-  }
   if (this.vehicleID !== null && this.vehicleID !== undefined) {
-    output.writeFieldBegin('vehicleID', Thrift.Type.STRUCT, 2);
+    output.writeFieldBegin('vehicleID', Thrift.Type.STRUCT, 1);
     this.vehicleID.write(output);
     output.writeFieldEnd();
   }
   if (this.state !== null && this.state !== undefined) {
-    output.writeFieldBegin('state', Thrift.Type.STRUCT, 3);
+    output.writeFieldBegin('state', Thrift.Type.STRUCT, 2);
     this.state.write(output);
     output.writeFieldEnd();
   }
@@ -138,7 +122,7 @@ var StatusReportClient = exports.Client = function(output, pClass) {
 StatusReportClient.prototype = {};
 StatusReportClient.prototype.seqid = function() { return this._seqid; };
 StatusReportClient.prototype.new_seqid = function() { return this._seqid += 1; };
-StatusReportClient.prototype.report_status = function(authenticationToken, vehicleID, state, callback) {
+StatusReportClient.prototype.report_status = function(vehicleID, state, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -149,19 +133,18 @@ StatusReportClient.prototype.report_status = function(authenticationToken, vehic
         _defer.resolve(result);
       }
     };
-    this.send_report_status(authenticationToken, vehicleID, state);
+    this.send_report_status(vehicleID, state);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_report_status(authenticationToken, vehicleID, state);
+    this.send_report_status(vehicleID, state);
   }
 };
 
-StatusReportClient.prototype.send_report_status = function(authenticationToken, vehicleID, state) {
+StatusReportClient.prototype.send_report_status = function(vehicleID, state) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('report_status', Thrift.MessageType.CALL, this.seqid());
   var args = new StatusReport_report_status_args();
-  args.authenticationToken = authenticationToken;
   args.vehicleID = vehicleID;
   args.state = state;
   args.write(output);
@@ -207,8 +190,8 @@ StatusReportProcessor.prototype.process_report_status = function(seqid, input, o
   var args = new StatusReport_report_status_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.report_status.length === 3) {
-    Q.fcall(this._handler.report_status, args.authenticationToken, args.vehicleID, args.state)
+  if (this._handler.report_status.length === 2) {
+    Q.fcall(this._handler.report_status, args.vehicleID, args.state)
       .then(function(result) {
         var result_obj = new StatusReport_report_status_result({success: result});
         output.writeMessageBegin("report_status", Thrift.MessageType.REPLY, seqid);
@@ -224,7 +207,7 @@ StatusReportProcessor.prototype.process_report_status = function(seqid, input, o
         output.flush();
       });
   } else {
-    this._handler.report_status(args.authenticationToken, args.vehicleID, args.state, function (err, result) {
+    this._handler.report_status(args.vehicleID, args.state, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined')) {
         result_obj = new StatusReport_report_status_result((err !== null || typeof err === 'undefined') ? err : {success: result});

@@ -124,12 +124,8 @@ Registration_register_vehicle_result.prototype.write = function(output) {
 };
 
 var Registration_deregister_vehicle_args = function(args) {
-  this.authenticationToken = null;
   this.vehicleID = null;
   if (args) {
-    if (args.authenticationToken !== undefined && args.authenticationToken !== null) {
-      this.authenticationToken = args.authenticationToken;
-    }
     if (args.vehicleID !== undefined && args.vehicleID !== null) {
       this.vehicleID = new DAVUser_ttypes.DAVUser(args.vehicleID);
     }
@@ -150,13 +146,6 @@ Registration_deregister_vehicle_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.authenticationToken = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
       if (ftype == Thrift.Type.STRUCT) {
         this.vehicleID = new DAVUser_ttypes.DAVUser();
         this.vehicleID.read(input);
@@ -164,6 +153,9 @@ Registration_deregister_vehicle_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 0:
+        input.skip(ftype);
+        break;
       default:
         input.skip(ftype);
     }
@@ -175,13 +167,8 @@ Registration_deregister_vehicle_args.prototype.read = function(input) {
 
 Registration_deregister_vehicle_args.prototype.write = function(output) {
   output.writeStructBegin('Registration_deregister_vehicle_args');
-  if (this.authenticationToken !== null && this.authenticationToken !== undefined) {
-    output.writeFieldBegin('authenticationToken', Thrift.Type.STRING, 1);
-    output.writeString(this.authenticationToken);
-    output.writeFieldEnd();
-  }
   if (this.vehicleID !== null && this.vehicleID !== undefined) {
-    output.writeFieldBegin('vehicleID', Thrift.Type.STRUCT, 2);
+    output.writeFieldBegin('vehicleID', Thrift.Type.STRUCT, 1);
     this.vehicleID.write(output);
     output.writeFieldEnd();
   }
@@ -219,12 +206,8 @@ Registration_deregister_vehicle_result.prototype.write = function(output) {
 };
 
 var Registration_vehicle_is_registered_args = function(args) {
-  this.authenticationToken = null;
   this.vehicleID = null;
   if (args) {
-    if (args.authenticationToken !== undefined && args.authenticationToken !== null) {
-      this.authenticationToken = args.authenticationToken;
-    }
     if (args.vehicleID !== undefined && args.vehicleID !== null) {
       this.vehicleID = new DAVUser_ttypes.DAVUser(args.vehicleID);
     }
@@ -245,13 +228,6 @@ Registration_vehicle_is_registered_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.authenticationToken = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
       if (ftype == Thrift.Type.STRUCT) {
         this.vehicleID = new DAVUser_ttypes.DAVUser();
         this.vehicleID.read(input);
@@ -259,6 +235,9 @@ Registration_vehicle_is_registered_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 0:
+        input.skip(ftype);
+        break;
       default:
         input.skip(ftype);
     }
@@ -270,13 +249,8 @@ Registration_vehicle_is_registered_args.prototype.read = function(input) {
 
 Registration_vehicle_is_registered_args.prototype.write = function(output) {
   output.writeStructBegin('Registration_vehicle_is_registered_args');
-  if (this.authenticationToken !== null && this.authenticationToken !== undefined) {
-    output.writeFieldBegin('authenticationToken', Thrift.Type.STRING, 1);
-    output.writeString(this.authenticationToken);
-    output.writeFieldEnd();
-  }
   if (this.vehicleID !== null && this.vehicleID !== undefined) {
-    output.writeFieldBegin('vehicleID', Thrift.Type.STRUCT, 2);
+    output.writeFieldBegin('vehicleID', Thrift.Type.STRUCT, 1);
     this.vehicleID.write(output);
     output.writeFieldEnd();
   }
@@ -394,7 +368,7 @@ RegistrationClient.prototype.recv_register_vehicle = function(input,mtype,rseqid
   }
   return callback('register_vehicle failed: unknown result');
 };
-RegistrationClient.prototype.deregister_vehicle = function(authenticationToken, vehicleID, callback) {
+RegistrationClient.prototype.deregister_vehicle = function(vehicleID, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -405,19 +379,18 @@ RegistrationClient.prototype.deregister_vehicle = function(authenticationToken, 
         _defer.resolve(result);
       }
     };
-    this.send_deregister_vehicle(authenticationToken, vehicleID);
+    this.send_deregister_vehicle(vehicleID);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_deregister_vehicle(authenticationToken, vehicleID);
+    this.send_deregister_vehicle(vehicleID);
   }
 };
 
-RegistrationClient.prototype.send_deregister_vehicle = function(authenticationToken, vehicleID) {
+RegistrationClient.prototype.send_deregister_vehicle = function(vehicleID) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('deregister_vehicle', Thrift.MessageType.CALL, this.seqid());
   var args = new Registration_deregister_vehicle_args();
-  args.authenticationToken = authenticationToken;
   args.vehicleID = vehicleID;
   args.write(output);
   output.writeMessageEnd();
@@ -439,7 +412,7 @@ RegistrationClient.prototype.recv_deregister_vehicle = function(input,mtype,rseq
 
   callback(null);
 };
-RegistrationClient.prototype.vehicle_is_registered = function(authenticationToken, vehicleID, callback) {
+RegistrationClient.prototype.vehicle_is_registered = function(vehicleID, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -450,19 +423,18 @@ RegistrationClient.prototype.vehicle_is_registered = function(authenticationToke
         _defer.resolve(result);
       }
     };
-    this.send_vehicle_is_registered(authenticationToken, vehicleID);
+    this.send_vehicle_is_registered(vehicleID);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_vehicle_is_registered(authenticationToken, vehicleID);
+    this.send_vehicle_is_registered(vehicleID);
   }
 };
 
-RegistrationClient.prototype.send_vehicle_is_registered = function(authenticationToken, vehicleID) {
+RegistrationClient.prototype.send_vehicle_is_registered = function(vehicleID) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('vehicle_is_registered', Thrift.MessageType.CALL, this.seqid());
   var args = new Registration_vehicle_is_registered_args();
-  args.authenticationToken = authenticationToken;
   args.vehicleID = vehicleID;
   args.write(output);
   output.writeMessageEnd();
@@ -546,8 +518,8 @@ RegistrationProcessor.prototype.process_deregister_vehicle = function(seqid, inp
   var args = new Registration_deregister_vehicle_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.deregister_vehicle.length === 2) {
-    Q.fcall(this._handler.deregister_vehicle, args.authenticationToken, args.vehicleID)
+  if (this._handler.deregister_vehicle.length === 1) {
+    Q.fcall(this._handler.deregister_vehicle, args.vehicleID)
       .then(function(result) {
         var result_obj = new Registration_deregister_vehicle_result({success: result});
         output.writeMessageBegin("deregister_vehicle", Thrift.MessageType.REPLY, seqid);
@@ -563,7 +535,7 @@ RegistrationProcessor.prototype.process_deregister_vehicle = function(seqid, inp
         output.flush();
       });
   } else {
-    this._handler.deregister_vehicle(args.authenticationToken, args.vehicleID, function (err, result) {
+    this._handler.deregister_vehicle(args.vehicleID, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined')) {
         result_obj = new Registration_deregister_vehicle_result((err !== null || typeof err === 'undefined') ? err : {success: result});
@@ -582,8 +554,8 @@ RegistrationProcessor.prototype.process_vehicle_is_registered = function(seqid, 
   var args = new Registration_vehicle_is_registered_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.vehicle_is_registered.length === 2) {
-    Q.fcall(this._handler.vehicle_is_registered, args.authenticationToken, args.vehicleID)
+  if (this._handler.vehicle_is_registered.length === 1) {
+    Q.fcall(this._handler.vehicle_is_registered, args.vehicleID)
       .then(function(result) {
         var result_obj = new Registration_vehicle_is_registered_result({success: result});
         output.writeMessageBegin("vehicle_is_registered", Thrift.MessageType.REPLY, seqid);
@@ -599,7 +571,7 @@ RegistrationProcessor.prototype.process_vehicle_is_registered = function(seqid, 
         output.flush();
       });
   } else {
-    this._handler.vehicle_is_registered(args.authenticationToken, args.vehicleID, function (err, result) {
+    this._handler.vehicle_is_registered(args.vehicleID, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined')) {
         result_obj = new Registration_vehicle_is_registered_result((err !== null || typeof err === 'undefined') ? err : {success: result});
