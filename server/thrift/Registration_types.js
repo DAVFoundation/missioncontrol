@@ -10,7 +10,7 @@ var Thrift = thrift.Thrift;
 var Q = thrift.Q;
 
 var DAVUser_ttypes = require('./DAVUser_types');
-var Types_ttypes = require('./Types_types');
+var Vehicle_ttypes = require('./Vehicle_types');
 
 
 var ttypes = module.exports = {};

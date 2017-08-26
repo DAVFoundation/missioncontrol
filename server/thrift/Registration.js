@@ -10,17 +10,17 @@ var Thrift = thrift.Thrift;
 var Q = thrift.Q;
 
 var DAVUser_ttypes = require('./DAVUser_types');
-var Types_ttypes = require('./Types_types');
+var Vehicle_ttypes = require('./Vehicle_types');
 
 
 var ttypes = require('./Registration_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
 var Registration_register_vehicle_args = function(args) {
-  this.vehicleID = null;
+  this.vehicleDetails = null;
   if (args) {
-    if (args.vehicleID !== undefined && args.vehicleID !== null) {
-      this.vehicleID = new DAVUser_ttypes.DAVUser(args.vehicleID);
+    if (args.vehicleDetails !== undefined && args.vehicleDetails !== null) {
+      this.vehicleDetails = new Vehicle_ttypes.VehicleDetails(args.vehicleDetails);
     }
   }
 };
@@ -40,8 +40,8 @@ Registration_register_vehicle_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.vehicleID = new DAVUser_ttypes.DAVUser();
-        this.vehicleID.read(input);
+        this.vehicleDetails = new Vehicle_ttypes.VehicleDetails();
+        this.vehicleDetails.read(input);
       } else {
         input.skip(ftype);
       }
@@ -60,9 +60,9 @@ Registration_register_vehicle_args.prototype.read = function(input) {
 
 Registration_register_vehicle_args.prototype.write = function(output) {
   output.writeStructBegin('Registration_register_vehicle_args');
-  if (this.vehicleID !== null && this.vehicleID !== undefined) {
-    output.writeFieldBegin('vehicleID', Thrift.Type.STRUCT, 1);
-    this.vehicleID.write(output);
+  if (this.vehicleDetails !== null && this.vehicleDetails !== undefined) {
+    output.writeFieldBegin('vehicleDetails', Thrift.Type.STRUCT, 1);
+    this.vehicleDetails.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -321,7 +321,7 @@ var RegistrationClient = exports.Client = function(output, pClass) {
 RegistrationClient.prototype = {};
 RegistrationClient.prototype.seqid = function() { return this._seqid; };
 RegistrationClient.prototype.new_seqid = function() { return this._seqid += 1; };
-RegistrationClient.prototype.register_vehicle = function(vehicleID, callback) {
+RegistrationClient.prototype.register_vehicle = function(vehicleDetails, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -332,19 +332,19 @@ RegistrationClient.prototype.register_vehicle = function(vehicleID, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_register_vehicle(vehicleID);
+    this.send_register_vehicle(vehicleDetails);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_register_vehicle(vehicleID);
+    this.send_register_vehicle(vehicleDetails);
   }
 };
 
-RegistrationClient.prototype.send_register_vehicle = function(vehicleID) {
+RegistrationClient.prototype.send_register_vehicle = function(vehicleDetails) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('register_vehicle', Thrift.MessageType.CALL, this.seqid());
   var args = new Registration_register_vehicle_args();
-  args.vehicleID = vehicleID;
+  args.vehicleDetails = vehicleDetails;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -483,7 +483,7 @@ RegistrationProcessor.prototype.process_register_vehicle = function(seqid, input
   args.read(input);
   input.readMessageEnd();
   if (this._handler.register_vehicle.length === 1) {
-    Q.fcall(this._handler.register_vehicle, args.vehicleID)
+    Q.fcall(this._handler.register_vehicle, args.vehicleDetails)
       .then(function(result) {
         var result_obj = new Registration_register_vehicle_result({success: result});
         output.writeMessageBegin("register_vehicle", Thrift.MessageType.REPLY, seqid);
@@ -499,7 +499,7 @@ RegistrationProcessor.prototype.process_register_vehicle = function(seqid, input
         output.flush();
       });
   } else {
-    this._handler.register_vehicle(args.vehicleID, function (err, result) {
+    this._handler.register_vehicle(args.vehicleDetails, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined')) {
         result_obj = new Registration_register_vehicle_result((err !== null || typeof err === 'undefined') ? err : {success: result});
