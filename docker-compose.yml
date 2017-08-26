@@ -3,6 +3,7 @@ version: '3'
 services:
   missioncontrol:
     build: .
+    command: 'nodemon server/start-servers.js'
     ports:
       - '8888:8443'
       - '9090:9090'
@@ -13,6 +14,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
     volumes:
+      - /app/node_modules
       - .:/app
     links:
       - redis:redis
