@@ -9,9 +9,7 @@ var thrift = require('thrift');
 var Thrift = thrift.Thrift;
 var Q = thrift.Q;
 
-var Registration_ttypes = require('./Registration_types');
-var StatusReport_ttypes = require('./StatusReport_types');
-var VehicleCreation_ttypes = require('./VehicleCreation_types');
+var Vehicle_ttypes = require('./Vehicle_types');
 
 
 var ttypes = module.exports = {};

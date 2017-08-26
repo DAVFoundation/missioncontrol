@@ -4,3 +4,4 @@
 
 include "Registration.thrift"
 include "StatusReport.thrift"
+include "VehicleCreation.thrift"

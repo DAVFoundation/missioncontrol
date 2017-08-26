@@ -10,6 +10,7 @@ var Thrift = thrift.Thrift;
 var Q = thrift.Q;
 
 var Types_ttypes = require('./Types_types');
+var DAVUser_ttypes = require('./DAVUser_types');
 
 
 var ttypes = module.exports = {};
@@ -75,6 +76,140 @@ VehicleState.prototype.write = function(output) {
   if (this.coordinates !== null && this.coordinates !== undefined) {
     output.writeFieldBegin('coordinates', Thrift.Type.STRUCT, 2);
     this.coordinates.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var VehicleDetails = module.exports.VehicleDetails = function(args) {
+  this.vehicleID = null;
+  this.model = null;
+  this.coordinates = null;
+  this.rating = null;
+  this.missions_completed = null;
+  this.missions_completed_7_days = null;
+  if (args) {
+    if (args.vehicleID !== undefined && args.vehicleID !== null) {
+      this.vehicleID = new DAVUser_ttypes.DAVUser(args.vehicleID);
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field vehicleID is unset!');
+    }
+    if (args.model !== undefined && args.model !== null) {
+      this.model = args.model;
+    }
+    if (args.coordinates !== undefined && args.coordinates !== null) {
+      this.coordinates = new Types_ttypes.Coordinates(args.coordinates);
+    }
+    if (args.rating !== undefined && args.rating !== null) {
+      this.rating = args.rating;
+    }
+    if (args.missions_completed !== undefined && args.missions_completed !== null) {
+      this.missions_completed = args.missions_completed;
+    }
+    if (args.missions_completed_7_days !== undefined && args.missions_completed_7_days !== null) {
+      this.missions_completed_7_days = args.missions_completed_7_days;
+    }
+  }
+};
+VehicleDetails.prototype = {};
+VehicleDetails.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.vehicleID = new DAVUser_ttypes.DAVUser();
+        this.vehicleID.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.model = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.coordinates = new Types_ttypes.Coordinates();
+        this.coordinates.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.DOUBLE) {
+        this.rating = input.readDouble();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I16) {
+        this.missions_completed = input.readI16();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I16) {
+        this.missions_completed_7_days = input.readI16();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+VehicleDetails.prototype.write = function(output) {
+  output.writeStructBegin('VehicleDetails');
+  if (this.vehicleID !== null && this.vehicleID !== undefined) {
+    output.writeFieldBegin('vehicleID', Thrift.Type.STRUCT, 1);
+    this.vehicleID.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.model !== null && this.model !== undefined) {
+    output.writeFieldBegin('model', Thrift.Type.STRING, 2);
+    output.writeString(this.model);
+    output.writeFieldEnd();
+  }
+  if (this.coordinates !== null && this.coordinates !== undefined) {
+    output.writeFieldBegin('coordinates', Thrift.Type.STRUCT, 3);
+    this.coordinates.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.rating !== null && this.rating !== undefined) {
+    output.writeFieldBegin('rating', Thrift.Type.DOUBLE, 4);
+    output.writeDouble(this.rating);
+    output.writeFieldEnd();
+  }
+  if (this.missions_completed !== null && this.missions_completed !== undefined) {
+    output.writeFieldBegin('missions_completed', Thrift.Type.I16, 5);
+    output.writeI16(this.missions_completed);
+    output.writeFieldEnd();
+  }
+  if (this.missions_completed_7_days !== null && this.missions_completed_7_days !== undefined) {
+    output.writeFieldBegin('missions_completed_7_days', Thrift.Type.I16, 6);
+    output.writeI16(this.missions_completed_7_days);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
