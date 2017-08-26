@@ -11,7 +11,7 @@ include "Vehicle.thrift"
  */
 service Registration {
 
-    string register_vehicle(
+    void register_vehicle(
         1: required Vehicle.VehicleDetails vehicleDetails
     )
 

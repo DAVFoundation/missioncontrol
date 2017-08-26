@@ -73,12 +73,6 @@ Registration_register_vehicle_args.prototype.write = function(output) {
 };
 
 var Registration_register_vehicle_result = function(args) {
-  this.success = null;
-  if (args) {
-    if (args.success !== undefined && args.success !== null) {
-      this.success = args.success;
-    }
-  }
 };
 Registration_register_vehicle_result.prototype = {};
 Registration_register_vehicle_result.prototype.read = function(input) {
@@ -92,21 +86,7 @@ Registration_register_vehicle_result.prototype.read = function(input) {
     if (ftype == Thrift.Type.STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-      if (ftype == Thrift.Type.STRING) {
-        this.success = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
+    input.skip(ftype);
     input.readFieldEnd();
   }
   input.readStructEnd();
@@ -115,11 +95,6 @@ Registration_register_vehicle_result.prototype.read = function(input) {
 
 Registration_register_vehicle_result.prototype.write = function(output) {
   output.writeStructBegin('Registration_register_vehicle_result');
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.STRING, 0);
-    output.writeString(this.success);
-    output.writeFieldEnd();
-  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -369,10 +344,7 @@ RegistrationClient.prototype.recv_register_vehicle = function(input,mtype,rseqid
   result.read(input);
   input.readMessageEnd();
 
-  if (null !== result.success) {
-    return callback(null, result.success);
-  }
-  return callback('register_vehicle failed: unknown result');
+  callback(null);
 };
 RegistrationClient.prototype.deregister_vehicle = function(vehicleID, callback) {
   this._seqid = this.new_seqid();

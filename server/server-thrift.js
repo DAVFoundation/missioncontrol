@@ -8,11 +8,11 @@ const MultiplexedProcessor = new thrift.MultiplexedProcessor();
 MultiplexedProcessor.registerProcessor('Registration', new Registration.Processor({
 
   register_vehicle: (vehicleDetails, result) => {
-    result(null, 'token');
+    result(null);
   },
 
   deregister_vehicle: (vehicleID, result) => {
-    result(null, 'token');
+    result(null);
   },
 
   vehicle_is_registered: (vehicleID, result) => {
