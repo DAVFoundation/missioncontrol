@@ -1,6 +1,8 @@
 const { getVehiclesInRange } = require('./store/vehicles');
 const { hasStore } = require('./lib/environment');
 
+require('./client-thrift').start();
+
 const express = require('express');
 const app = express();
 const port = process.env.WEB_SERVER_PORT || 8888;
