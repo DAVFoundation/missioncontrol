@@ -1,5 +1,5 @@
 /*
- * This is the main IDL file for status reports to and from Mission Control
+ * This is the main IDL file for status reports to Mission Control
  */
 
 // Includes
