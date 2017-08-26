@@ -1,5 +1,5 @@
 /*
- * This is the main IDL file for Registration calls to Mission Control
+ * This is the main IDL file for Registration calls from Captain
  */
 
 // Includes
