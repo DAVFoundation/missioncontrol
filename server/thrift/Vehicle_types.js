@@ -17,6 +17,11 @@ var ttypes = module.exports = {};
 var VehicleState = module.exports.VehicleState = function(args) {
   this.timestamp = null;
   this.coordinates = null;
+  this.heading = null;
+  this.height = null;
+  this.battery_level = null;
+  this.waypoints = null;
+  this.mission_status = null;
   if (args) {
     if (args.timestamp !== undefined && args.timestamp !== null) {
       this.timestamp = args.timestamp;
@@ -25,6 +30,23 @@ var VehicleState = module.exports.VehicleState = function(args) {
     }
     if (args.coordinates !== undefined && args.coordinates !== null) {
       this.coordinates = new Types_ttypes.Coordinates(args.coordinates);
+    } else {
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field coordinates is unset!');
+    }
+    if (args.heading !== undefined && args.heading !== null) {
+      this.heading = args.heading;
+    }
+    if (args.height !== undefined && args.height !== null) {
+      this.height = args.height;
+    }
+    if (args.battery_level !== undefined && args.battery_level !== null) {
+      this.battery_level = args.battery_level;
+    }
+    if (args.waypoints !== undefined && args.waypoints !== null) {
+      this.waypoints = Thrift.copyList(args.waypoints, [Types_ttypes.Coordinates]);
+    }
+    if (args.mission_status !== undefined && args.mission_status !== null) {
+      this.mission_status = args.mission_status;
     }
   }
 };
@@ -57,6 +79,55 @@ VehicleState.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 3:
+      if (ftype == Thrift.Type.I16) {
+        this.heading = input.readI16();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I16) {
+        this.height = input.readI16();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.BYTE) {
+        this.battery_level = input.readByte();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.LIST) {
+        var _size0 = 0;
+        var _rtmp34;
+        this.waypoints = [];
+        var _etype3 = 0;
+        _rtmp34 = input.readListBegin();
+        _etype3 = _rtmp34.etype;
+        _size0 = _rtmp34.size;
+        for (var _i5 = 0; _i5 < _size0; ++_i5)
+        {
+          var elem6 = null;
+          elem6 = new Types_ttypes.Coordinates();
+          elem6.read(input);
+          this.waypoints.push(elem6);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.STRING) {
+        this.mission_status = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -76,6 +147,40 @@ VehicleState.prototype.write = function(output) {
   if (this.coordinates !== null && this.coordinates !== undefined) {
     output.writeFieldBegin('coordinates', Thrift.Type.STRUCT, 2);
     this.coordinates.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.heading !== null && this.heading !== undefined) {
+    output.writeFieldBegin('heading', Thrift.Type.I16, 3);
+    output.writeI16(this.heading);
+    output.writeFieldEnd();
+  }
+  if (this.height !== null && this.height !== undefined) {
+    output.writeFieldBegin('height', Thrift.Type.I16, 4);
+    output.writeI16(this.height);
+    output.writeFieldEnd();
+  }
+  if (this.battery_level !== null && this.battery_level !== undefined) {
+    output.writeFieldBegin('battery_level', Thrift.Type.BYTE, 5);
+    output.writeByte(this.battery_level);
+    output.writeFieldEnd();
+  }
+  if (this.waypoints !== null && this.waypoints !== undefined) {
+    output.writeFieldBegin('waypoints', Thrift.Type.LIST, 6);
+    output.writeListBegin(Thrift.Type.STRUCT, this.waypoints.length);
+    for (var iter7 in this.waypoints)
+    {
+      if (this.waypoints.hasOwnProperty(iter7))
+      {
+        iter7 = this.waypoints[iter7];
+        iter7.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.mission_status !== null && this.mission_status !== undefined) {
+    output.writeFieldBegin('mission_status', Thrift.Type.STRING, 7);
+    output.writeString(this.mission_status);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

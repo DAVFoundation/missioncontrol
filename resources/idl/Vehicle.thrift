@@ -6,7 +6,12 @@ include "DAVUser.thrift"
  */
 struct VehicleState {
   1: required Types.Timestamp timestamp,
-  2: Types.Coordinates coordinates,
+  2: required Types.Coordinates coordinates,
+  3: optional i16 heading,
+  4: optional i16 height,
+  5: optional i8 battery_level,
+  6: optional Types.WayPoints waypoints,
+  7: optional string mission_status,
 }
 
 struct VehicleDetails {
