@@ -10,7 +10,7 @@ include "Vehicle.thrift"
  */
 service VehicleCreation {
 
-    string create_vehicle(
+    void create_vehicle(
         1: required Vehicle.VehicleDetails vehicle
     )
 

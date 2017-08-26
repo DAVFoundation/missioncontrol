@@ -84,17 +84,17 @@ VehicleState.prototype.write = function(output) {
 };
 
 var VehicleDetails = module.exports.VehicleDetails = function(args) {
-  this.vehicleID = null;
+  this.vehicleId = null;
   this.model = null;
   this.coordinates = null;
   this.rating = null;
   this.missions_completed = null;
   this.missions_completed_7_days = null;
   if (args) {
-    if (args.vehicleID !== undefined && args.vehicleID !== null) {
-      this.vehicleID = new DAVUser_ttypes.DAVUser(args.vehicleID);
+    if (args.vehicleId !== undefined && args.vehicleId !== null) {
+      this.vehicleId = new DAVUser_ttypes.DAVUser(args.vehicleId);
     } else {
-      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field vehicleID is unset!');
+      throw new Thrift.TProtocolException(Thrift.TProtocolExceptionType.UNKNOWN, 'Required field vehicleId is unset!');
     }
     if (args.model !== undefined && args.model !== null) {
       this.model = args.model;
@@ -129,8 +129,8 @@ VehicleDetails.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.vehicleID = new DAVUser_ttypes.DAVUser();
-        this.vehicleID.read(input);
+        this.vehicleId = new DAVUser_ttypes.DAVUser();
+        this.vehicleId.read(input);
       } else {
         input.skip(ftype);
       }
@@ -182,9 +182,9 @@ VehicleDetails.prototype.read = function(input) {
 
 VehicleDetails.prototype.write = function(output) {
   output.writeStructBegin('VehicleDetails');
-  if (this.vehicleID !== null && this.vehicleID !== undefined) {
-    output.writeFieldBegin('vehicleID', Thrift.Type.STRUCT, 1);
-    this.vehicleID.write(output);
+  if (this.vehicleId !== null && this.vehicleId !== undefined) {
+    output.writeFieldBegin('vehicleId', Thrift.Type.STRUCT, 1);
+    this.vehicleId.write(output);
     output.writeFieldEnd();
   }
   if (this.model !== null && this.model !== undefined) {

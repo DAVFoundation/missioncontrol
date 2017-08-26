@@ -10,7 +10,7 @@ struct VehicleState {
 }
 
 struct VehicleDetails {
-  1: required DAVUser.DAVUser vehicleID,
+  1: required DAVUser.DAVUser vehicleId,
   2: optional string model,
   3: optional Types.Coordinates coordinates,
   4: optional double rating,
