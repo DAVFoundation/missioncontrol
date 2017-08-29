@@ -18,5 +18,13 @@ services:
       - .:/app
     links:
       - redis:redis
+    networks:
+      - dav
   redis:
     image: redis
+    networks:
+      - dav
+
+networks:
+  dav:
+    external: true
