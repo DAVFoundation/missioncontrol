@@ -11,6 +11,8 @@ services:
       NODE_ENV: development
       DAV_ENV: simulated
       WEB_SERVER_PORT: 8443
+      CAPTAIN_HOST: cap
+      CAPTAIN_PORT: 4800
       REDIS_HOST: redis
       REDIS_PORT: 6379
     volumes:
@@ -18,6 +20,8 @@ services:
       - .:/app
     links:
       - redis:redis
+    external_links:
+      - captain_captain-server:cap
     networks:
       - dav
   redis:
