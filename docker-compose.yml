@@ -21,7 +21,7 @@ services:
     links:
       - redis:redis
     external_links:
-      - captain_captain-server:cap
+      - captain_captain-server_1:cap
     networks:
       - dav
   redis:
