@@ -32,6 +32,14 @@ const randomRating = () => {
   return parseFloat(rating);
 };
 
+/**
+ *   
+ * Returns an object with two properties: one number between 4 and 89, and one number between 2 and 9 
+ * 
+ * @returns {object} with 2 properties,
+ *  (missionsCompleted): number between 4 and 89
+ * (missionsCompleted7Days): number between 2 and 9
+ */
 const randomMissionsCompleted = () => {
   const missionsCompleted = Math.floor(Math.random() * (90 - 4) + 4);
   return {
