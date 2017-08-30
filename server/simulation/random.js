@@ -3,6 +3,14 @@ const randomString = require('randomstring');
 const manufacturerNames = ['DJX', 'Parakeet', 'Gruff', 'Unique', 'FlyHawk'];
 const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship'];
 
+
+/**
+ * Generates a random string starting with 0x (in the form of of Dav Address) using the hex charset.
+ * 
+ * @returns {String} A string of length 42 with the last 40 characters being randomly generated.
+ * 
+ */
+
 const randomDavAddress = () => {
   return '0x'+randomString.generate({
     length: 40,
