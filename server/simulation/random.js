@@ -5,10 +5,9 @@ const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship'];
 
 
 /**
- * Generates a random string starting with 0x (in the form of of Dav Address) using the hex charset.
- * 
- * @returns {String} A string of length 42 with the last 40 characters being randomly generated.
- * 
+ * Generates a random DAV address (a UID)
+ *
+ * @returns {String} DAV address. A string of length 42 beginning with 0x followed by 40 hexadecimal characters
  */
 
 const randomDavAddress = () => {
