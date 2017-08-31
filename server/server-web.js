@@ -1,4 +1,5 @@
 const { getVehiclesInRange } = require('./store/vehicles');
+const { getBidsForRequest } = require('./store/bids');
 const { hasStore } = require('./lib/environment');
 
 // Create thrift connection to Captain
@@ -27,7 +28,10 @@ app.get('/status', async function (req, res) {
       7000
     );
 
-  res.json({ vehicles });
+  const bidRequestId = req.query.requestId;
+  const bids = (!hasStore || !bidRequestId) ? [] : await getBidsForRequest(bidRequestId);
+
+  res.json({ vehicles, bids });
 });
 
 
