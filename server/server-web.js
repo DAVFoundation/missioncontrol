@@ -21,12 +21,12 @@ app.get('/', function (req, res) {
 });
 
 app.get('/status', async function (req, res) {
-  if (!hasStore) return res.json({ vehicles: [] });
+  const vehicles =
+    (!hasStore) ? [] : await getVehiclesInRange(
+      { lat: parseFloat(req.query.lat), long: parseFloat(req.query.long) },
+      7000
+    );
 
-  const vehicles = await getVehiclesInRange(
-    { lat: parseFloat(req.query.lat), long: parseFloat(req.query.long) },
-    7000
-  );
   res.json({ vehicles });
 });
 
