@@ -37,7 +37,7 @@ app.get('/status', async (req, res) => {
 
 app.get('/request/new', async (req, res) => {
   const { user_id, pickup, dropoff, requested_pickup_time, size, weight } = req.query;
-  const requestId = createRequest({
+  const requestId = await createRequest({
     user_id, pickup, dropoff, requested_pickup_time, size, weight
   });
   if (requestId) {
