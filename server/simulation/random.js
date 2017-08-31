@@ -18,14 +18,26 @@ const randomDavAddress = () => {
   });
 };
 
+/**
+ * Returns a random manufacturer name chosen from an array of possible names
+ * @return {String} A string representing the name of a manufacturer
+ */
 const randomManufacturerName = () => {
   return manufacturerNames[Math.floor(Math.random()*manufacturerNames.length)];
 };
 
+/**
+ * Returns a random model name chosen from an array of possible names
+ * @return {String} A string representing the name of a model
+ */
 const randomModelName = () => {
   return modelNames[Math.floor(Math.random()*modelNames.length)];
 };
 
+/**
+ * Returns a random drone mode name combining a random manifacturer and a random model name in a string
+ * @return {String} A string representing the full name of a drone
+ */
 const randomDroneModel = () => {
   return `${randomManufacturerName()} ${randomModelName()}`;
 };
