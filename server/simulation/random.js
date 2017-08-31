@@ -18,27 +18,14 @@ const randomManufacturerName = () => {
   return manufacturerNames[Math.floor(Math.random()*manufacturerNames.length)];
 };
 
-/**
- * Returns a random model name chosen from an array of possible names
- * @return {String} A string representing the name of a model
- */
 const randomModelName = () => {
   return modelNames[Math.floor(Math.random()*modelNames.length)];
 };
 
-/**
- * Returns a random drone mode name combining a random manifacturer and a random model name in a string
- * @return {String} A string representing the full name of a drone
- */
 const randomDroneModel = () => {
   return `${randomManufacturerName()} ${randomModelName()}`;
 };
 
-/**
- * Returns a random rating between 1.0 and 5.0
- *
- * @returns {Number} A floating point number representing a rating between 1.0 and 5.0
- */
 const randomRating = () => {
   const rating = ((Math.random() * 4) + 1).toFixed(1);
   return parseFloat(rating);
