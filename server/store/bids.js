@@ -46,7 +46,7 @@ const getBidsForRequest = async (requestId) => {
         pickup: Date.now()+(1000*60*2),
         dropoff: Date.now()+(1000*60*10),
       };
-      const newBidId = saveBid(newBid, requestId);
+      const newBidId = await saveBid(newBid, requestId);
       newBid.id = newBidId;
       bids.push(newBid);
     }
