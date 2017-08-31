@@ -10,18 +10,18 @@ const app = express();
 const port = process.env.WEB_SERVER_PORT || 8888;
 
 // Allow CORS
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
 // Define routes
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.send('hello world');
 });
 
-app.get('/status', async function (req, res) {
+app.get('/status', async (req, res) => {
   const vehicles =
     (!hasStore) ? [] : await getVehiclesInRange(
       { lat: parseFloat(req.query.lat), long: parseFloat(req.query.long) },
@@ -34,11 +34,10 @@ app.get('/status', async function (req, res) {
   res.json({ vehicles, bids });
 });
 
-
 module.exports = {
   start: () => {
     // Start the server
-    app.listen(port, function() {
+    app.listen(port, () => {
       console.log(`Web server started. Listening on port ${port}`);
     });
   }
