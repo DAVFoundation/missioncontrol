@@ -33,12 +33,10 @@ const randomRating = () => {
 };
 
 /**
- *   
- * Returns an object with two properties: one number between 4 and 89, and one number between 2 and 9 
+ * Returns an object with two properties containing a random number of missions completed, and a smaller random number of missions completed 
+ * in the last 7 days.
  * 
- * @returns {object} with 2 properties,
- *  (missionsCompleted): number between 4 and 89
- * (missionsCompleted7Days): number between 2 and 9
+ * @returns {{missionsCompleted: Number, missionsCompleted7Days: Number}} An object containing missionsCompleted and missionsCompleted7Days
  */
 const randomMissionsCompleted = () => {
   const missionsCompleted = Math.floor(Math.random() * (90 - 4) + 4);
