@@ -29,8 +29,8 @@ app.get('/status', async (req, res) => {
       7000
     );
 
-  const bidRequestId = req.query.requestId;
-  const bids = (!hasStore || !bidRequestId) ? [] : await getBidsForRequest(bidRequestId);
+  const { requestId } = req.query;
+  const bids = (!hasStore || !requestId) ? [] : await getBidsForRequest(requestId);
 
   res.json({ vehicles, bids });
 });
