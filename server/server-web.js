@@ -1,5 +1,6 @@
 const { getVehiclesInRange } = require('./store/vehicles');
 const { getBidsForRequest } = require('./store/bids');
+const { createRequest } = require('./store/requests');
 const { hasStore } = require('./lib/environment');
 
 // Create thrift connection to Captain
@@ -32,6 +33,18 @@ app.get('/status', async (req, res) => {
   const bids = (!hasStore || !bidRequestId) ? [] : await getBidsForRequest(bidRequestId);
 
   res.json({ vehicles, bids });
+});
+
+app.get('/request/new', async (req, res) => {
+  const { user_id, pickup, dropoff, requested_pickup_time, size, weight } = req.query;
+  const requestId = createRequest({
+    user_id, pickup, dropoff, requested_pickup_time, size, weight
+  });
+  if (requestId) {
+    res.json({ requestId });
+  } else {
+    res.status(500).send('Something broke!');
+  }
 });
 
 module.exports = {
