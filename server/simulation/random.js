@@ -26,11 +26,11 @@ const randomDroneModel = () => {
   return `${randomManufacturerName()} ${randomModelName()}`;
 };
 
--/**		
-- * Returns a random rating between 1.0 and 5.0		
-- *		
-- * @returns {Number} A floating point number representing a rating between 1.0 and 5.0		
-- */
+/**		
+* Returns a random rating between 1.0 and 5.0		
+*		
+* @returns {Number} A floating point number representing a rating between 1.0 and 5.0		
+*/
 
 const randomRating = () => {
   const rating = ((Math.random() * 4) + 1).toFixed(1);
