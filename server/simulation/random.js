@@ -18,6 +18,10 @@ const randomDavAddress = () => {
   });
 };
 
+/**
+ * Returns a random manufacturer name chosen from an array of possible names
+ * @return {String} A string representing the name of a manufacturer
+ */
 const randomManufacturerName = () => {
   return manufacturerNames[Math.floor(Math.random()*manufacturerNames.length)];
 };
