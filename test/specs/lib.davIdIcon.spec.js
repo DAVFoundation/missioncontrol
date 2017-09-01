@@ -1,4 +1,5 @@
-const { getDavIdIconUrl, checkIfAbsoluteURL } = require('../../server/lib/davIdIcon.js');
+const { getDavIdIconUrl } = require('../../server/lib/davIdIcon.js');
+const { URL } = require('url');
 
 describe('getDavIdIconUrl()', () => {
   test('returns an absolute URL', () => {
@@ -6,5 +7,13 @@ describe('getDavIdIconUrl()', () => {
       checkIfAbsoluteURL(getDavIdIconUrl())
     ).toBeTruthy();
   });
-
+  
+  const checkIfAbsoluteURL = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (err) {
+      return false;  
+    }
+  };
 });
