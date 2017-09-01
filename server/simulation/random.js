@@ -40,6 +40,12 @@ const randomRating = () => {
   return parseFloat(rating);
 };
 
+/**
+ * Returns an object with two properties containing a random number of missions completed, and a smaller random number of missions completed 
+ * in the last 7 days.
+ * 
+ * @returns {{missionsCompleted: Number, missionsCompleted7Days: Number}} An object containing missionsCompleted and missionsCompleted7Days
+ */
 const randomMissionsCompleted = () => {
   const missionsCompleted = Math.floor(Math.random() * (90 - 4) + 4);
   return {
