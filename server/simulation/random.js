@@ -1,7 +1,7 @@
 const randomString = require('randomstring');
 
 const manufacturerNames = ['DJX', 'Parakeet', 'Gruff', 'Unique', 'FlyHawk'];
-const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship', 'Sky Captain', 
+const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship', 'Sky Captain',
   'Sky Master', 'Soar', 'Open Skies', 'Cargo Haul', 'Heavy', 'Flight Master', 'Sky King', 'Power Hauler', 'Cargo Master'];
 
 
@@ -35,19 +35,20 @@ const randomDroneModel = () => {
 };
 
 /**
- * Returns a random rating between 1.0 and 5.0
+ * Returns a random rating between 4.3 and 5.0 (with a slightly greater chance for perfect 5s)
  *
- * @returns {Number} A floating point number representing a rating between 1.0 and 5.0
+ * @returns {Number} A floating point number representing a rating
  */
 const randomRating = () => {
-  const rating = ((Math.random() * 4) + 1).toFixed(1);
+  let rating = (Math.random() + 4.3).toFixed(1);
+  if (rating > 5) rating = 5.0;
   return parseFloat(rating);
 };
 
 /**
- * Returns an object with two properties containing a random number of missions completed, and a smaller random number of missions completed 
+ * Returns an object with two properties containing a random number of missions completed, and a smaller random number of missions completed
  * in the last 7 days.
- * 
+ *
  * @returns {{missionsCompleted: Number, missionsCompleted7Days: Number}} An object containing missionsCompleted and missionsCompleted7Days
  */
 const randomMissionsCompleted = () => {
