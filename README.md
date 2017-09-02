@@ -1,8 +1,6 @@
 # Mission Control
 
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/DAVFoundation/DAV-Contributors)
-
-[![License](https://img.shields.io/github/license/DAVFoundation/missioncontrol.svg?style=flat-square)](https://github.com/DAVFoundation/missioncontrol/blob/master/LICENSE)
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/DAVFoundation/DAV-Contributors) [![License](https://img.shields.io/github/license/DAVFoundation/missioncontrol.svg?style=flat-square)](https://github.com/DAVFoundation/missioncontrol/blob/master/LICENSE)
 
 <img src="./resources/images/logo-missioncontrol.jpg" align="right" />
 
