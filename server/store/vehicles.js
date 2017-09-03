@@ -71,5 +71,6 @@ const getVehiclesInRange = async (coords, radius) => {
 };
 
 module.exports = {
-  getVehiclesInRange
+  getVehiclesInRange,
+  getVehicle,
 };
