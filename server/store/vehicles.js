@@ -21,6 +21,8 @@ const addNewVehicle = vehicle => {
   createVehicle(vehicle);
 };
 
+const getVehicle = id => redis.hgetallAsync(`vehicles:${id}`);
+
 const generateAndAddVehicles = (count, coords, radius) =>
   count > 0 && generateRandomVehicles(count, coords, radius)
     .forEach(vehicle => {
@@ -46,7 +48,7 @@ const getVehiclesInRange = async (coords, radius) => {
   // get details for vehicles in range
   let vehicles = await Promise.all(
     vehiclesInLongRange.map(
-      vehicleId => redis.hgetallAsync(`vehicles:${vehicleId}`)
+      vehicleId => getVehicle(vehicleId)
     )
   );
 
