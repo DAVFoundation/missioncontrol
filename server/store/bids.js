@@ -1,4 +1,6 @@
 const redis = require('./redis');
+const { randomBid } = require('../simulation/vehicles');
+const { getVehicle } = require('../store/vehicles');
 
 const saveBid = async ({ vehicle_id, bid, pickup, dropoff }, requestId) => {
   // get new unique id for bid
@@ -34,18 +36,18 @@ const getBidsForRequest = async (requestId) => {
 
   // If not enough bids, make some up
   if (bidIds.length < 10) {
-    const { pickup_long, pickup_lat } = request;
+    const { pickup_long, pickup_lat, dropoff_lat, dropoff_long } = request;
+    const pickup =  {lat: pickup_lat,  long: pickup_long};
+    const dropoff = {lat: dropoff_lat, long: dropoff_long};
     const vehicleIds = await redis.georadiusAsync('vehicle_positions', pickup_long, pickup_lat, 2000, 'm');
     if (vehicleIds.length > bidIds.length) {
       // Just a hacky way to get more bids from different vehicles.
       // Not guaranteed to not have duplicate bids from same vehicle
       const vehicleId = vehicleIds[bidIds.length];
-      let newBid = {
-        vehicle_id: vehicleId,
-        bid: 0.8,
-        pickup: Date.now()+(1000*60*2),
-        dropoff: Date.now()+(1000*60*10),
-      };
+      const vehicle = await getVehicle(vehicleId);
+      const origin = {lat: vehicle.lat, long: vehicle.long};
+      let newBid = randomBid(origin, pickup, dropoff);
+      newBid.vehicle_id = vehicleId;
       const newBidId = await saveBid(newBid, requestId);
       newBid.id = newBidId;
       bids.push(newBid);
