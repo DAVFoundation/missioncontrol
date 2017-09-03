@@ -47,6 +47,10 @@ app.get('/request/new', async (req, res) => {
   }
 });
 
+app.get('/choose_bid', (req, res) => {
+  res.json({});
+});
+
 module.exports = {
   start: () => {
     // Start the server
