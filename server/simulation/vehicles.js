@@ -18,8 +18,8 @@ const randomBid = (origin, pickup, dropoff) => {
   const bid = (distanceOriginToPickup+distancePickupToDelivery).toFixed(2);
   return {
     bid: bid,
-    pickup: Date.now()+(1000*60*2),
-    dropoff: Date.now()+(1000*60*10),
+    pickup: distanceOriginToPickup*3,
+    dropoff: distancePickupToDelivery*3*Math.random(),
   };
 };
 
