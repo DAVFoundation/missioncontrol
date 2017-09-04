@@ -1,4 +1,4 @@
-const getDavIdIconUrl = () => 'http://lorempixel.com/100/100/abstract/';
+const getDavIdIconUrl = () => 'https://lorempixel.com/100/100/abstract/';
 
 module.exports = {
   getDavIdIconUrl,
