@@ -1,6 +1,6 @@
 const randomString = require('randomstring');
 
-const manufacturerNames = ['DJX', 'Parakeet', 'Gruff', 'Unique', 'FlyHawk'];
+const manufacturerNames = ['DJX', 'Parakeet', 'Gruff', 'FlyHawk'];
 const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship', 'Sky Captain',
   'Sky Master', 'Soar', 'Open Skies', 'Cargo Haul', 'Heavy', 'Flight Master', 'Sky King', 'Power Hauler', 'Cargo Master'];
 
