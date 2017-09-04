@@ -4,6 +4,1048 @@
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
+    "@mapbox/geojson-area": {
+      "version": "0.2.2",
+      "resolved": "https://registry.npmjs.org/@mapbox/geojson-area/-/geojson-area-0.2.2.tgz",
+      "integrity": "sha1-GNeBSqNr8j+7zDefjiaiKSfevxA=",
+      "requires": {
+        "wgs84": "0.0.0"
+      }
+    },
+    "@turf/along": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/along/-/along-4.6.0.tgz",
+      "integrity": "sha1-8hlty/lK14RdLiIsvvZq1l6qDJE=",
+      "requires": {
+        "@turf/bearing": "4.6.0",
+        "@turf/destination": "4.6.0",
+        "@turf/distance": "4.6.0",
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/area": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/area/-/area-4.6.0.tgz",
+      "integrity": "sha1-y6hxrb5z7W1C0UieBLC/iMZBRRQ=",
+      "requires": {
+        "@mapbox/geojson-area": "0.2.2",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/bbox": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/bbox/-/bbox-4.6.0.tgz",
+      "integrity": "sha1-jH9ozdK+6ReN5Nn5v7zuQjXbX8M=",
+      "requires": {
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/bbox-clip": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/bbox-clip/-/bbox-clip-4.6.0.tgz",
+      "integrity": "sha1-P/BmzQvZIiuhcvnlzF8DAD2t8nk=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "lineclip": "1.1.5"
+      }
+    },
+    "@turf/bbox-polygon": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/bbox-polygon/-/bbox-polygon-4.6.0.tgz",
+      "integrity": "sha1-bsIXiqCSDaph6YHsgrWOWEmj+1k=",
+      "requires": {
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/bearing": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/bearing/-/bearing-4.6.0.tgz",
+      "integrity": "sha1-DOGNZWa/9GeVA/8v2IPzYQSXZRg=",
+      "requires": {
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/bezier": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/bezier/-/bezier-4.6.0.tgz",
+      "integrity": "sha1-oyt2zHQhewY6bVeXrnMEHvp0VQw=",
+      "requires": {
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/boolean-clockwise": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/boolean-clockwise/-/boolean-clockwise-4.6.0.tgz",
+      "integrity": "sha1-7qiFZen6rn2cBO1HL2JmTS53f8g=",
+      "requires": {
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/boolean-contains": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/boolean-contains/-/boolean-contains-4.6.1.tgz",
+      "integrity": "sha1-qjk2yBGJtWVH6qsUDQgzT0pX1wc=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/inside": "4.6.0",
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/boolean-crosses": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/boolean-crosses/-/boolean-crosses-4.6.1.tgz",
+      "integrity": "sha1-k8N92cnRy2H96Bc8BY4CfHD+DS8=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/inside": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/line-intersect": "4.6.0",
+        "@turf/polygon-to-linestring": "4.6.0"
+      }
+    },
+    "@turf/boolean-disjoint": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/boolean-disjoint/-/boolean-disjoint-4.6.1.tgz",
+      "integrity": "sha1-OYwuluO/6+eIp02TPoIee8eR99w=",
+      "requires": {
+        "@turf/inside": "4.6.0",
+        "@turf/line-intersect": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "@turf/polygon-to-linestring": "4.6.0"
+      }
+    },
+    "@turf/boolean-equal": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/boolean-equal/-/boolean-equal-4.6.0.tgz",
+      "integrity": "sha1-48S83dKACnmAz16ZHBquE4P0dKQ=",
+      "requires": {
+        "@turf/clean-coords": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "geojson-equality": "0.1.6"
+      }
+    },
+    "@turf/boolean-overlap": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/boolean-overlap/-/boolean-overlap-4.6.0.tgz",
+      "integrity": "sha1-rIFGBCbUzfJUhjb3iokMydVu7uo=",
+      "requires": {
+        "@turf/invariant": "4.6.0",
+        "@turf/line-intersect": "4.6.0",
+        "@turf/line-overlap": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "geojson-equality": "0.1.6"
+      }
+    },
+    "@turf/boolean-point-on-line": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/boolean-point-on-line/-/boolean-point-on-line-4.6.1.tgz",
+      "integrity": "sha1-dNjpgm8LWimZS116P/KzkXJbtus=",
+      "requires": {
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/buffer": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/buffer/-/buffer-4.6.1.tgz",
+      "integrity": "sha1-gHEQUoBh+X2EM5hZdRinFdCyXkM=",
+      "requires": {
+        "@turf/center": "4.6.1",
+        "@turf/helpers": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "d3-geo": "1.6.4",
+        "jsts": "1.3.0"
+      }
+    },
+    "@turf/center": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/center/-/center-4.6.1.tgz",
+      "integrity": "sha1-2e16fgmPasH/UYmgXudStg16xoE=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/center-of-mass": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/center-of-mass/-/center-of-mass-4.6.1.tgz",
+      "integrity": "sha1-6LD0asEE7IxY7YZWXUw2mOjafL4=",
+      "requires": {
+        "@turf/centroid": "4.6.1",
+        "@turf/convex": "4.6.0",
+        "@turf/explode": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/centroid": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/centroid/-/centroid-4.6.1.tgz",
+      "integrity": "sha1-b/4gN0aqM97BfUHCKqVpE0LkZJY=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/circle": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/circle/-/circle-4.6.0.tgz",
+      "integrity": "sha1-FJVZm1Gyh0/md9Ee7fqBqIcHTNA=",
+      "requires": {
+        "@turf/destination": "4.6.0",
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/clean-coords": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/clean-coords/-/clean-coords-4.6.0.tgz",
+      "integrity": "sha1-wl6lV/TSGyp/ZzEnZb8jwNRRphk=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/clone": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/clone/-/clone-4.6.1.tgz",
+      "integrity": "sha1-5BNtncpIpwZaYUVACSdcY6n2gSE="
+    },
+    "@turf/clusters": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/clusters/-/clusters-4.6.1.tgz",
+      "integrity": "sha1-vkVItzW/odS0Lsog4npfbm6JH6w=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/clusters-dbscan": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/clusters-dbscan/-/clusters-dbscan-4.6.1.tgz",
+      "integrity": "sha1-//F9fPXEWkSzr8xvrlZjQeS0cHw=",
+      "requires": {
+        "@turf/clone": "4.6.1",
+        "@turf/distance": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "density-clustering": "1.3.0"
+      }
+    },
+    "@turf/clusters-kmeans": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/clusters-kmeans/-/clusters-kmeans-4.6.1.tgz",
+      "integrity": "sha1-E8ZW1cc7rZuwK7SQSKkQW8RYzBA=",
+      "requires": {
+        "@turf/clone": "4.6.1",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/collect": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/collect/-/collect-4.6.0.tgz",
+      "integrity": "sha1-It2s1/F1Qx/AdqQoSbz7ZbxHqTs=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/inside": "4.6.0",
+        "rbush": "2.0.1"
+      }
+    },
+    "@turf/combine": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/combine/-/combine-4.6.0.tgz",
+      "integrity": "sha1-F3uUjvv1ko1aX5KJ+IhWoGCRYm8=",
+      "requires": {
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/concave": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/concave/-/concave-4.6.0.tgz",
+      "integrity": "sha1-WnafkAj0uP0CKopnJiCy8Z2JZVo=",
+      "requires": {
+        "@turf/distance": "4.6.0",
+        "@turf/tin": "4.6.0",
+        "@turf/union": "4.6.0"
+      }
+    },
+    "@turf/convex": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/convex/-/convex-4.6.0.tgz",
+      "integrity": "sha1-ljr+gx6Slyi2Tu8wq82CNWIi4X4=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "convex-hull": "1.0.3"
+      }
+    },
+    "@turf/destination": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/destination/-/destination-4.6.0.tgz",
+      "integrity": "sha1-PUdZ6F6nm9xMk64lKflZuu9q7t0=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/difference": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/difference/-/difference-4.6.0.tgz",
+      "integrity": "sha1-mEMaorxl573huIItYoizyw2eoP0=",
+      "requires": {
+        "@turf/area": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "jsts": "1.3.0"
+      }
+    },
+    "@turf/dissolve": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/dissolve/-/dissolve-4.6.0.tgz",
+      "integrity": "sha1-lQBnLsiyR9fLKc2NgXGoJtukVPs=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/union": "4.6.0",
+        "geojson-utils": "1.1.0",
+        "get-closest": "0.0.4",
+        "rbush": "2.0.1",
+        "turf-overlaps": "1.0.3"
+      }
+    },
+    "@turf/distance": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/distance/-/distance-4.6.0.tgz",
+      "integrity": "sha1-ZBC5tOp+ROSpm+MwGNnaqwMZRuA=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/envelope": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/envelope/-/envelope-4.6.0.tgz",
+      "integrity": "sha1-fhmHqWLAj4ZeN9nCPJFGfnaV+Wk=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/bbox-polygon": "4.6.0"
+      }
+    },
+    "@turf/explode": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/explode/-/explode-4.6.0.tgz",
+      "integrity": "sha1-bWxTObvJ5WccT7m+WWyhm4wFka8=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/flatten": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/flatten/-/flatten-4.6.0.tgz",
+      "integrity": "sha1-jc5PBUO9K7IGJOj8UtYTwOFe6Rg=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/flip": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/flip/-/flip-4.6.0.tgz",
+      "integrity": "sha1-CEMTHHeiwRTyAn/P866b0G6WRX8=",
+      "requires": {
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/great-circle": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/great-circle/-/great-circle-4.6.0.tgz",
+      "integrity": "sha1-MJO1SfghCVYEhaH4eVrgFUMKfzk=",
+      "requires": {
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/helpers": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/helpers/-/helpers-4.6.0.tgz",
+      "integrity": "sha1-EjmHM7iuKEIN9hZvpEx+6P/WQUw="
+    },
+    "@turf/hex-grid": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/hex-grid/-/hex-grid-4.6.1.tgz",
+      "integrity": "sha1-IR7ghMrZxbpgzrNqKZTkv2li90Y=",
+      "requires": {
+        "@turf/distance": "4.6.0",
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/idw": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/idw/-/idw-4.6.1.tgz",
+      "integrity": "sha1-sjtwh2ZT7k+JHmVLgScJ0FECqnk=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/centroid": "4.6.1",
+        "@turf/distance": "4.6.0",
+        "@turf/square-grid": "4.6.0"
+      }
+    },
+    "@turf/inside": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/inside/-/inside-4.6.0.tgz",
+      "integrity": "sha1-Xkadp0v8ddtSJxt9xhqgWunUXpM=",
+      "requires": {
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/interpolate": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/interpolate/-/interpolate-4.6.1.tgz",
+      "integrity": "sha1-bQACIzZf7s9KZQlzn6ax2SMM0v0=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/centroid": "4.6.1",
+        "@turf/distance": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/hex-grid": "4.6.1",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "@turf/point-grid": "4.6.0",
+        "@turf/square-grid": "4.6.0",
+        "@turf/triangle-grid": "4.6.0"
+      }
+    },
+    "@turf/intersect": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/intersect/-/intersect-4.6.0.tgz",
+      "integrity": "sha1-ucIfgfJYACx8MXVruGzd6XhlEw4=",
+      "requires": {
+        "jsts": "1.3.0"
+      }
+    },
+    "@turf/invariant": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/invariant/-/invariant-4.6.0.tgz",
+      "integrity": "sha1-umFAHVN1Q/gcz8WI4Suw2OZT3YA="
+    },
+    "@turf/isobands": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/isobands/-/isobands-4.6.0.tgz",
+      "integrity": "sha1-8Q2w2GSpm+j29MCFHMWidtLFunI=",
+      "requires": {
+        "@turf/area": "3.14.0",
+        "@turf/bbox": "3.14.0",
+        "@turf/explode": "3.14.0",
+        "@turf/helpers": "3.13.0",
+        "@turf/inside": "3.14.0",
+        "@turf/invariant": "3.13.0",
+        "grid-to-matrix": "1.2.0",
+        "marchingsquares": "1.2.0"
+      },
+      "dependencies": {
+        "@turf/area": {
+          "version": "3.14.0",
+          "resolved": "https://registry.npmjs.org/@turf/area/-/area-3.14.0.tgz",
+          "integrity": "sha1-8xl+1OlxDQLNi71VGyXEdv5H6Js=",
+          "requires": {
+            "@mapbox/geojson-area": "0.2.2",
+            "@turf/meta": "3.14.0"
+          }
+        },
+        "@turf/bbox": {
+          "version": "3.14.0",
+          "resolved": "https://registry.npmjs.org/@turf/bbox/-/bbox-3.14.0.tgz",
+          "integrity": "sha1-zuXzlt3nisqc7eBeESLbGLxQRjU=",
+          "requires": {
+            "@turf/meta": "3.14.0"
+          }
+        },
+        "@turf/explode": {
+          "version": "3.14.0",
+          "resolved": "https://registry.npmjs.org/@turf/explode/-/explode-3.14.0.tgz",
+          "integrity": "sha1-8sweRqOXANVgJGbM1Q9ZpSNBuSw=",
+          "requires": {
+            "@turf/helpers": "3.13.0",
+            "@turf/meta": "3.14.0"
+          }
+        },
+        "@turf/helpers": {
+          "version": "3.13.0",
+          "resolved": "https://registry.npmjs.org/@turf/helpers/-/helpers-3.13.0.tgz",
+          "integrity": "sha1-0GB4oUZM9WzbfqYk6h4TpxuIuAY="
+        },
+        "@turf/inside": {
+          "version": "3.14.0",
+          "resolved": "https://registry.npmjs.org/@turf/inside/-/inside-3.14.0.tgz",
+          "integrity": "sha1-1ravVYgsvbj5pVjcqYaJxnvTxZA=",
+          "requires": {
+            "@turf/invariant": "3.13.0"
+          }
+        },
+        "@turf/invariant": {
+          "version": "3.13.0",
+          "resolved": "https://registry.npmjs.org/@turf/invariant/-/invariant-3.13.0.tgz",
+          "integrity": "sha1-iSQzCM1WMgboHlxhYuDSL2GCL5A="
+        },
+        "@turf/meta": {
+          "version": "3.14.0",
+          "resolved": "https://registry.npmjs.org/@turf/meta/-/meta-3.14.0.tgz",
+          "integrity": "sha1-jTBQwaD0S/QGpjO2vSjFEPe87ic="
+        }
+      }
+    },
+    "@turf/isolines": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/isolines/-/isolines-4.6.1.tgz",
+      "integrity": "sha1-qvw2UgVUtEoS5T8Y7a4xtTqUHGs=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "grid-to-matrix": "1.2.0",
+        "marchingsquares": "1.2.0"
+      }
+    },
+    "@turf/kinks": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/kinks/-/kinks-4.6.0.tgz",
+      "integrity": "sha1-RJHoCFuJ768ZY2lKRRgkIinTXgg=",
+      "requires": {
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/line-arc": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/line-arc/-/line-arc-4.6.0.tgz",
+      "integrity": "sha1-uhwoOC0Obz70iGx86qTY+y2DQA4=",
+      "requires": {
+        "@turf/circle": "4.6.0",
+        "@turf/destination": "4.6.0",
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/line-chunk": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/line-chunk/-/line-chunk-4.6.0.tgz",
+      "integrity": "sha1-TkuHS9dB7oJuakad7JttM+1j2zE=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/line-distance": "4.6.0",
+        "@turf/line-slice-along": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/line-distance": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/line-distance/-/line-distance-4.6.0.tgz",
+      "integrity": "sha1-rSnGjCHeiBGUFhTt0fa2oWT/Gx4=",
+      "requires": {
+        "@turf/distance": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/line-intersect": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/line-intersect/-/line-intersect-4.6.0.tgz",
+      "integrity": "sha1-FaM+U761ne5MM9WUtKu8iBBLbfo=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/line-segment": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "geojson-rbush": "1.2.0"
+      }
+    },
+    "@turf/line-offset": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/line-offset/-/line-offset-4.6.0.tgz",
+      "integrity": "sha1-CgNQEqUuKs8Wt7qQt5CKIjO9VD0=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/line-overlap": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/line-overlap/-/line-overlap-4.6.0.tgz",
+      "integrity": "sha1-DcOxebSLZxmmN1B/AgI2ebasVKY=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/line-segment": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "deep-equal": "1.0.1",
+        "geojson-rbush": "1.2.0"
+      }
+    },
+    "@turf/line-segment": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/line-segment/-/line-segment-4.6.0.tgz",
+      "integrity": "sha1-aNjpjLX1Mr2x3MOnz/HhEWELH9o=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/line-slice": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/line-slice/-/line-slice-4.6.0.tgz",
+      "integrity": "sha1-vxuNlpmnUHCW3KFR328GYC6zQ3U=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/point-on-line": "4.6.0"
+      }
+    },
+    "@turf/line-slice-along": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/line-slice-along/-/line-slice-along-4.6.0.tgz",
+      "integrity": "sha1-naWPN++UErRC9gM+dSLaEG127C4=",
+      "requires": {
+        "@turf/bearing": "4.6.0",
+        "@turf/destination": "4.6.0",
+        "@turf/distance": "4.6.0",
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/line-split": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/line-split/-/line-split-4.6.1.tgz",
+      "integrity": "sha1-CecYDDWv6PBaDSHq4xjVPSGgP+A=",
+      "requires": {
+        "@turf/flatten": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/line-intersect": "4.6.0",
+        "@turf/line-segment": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "@turf/point-on-line": "4.6.0",
+        "@turf/truncate": "4.6.0",
+        "geojson-rbush": "1.2.0"
+      }
+    },
+    "@turf/linestring-to-polygon": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/linestring-to-polygon/-/linestring-to-polygon-4.6.0.tgz",
+      "integrity": "sha1-oDy+XDgHO0FCaW3q72Hu45SHqwo=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/mask": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/mask/-/mask-4.6.0.tgz",
+      "integrity": "sha1-zHvDTPWM/V11RWz7P+95XWFsbuM=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "@turf/union": "4.6.0",
+        "rbush": "2.0.1"
+      }
+    },
+    "@turf/meta": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/meta/-/meta-4.6.0.tgz",
+      "integrity": "sha1-DT+aIY5Y0cXl3u30Z8MyHdYSA/M="
+    },
+    "@turf/midpoint": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/midpoint/-/midpoint-4.6.0.tgz",
+      "integrity": "sha1-0TT5gjtTxMt5bnCbrXop5qsKUF0=",
+      "requires": {
+        "@turf/bearing": "4.6.0",
+        "@turf/destination": "4.6.0",
+        "@turf/distance": "4.6.0"
+      }
+    },
+    "@turf/nearest": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/nearest/-/nearest-4.6.0.tgz",
+      "integrity": "sha1-SCh+tVt814f17VvRRXrRVr7VnbM=",
+      "requires": {
+        "@turf/distance": "4.6.0"
+      }
+    },
+    "@turf/planepoint": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/planepoint/-/planepoint-4.6.0.tgz",
+      "integrity": "sha1-hahMLUgCfz7KZBchJiIRa+rVbh8=",
+      "requires": {
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/point-grid": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/point-grid/-/point-grid-4.6.0.tgz",
+      "integrity": "sha1-YkIfNuUFlXhO0no26UYomJ7EVQ4=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/distance": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/inside": "4.6.0",
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/point-on-line": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/point-on-line/-/point-on-line-4.6.0.tgz",
+      "integrity": "sha1-+55vrpTao5iW31fZhyrTzk1V7wo=",
+      "requires": {
+        "@turf/bearing": "4.6.0",
+        "@turf/destination": "4.6.0",
+        "@turf/distance": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/line-intersect": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/point-on-surface": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/point-on-surface/-/point-on-surface-4.6.1.tgz",
+      "integrity": "sha1-3MlrytPb5DWZjhMWRgzWJ0qjxpc=",
+      "requires": {
+        "@turf/center": "4.6.1",
+        "@turf/distance": "4.6.0",
+        "@turf/explode": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/inside": "4.6.0"
+      }
+    },
+    "@turf/polygon-tangents": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/polygon-tangents/-/polygon-tangents-4.6.0.tgz",
+      "integrity": "sha1-9G0Ah/9dEGnUsGaLmzhe12rY/cY=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/polygon-to-linestring": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/polygon-to-linestring/-/polygon-to-linestring-4.6.0.tgz",
+      "integrity": "sha1-9ekErR3CdyisMIJMkoElLE/QFA8=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0"
+      }
+    },
+    "@turf/polygonize": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/polygonize/-/polygonize-4.6.1.tgz",
+      "integrity": "sha1-Faqvdrdwu+CKjsiG/yOOU2KerFI=",
+      "requires": {
+        "polygonize": "1.0.1"
+      }
+    },
+    "@turf/random": {
+      "version": "4.5.2",
+      "resolved": "https://registry.npmjs.org/@turf/random/-/random-4.5.2.tgz",
+      "integrity": "sha1-llNTaRzWQmHDQctNwHHGGLjwXlE=",
+      "requires": {
+        "geojson-random": "0.2.2"
+      }
+    },
+    "@turf/rewind": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/rewind/-/rewind-4.6.0.tgz",
+      "integrity": "sha1-8vzhhyVLbsg5OhA9iOa0ki/Fuqc=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "turf-is-clockwise": "1.0.0"
+      }
+    },
+    "@turf/rhumb-bearing": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/rhumb-bearing/-/rhumb-bearing-4.6.0.tgz",
+      "integrity": "sha1-VQgho0MX8nTk65A2PsMs4uqUwqk=",
+      "requires": {
+        "@turf/invariant": "4.6.0",
+        "geodesy": "1.1.1"
+      }
+    },
+    "@turf/rhumb-destination": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/rhumb-destination/-/rhumb-destination-4.6.0.tgz",
+      "integrity": "sha1-0h08dvp7cxLlsfO0AIOu+5mHmoY=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "geodesy": "1.1.1"
+      }
+    },
+    "@turf/rhumb-distance": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/rhumb-distance/-/rhumb-distance-4.6.0.tgz",
+      "integrity": "sha1-Kk+7UQ8L4qLMj1Dp8+WfrC7FkPs=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "geodesy": "1.1.1"
+      }
+    },
+    "@turf/sample": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/sample/-/sample-4.6.0.tgz",
+      "integrity": "sha1-NR0UTcLipD90zLy3kkyJRxQ54pA=",
+      "requires": {
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/sector": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/sector/-/sector-4.6.0.tgz",
+      "integrity": "sha1-mJA1JD2TbirToy4iYWn9Q5TUKds=",
+      "requires": {
+        "@turf/circle": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/line-arc": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/simplify": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/simplify/-/simplify-4.6.0.tgz",
+      "integrity": "sha1-4Z48Dq9fzsVOuXirYPCIQ69lQ8c=",
+      "requires": {
+        "simplify-js": "1.2.1"
+      }
+    },
+    "@turf/square": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/square/-/square-4.6.0.tgz",
+      "integrity": "sha1-W2cYVH4EwMGlPhjTzhyeYUsM21o=",
+      "requires": {
+        "@turf/distance": "4.6.0"
+      }
+    },
+    "@turf/square-grid": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/square-grid/-/square-grid-4.6.0.tgz",
+      "integrity": "sha1-4cFjdALsZCbdzzfLY4LeqwJn3zQ=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/distance": "4.6.0",
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/tag": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/tag/-/tag-4.6.0.tgz",
+      "integrity": "sha1-bn5e9U9RfjSOeLRYznPShgq2B9M=",
+      "requires": {
+        "@turf/inside": "4.6.0"
+      }
+    },
+    "@turf/tesselate": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/tesselate/-/tesselate-4.6.0.tgz",
+      "integrity": "sha1-m83qmXJNuo1GXHrxBOeps4ngG90=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "earcut": "2.1.1"
+      }
+    },
+    "@turf/tin": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/tin/-/tin-4.6.0.tgz",
+      "integrity": "sha1-x/Q6YAZaZCxcx8bQHGeEScZnyOY=",
+      "requires": {
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/transform-rotate": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/transform-rotate/-/transform-rotate-4.6.1.tgz",
+      "integrity": "sha1-fTvyyaJjDh1B3oqHLpKsMa8Ht0o=",
+      "requires": {
+        "@turf/centroid": "4.6.1",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "@turf/rhumb-bearing": "4.6.0",
+        "@turf/rhumb-destination": "4.6.0",
+        "@turf/rhumb-distance": "4.6.0"
+      }
+    },
+    "@turf/transform-scale": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/transform-scale/-/transform-scale-4.6.1.tgz",
+      "integrity": "sha1-QuIql/JItwsHJidvGqCLiSnOloM=",
+      "requires": {
+        "@turf/bbox": "4.6.0",
+        "@turf/center": "4.6.1",
+        "@turf/centroid": "4.6.1",
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "@turf/rhumb-bearing": "4.6.0",
+        "@turf/rhumb-destination": "4.6.0",
+        "@turf/rhumb-distance": "4.6.0"
+      }
+    },
+    "@turf/transform-translate": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/transform-translate/-/transform-translate-4.6.0.tgz",
+      "integrity": "sha1-Ta9/F+VkOCEYSLQtn3mse6rVwy8=",
+      "requires": {
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "@turf/rhumb-destination": "4.6.0"
+      }
+    },
+    "@turf/triangle-grid": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/triangle-grid/-/triangle-grid-4.6.0.tgz",
+      "integrity": "sha1-wMMN9Gb+C7fzLMHf2MpIWsKRG20=",
+      "requires": {
+        "@turf/distance": "4.6.0",
+        "@turf/helpers": "4.6.0"
+      }
+    },
+    "@turf/truncate": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/truncate/-/truncate-4.6.0.tgz",
+      "integrity": "sha1-kDrV7TTAuFG5NSmXXrji63aaVh8=",
+      "requires": {
+        "@turf/meta": "4.6.0"
+      }
+    },
+    "@turf/turf": {
+      "version": "4.6.1",
+      "resolved": "https://registry.npmjs.org/@turf/turf/-/turf-4.6.1.tgz",
+      "integrity": "sha1-Kf5JlrLoCf4tuY6i8+01K8W0BrI=",
+      "requires": {
+        "@turf/along": "4.6.0",
+        "@turf/area": "4.6.0",
+        "@turf/bbox": "4.6.0",
+        "@turf/bbox-clip": "4.6.0",
+        "@turf/bbox-polygon": "4.6.0",
+        "@turf/bearing": "4.6.0",
+        "@turf/bezier": "4.6.0",
+        "@turf/boolean-clockwise": "4.6.0",
+        "@turf/boolean-contains": "4.6.1",
+        "@turf/boolean-crosses": "4.6.1",
+        "@turf/boolean-disjoint": "4.6.1",
+        "@turf/boolean-equal": "4.6.0",
+        "@turf/boolean-overlap": "4.6.0",
+        "@turf/boolean-point-on-line": "4.6.1",
+        "@turf/buffer": "4.6.1",
+        "@turf/center": "4.6.1",
+        "@turf/center-of-mass": "4.6.1",
+        "@turf/centroid": "4.6.1",
+        "@turf/circle": "4.6.0",
+        "@turf/clean-coords": "4.6.0",
+        "@turf/clone": "4.6.1",
+        "@turf/clusters": "4.6.1",
+        "@turf/clusters-dbscan": "4.6.1",
+        "@turf/clusters-kmeans": "4.6.1",
+        "@turf/collect": "4.6.0",
+        "@turf/combine": "4.6.0",
+        "@turf/concave": "4.6.0",
+        "@turf/convex": "4.6.0",
+        "@turf/destination": "4.6.0",
+        "@turf/difference": "4.6.0",
+        "@turf/dissolve": "4.6.0",
+        "@turf/distance": "4.6.0",
+        "@turf/envelope": "4.6.0",
+        "@turf/explode": "4.6.0",
+        "@turf/flatten": "4.6.0",
+        "@turf/flip": "4.6.0",
+        "@turf/great-circle": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/hex-grid": "4.6.1",
+        "@turf/idw": "4.6.1",
+        "@turf/inside": "4.6.0",
+        "@turf/interpolate": "4.6.1",
+        "@turf/intersect": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/isobands": "4.6.0",
+        "@turf/isolines": "4.6.1",
+        "@turf/kinks": "4.6.0",
+        "@turf/line-arc": "4.6.0",
+        "@turf/line-chunk": "4.6.0",
+        "@turf/line-distance": "4.6.0",
+        "@turf/line-intersect": "4.6.0",
+        "@turf/line-offset": "4.6.0",
+        "@turf/line-overlap": "4.6.0",
+        "@turf/line-segment": "4.6.0",
+        "@turf/line-slice": "4.6.0",
+        "@turf/line-slice-along": "4.6.0",
+        "@turf/line-split": "4.6.1",
+        "@turf/linestring-to-polygon": "4.6.0",
+        "@turf/mask": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "@turf/midpoint": "4.6.0",
+        "@turf/nearest": "4.6.0",
+        "@turf/planepoint": "4.6.0",
+        "@turf/point-grid": "4.6.0",
+        "@turf/point-on-line": "4.6.0",
+        "@turf/point-on-surface": "4.6.1",
+        "@turf/polygon-tangents": "4.6.0",
+        "@turf/polygon-to-linestring": "4.6.0",
+        "@turf/polygonize": "4.6.1",
+        "@turf/random": "4.5.2",
+        "@turf/rewind": "4.6.0",
+        "@turf/rhumb-bearing": "4.6.0",
+        "@turf/rhumb-destination": "4.6.0",
+        "@turf/rhumb-distance": "4.6.0",
+        "@turf/sample": "4.6.0",
+        "@turf/sector": "4.6.0",
+        "@turf/simplify": "4.6.0",
+        "@turf/square": "4.6.0",
+        "@turf/square-grid": "4.6.0",
+        "@turf/tag": "4.6.0",
+        "@turf/tesselate": "4.6.0",
+        "@turf/tin": "4.6.0",
+        "@turf/transform-rotate": "4.6.1",
+        "@turf/transform-scale": "4.6.1",
+        "@turf/transform-translate": "4.6.0",
+        "@turf/triangle-grid": "4.6.0",
+        "@turf/truncate": "4.6.0",
+        "@turf/union": "4.6.0",
+        "@turf/unkink-polygon": "4.6.0",
+        "@turf/within": "4.6.0"
+      }
+    },
+    "@turf/union": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/union/-/union-4.6.0.tgz",
+      "integrity": "sha1-O4YeNfbOMX6Gszuido5dP2JUF7M=",
+      "requires": {
+        "jsts": "1.3.0"
+      }
+    },
+    "@turf/unkink-polygon": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/unkink-polygon/-/unkink-polygon-4.6.0.tgz",
+      "integrity": "sha1-lOo00DcTJ4PVqmOBuYS+Oc4krOI=",
+      "requires": {
+        "@turf/flatten": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/meta": "4.6.0",
+        "simplepolygon": "1.2.0"
+      }
+    },
+    "@turf/within": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/@turf/within/-/within-4.6.0.tgz",
+      "integrity": "sha1-NXaQmhiChAoxK13ldvTkRMxCTkM=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/inside": "4.6.0"
+      }
+    },
     "abab": {
       "version": "1.0.3",
       "resolved": "https://registry.npmjs.org/abab/-/abab-1.0.3.tgz",
@@ -63,6 +1105,14 @@
           "integrity": "sha1-ReN/s56No/JbruP/U2niu18iAXo=",
           "dev": true
         }
+      }
+    },
+    "affine-hull": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/affine-hull/-/affine-hull-1.0.0.tgz",
+      "integrity": "sha1-dj/x040GPOt+Jy8X7k17vK+QXF0=",
+      "requires": {
+        "robust-orientation": "1.1.3"
       }
     },
     "ajv": {
@@ -544,6 +1594,11 @@
       "integrity": "sha1-ZlBsFs5vTWkopbPNajPKQelB43s=",
       "dev": true
     },
+    "bit-twiddle": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/bit-twiddle/-/bit-twiddle-1.0.2.tgz",
+      "integrity": "sha1-DGwfq+KyPRcXPZpht7cJPrnhdp4="
+    },
     "bluebird": {
       "version": "3.5.0",
       "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-3.5.0.tgz",
@@ -896,6 +1951,16 @@
       "integrity": "sha1-ms1whRxtXf3ZPZKC5e35SgP/RrU=",
       "dev": true
     },
+    "convex-hull": {
+      "version": "1.0.3",
+      "resolved": "https://registry.npmjs.org/convex-hull/-/convex-hull-1.0.3.tgz",
+      "integrity": "sha1-IKOqbOh/St6i/30XlxyfwcZ+H/8=",
+      "requires": {
+        "affine-hull": "1.0.0",
+        "incremental-convex-hull": "1.0.1",
+        "monotone-convex-hull-2d": "1.0.1"
+      }
+    },
     "cookie": {
       "version": "0.3.1",
       "resolved": "https://registry.npmjs.org/cookie/-/cookie-0.3.1.tgz",
@@ -965,6 +2030,19 @@
         "cssom": "0.3.2"
       }
     },
+    "d3-array": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/d3-array/-/d3-array-1.2.0.tgz",
+      "integrity": "sha1-FH0mlyDhdMQFen9CvosPPyulMQg="
+    },
+    "d3-geo": {
+      "version": "1.6.4",
+      "resolved": "https://registry.npmjs.org/d3-geo/-/d3-geo-1.6.4.tgz",
+      "integrity": "sha1-8g4eRhyxhF9ai+Vatvh2VCp+MZk=",
+      "requires": {
+        "d3-array": "1.2.0"
+      }
+    },
     "dashdash": {
       "version": "1.14.1",
       "resolved": "https://registry.npmjs.org/dashdash/-/dashdash-1.14.1.tgz",
@@ -1001,6 +2079,11 @@
       "resolved": "https://registry.npmjs.org/decamelize/-/decamelize-1.2.0.tgz",
       "integrity": "sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=",
       "dev": true
+    },
+    "deep-equal": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/deep-equal/-/deep-equal-1.0.1.tgz",
+      "integrity": "sha1-9dJgKStmDghO/0zbyfCK0yR0SLU="
     },
     "deep-extend": {
       "version": "0.4.2",
@@ -1071,6 +2154,11 @@
       "resolved": "https://registry.npmjs.org/delayed-stream/-/delayed-stream-1.0.0.tgz",
       "integrity": "sha1-3zrhmayt+31ECqrgsp4icrJOxhk=",
       "dev": true
+    },
+    "density-clustering": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/density-clustering/-/density-clustering-1.3.0.tgz",
+      "integrity": "sha1-3J9ZyPCrl+FiSsZJMP0xlIF9ysU="
     },
     "depd": {
       "version": "1.1.1",
@@ -1222,6 +2310,11 @@
           }
         }
       }
+    },
+    "earcut": {
+      "version": "2.1.1",
+      "resolved": "https://registry.npmjs.org/earcut/-/earcut-2.1.1.tgz",
+      "integrity": "sha1-FXY05fPrtCIk5HUBboalts5Va0U="
     },
     "ecc-jsbn": {
       "version": "0.1.1",
@@ -2785,11 +3878,56 @@
         "globule": "0.1.0"
       }
     },
+    "geodesy": {
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/geodesy/-/geodesy-1.1.1.tgz",
+      "integrity": "sha1-kYxBSlzCR8gSgzK3YkBQxGfpil0="
+    },
+    "geojson-equality": {
+      "version": "0.1.6",
+      "resolved": "https://registry.npmjs.org/geojson-equality/-/geojson-equality-0.1.6.tgz",
+      "integrity": "sha1-oXE3TvBD5dR5eZWEC65GSOB1LXI=",
+      "requires": {
+        "deep-equal": "1.0.1"
+      }
+    },
+    "geojson-polygon-self-intersections": {
+      "version": "1.1.2",
+      "resolved": "https://registry.npmjs.org/geojson-polygon-self-intersections/-/geojson-polygon-self-intersections-1.1.2.tgz",
+      "integrity": "sha1-vEnOO+IXUAWAKtbzwjHb3Xxld3s=",
+      "requires": {
+        "rbush": "2.0.1"
+      }
+    },
+    "geojson-random": {
+      "version": "0.2.2",
+      "resolved": "https://registry.npmjs.org/geojson-random/-/geojson-random-0.2.2.tgz",
+      "integrity": "sha1-q0g48SatxeFvj5TmVd74IPkRnbw="
+    },
+    "geojson-rbush": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/geojson-rbush/-/geojson-rbush-1.2.0.tgz",
+      "integrity": "sha1-7KO2o6+4maRT74LV4jcwkuINd+U=",
+      "requires": {
+        "@turf/meta": "4.6.0",
+        "rbush": "2.0.1"
+      }
+    },
+    "geojson-utils": {
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/geojson-utils/-/geojson-utils-1.1.0.tgz",
+      "integrity": "sha1-6P+0yBwKdbPjBvUYcmXW8jBA9Qs="
+    },
     "get-caller-file": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/get-caller-file/-/get-caller-file-1.0.2.tgz",
       "integrity": "sha1-9wLmMSfn4jHBYKgMFVSstw1QR+U=",
       "dev": true
+    },
+    "get-closest": {
+      "version": "0.0.4",
+      "resolved": "https://registry.npmjs.org/get-closest/-/get-closest-0.0.4.tgz",
+      "integrity": "sha1-JprHdtHmAiqg/Vht1wjop9Miaa8="
     },
     "getpass": {
       "version": "0.1.7",
@@ -3048,6 +4186,16 @@
       "dev": true,
       "requires": {
         "natives": "1.1.0"
+      }
+    },
+    "grid-to-matrix": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/grid-to-matrix/-/grid-to-matrix-1.2.0.tgz",
+      "integrity": "sha1-sBbfTXb5lua3RmPquc65E1RmV+k=",
+      "requires": {
+        "@turf/helpers": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0"
       }
     },
     "growly": {
@@ -3339,6 +4487,15 @@
       "resolved": "https://registry.npmjs.org/imurmurhash/-/imurmurhash-0.1.4.tgz",
       "integrity": "sha1-khi5srkoojixPcT7a21XbyMUU+o=",
       "dev": true
+    },
+    "incremental-convex-hull": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/incremental-convex-hull/-/incremental-convex-hull-1.0.1.tgz",
+      "integrity": "sha1-UUKMFMudmmFEv+abKFH7N3M0vh4=",
+      "requires": {
+        "robust-orientation": "1.1.3",
+        "simplicial-complex": "1.0.0"
+      }
     },
     "infinity-agent": {
       "version": "2.0.3",
@@ -4334,6 +5491,11 @@
         }
       }
     },
+    "jsts": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/jsts/-/jsts-1.3.0.tgz",
+      "integrity": "sha1-6Tp2+XrJvafUYl2dZHDw1grIDkU="
+    },
     "kind-of": {
       "version": "3.2.2",
       "resolved": "https://registry.npmjs.org/kind-of/-/kind-of-3.2.2.tgz",
@@ -4400,6 +5562,11 @@
         "rechoir": "0.6.2",
         "resolve": "1.4.0"
       }
+    },
+    "lineclip": {
+      "version": "1.1.5",
+      "resolved": "https://registry.npmjs.org/lineclip/-/lineclip-1.1.5.tgz",
+      "integrity": "sha1-K/JgZ9lDVP6r+R5CdoI221YW/RM="
     },
     "load-json-file": {
       "version": "1.1.0",
@@ -4680,6 +5847,11 @@
       "integrity": "sha1-5WqpTEyAVaFkBKBnS3jyFffI4ZQ=",
       "dev": true
     },
+    "marchingsquares": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/marchingsquares/-/marchingsquares-1.2.0.tgz",
+      "integrity": "sha1-Nq4tzBcL5XbUJXmqw8RtqJq2UOY="
+    },
     "media-typer": {
       "version": "0.3.0",
       "resolved": "https://registry.npmjs.org/media-typer/-/media-typer-0.3.0.tgz",
@@ -4776,6 +5948,14 @@
           "integrity": "sha1-hX/Kv8M5fSYluCKCYuhqp6ARsF0=",
           "dev": true
         }
+      }
+    },
+    "monotone-convex-hull-2d": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/monotone-convex-hull-2d/-/monotone-convex-hull-2d-1.0.1.tgz",
+      "integrity": "sha1-R/Xa6t88Sv03dkuqGqh4ekDu4Iw=",
+      "requires": {
+        "robust-orientation": "1.1.3"
       }
     },
     "ms": {
@@ -5289,6 +6469,18 @@
       "integrity": "sha1-WbcIwcAZCi9pLxx2GMRGsFL9F2I=",
       "dev": true
     },
+    "polygonize": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/polygonize/-/polygonize-1.0.1.tgz",
+      "integrity": "sha1-UftwQJFL4PvEOwvVTUIddfwq56Y=",
+      "requires": {
+        "@turf/envelope": "4.6.0",
+        "@turf/helpers": "4.6.0",
+        "@turf/inside": "4.6.0",
+        "@turf/invariant": "4.6.0",
+        "@turf/meta": "4.6.0"
+      }
+    },
     "prelude-ls": {
       "version": "1.1.2",
       "resolved": "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.1.2.tgz",
@@ -5398,6 +6590,11 @@
       "resolved": "https://registry.npmjs.org/qs/-/qs-6.4.0.tgz",
       "integrity": "sha1-E+JtKK1rD/qpExLNO/cI7TUecjM="
     },
+    "quickselect": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/quickselect/-/quickselect-1.0.0.tgz",
+      "integrity": "sha1-AmMIGPmq5OyrJvAQP5jQYcF8WPM="
+    },
     "randomatic": {
       "version": "1.1.7",
       "resolved": "https://registry.npmjs.org/randomatic/-/randomatic-1.1.7.tgz",
@@ -5458,6 +6655,14 @@
       "version": "1.2.0",
       "resolved": "https://registry.npmjs.org/range-parser/-/range-parser-1.2.0.tgz",
       "integrity": "sha1-9JvmtIeJTdxA3MlKMi9hEJLgDV4="
+    },
+    "rbush": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/rbush/-/rbush-2.0.1.tgz",
+      "integrity": "sha1-TPrKKMMGS8DudUMaG3mZDode76k=",
+      "requires": {
+        "quickselect": "1.0.0"
+      }
     },
     "rc": {
       "version": "1.2.1",
@@ -5852,6 +7057,36 @@
         }
       }
     },
+    "robust-orientation": {
+      "version": "1.1.3",
+      "resolved": "https://registry.npmjs.org/robust-orientation/-/robust-orientation-1.1.3.tgz",
+      "integrity": "sha1-2v9bANO+TmByLw6cAVbvln8cIEk=",
+      "requires": {
+        "robust-scale": "1.0.2",
+        "robust-subtract": "1.0.0",
+        "robust-sum": "1.0.0",
+        "two-product": "1.0.2"
+      }
+    },
+    "robust-scale": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/robust-scale/-/robust-scale-1.0.2.tgz",
+      "integrity": "sha1-d1Ey7QlULQKOWLLMecBikLz3jDI=",
+      "requires": {
+        "two-product": "1.0.2",
+        "two-sum": "1.0.0"
+      }
+    },
+    "robust-subtract": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/robust-subtract/-/robust-subtract-1.0.0.tgz",
+      "integrity": "sha1-4LFk4e2LpOOl3aRaEgODSNvtPpo="
+    },
+    "robust-sum": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/robust-sum/-/robust-sum-1.0.0.tgz",
+      "integrity": "sha1-FmRuUlKStNJdgnV6KGlV4Lv6U9k="
+    },
     "run-async": {
       "version": "2.3.0",
       "resolved": "https://registry.npmjs.org/run-async/-/run-async-2.3.0.tgz",
@@ -6047,6 +7282,79 @@
       "resolved": "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.2.tgz",
       "integrity": "sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=",
       "dev": true
+    },
+    "simplepolygon": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/simplepolygon/-/simplepolygon-1.2.0.tgz",
+      "integrity": "sha1-RiYKSLvkZ+KnoQvLZezQ4927Lrk=",
+      "requires": {
+        "@turf/area": "3.14.0",
+        "@turf/helpers": "3.13.0",
+        "@turf/inside": "4.6.0",
+        "@turf/within": "3.14.0",
+        "debug": "2.6.7",
+        "geojson-polygon-self-intersections": "1.1.2",
+        "rbush": "2.0.1"
+      },
+      "dependencies": {
+        "@turf/area": {
+          "version": "3.14.0",
+          "resolved": "https://registry.npmjs.org/@turf/area/-/area-3.14.0.tgz",
+          "integrity": "sha1-8xl+1OlxDQLNi71VGyXEdv5H6Js=",
+          "requires": {
+            "@mapbox/geojson-area": "0.2.2",
+            "@turf/meta": "3.14.0"
+          }
+        },
+        "@turf/helpers": {
+          "version": "3.13.0",
+          "resolved": "https://registry.npmjs.org/@turf/helpers/-/helpers-3.13.0.tgz",
+          "integrity": "sha1-0GB4oUZM9WzbfqYk6h4TpxuIuAY="
+        },
+        "@turf/invariant": {
+          "version": "3.13.0",
+          "resolved": "https://registry.npmjs.org/@turf/invariant/-/invariant-3.13.0.tgz",
+          "integrity": "sha1-iSQzCM1WMgboHlxhYuDSL2GCL5A="
+        },
+        "@turf/meta": {
+          "version": "3.14.0",
+          "resolved": "https://registry.npmjs.org/@turf/meta/-/meta-3.14.0.tgz",
+          "integrity": "sha1-jTBQwaD0S/QGpjO2vSjFEPe87ic="
+        },
+        "@turf/within": {
+          "version": "3.14.0",
+          "resolved": "https://registry.npmjs.org/@turf/within/-/within-3.14.0.tgz",
+          "integrity": "sha1-iRpXgyPCkrl5ImkDLddIcODhTFM=",
+          "requires": {
+            "@turf/helpers": "3.13.0",
+            "@turf/inside": "3.14.0"
+          },
+          "dependencies": {
+            "@turf/inside": {
+              "version": "3.14.0",
+              "resolved": "https://registry.npmjs.org/@turf/inside/-/inside-3.14.0.tgz",
+              "integrity": "sha1-1ravVYgsvbj5pVjcqYaJxnvTxZA=",
+              "requires": {
+                "@turf/invariant": "3.13.0"
+              }
+            }
+          }
+        }
+      }
+    },
+    "simplicial-complex": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/simplicial-complex/-/simplicial-complex-1.0.0.tgz",
+      "integrity": "sha1-bDOk7Wn81Nkbe8rdOzC2NoPq4kE=",
+      "requires": {
+        "bit-twiddle": "1.0.2",
+        "union-find": "1.0.2"
+      }
+    },
+    "simplify-js": {
+      "version": "1.2.1",
+      "resolved": "https://registry.npmjs.org/simplify-js/-/simplify-js-1.2.1.tgz",
+      "integrity": "sha1-+iFrQEVPSBdUUOD+ob0earOfy8A="
     },
     "slash": {
       "version": "1.0.0",
@@ -6482,12 +7790,35 @@
         "safe-buffer": "5.1.1"
       }
     },
+    "turf-is-clockwise": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/turf-is-clockwise/-/turf-is-clockwise-1.0.0.tgz",
+      "integrity": "sha1-3CLl/9TPEJNGg6oARifP+Hpt/pE="
+    },
+    "turf-overlaps": {
+      "version": "1.0.3",
+      "resolved": "https://registry.npmjs.org/turf-overlaps/-/turf-overlaps-1.0.3.tgz",
+      "integrity": "sha1-RxHJFGaFOvA7POliWFrsqfwjJfU=",
+      "requires": {
+        "turf-is-clockwise": "1.0.0"
+      }
+    },
     "tweetnacl": {
       "version": "0.14.5",
       "resolved": "https://registry.npmjs.org/tweetnacl/-/tweetnacl-0.14.5.tgz",
       "integrity": "sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=",
       "dev": true,
       "optional": true
+    },
+    "two-product": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/two-product/-/two-product-1.0.2.tgz",
+      "integrity": "sha1-Z9ldSyV6kh4stL16+VEfkIhSLqo="
+    },
+    "two-sum": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/two-sum/-/two-sum-1.0.0.tgz",
+      "integrity": "sha1-MdPzIjnk9zHsqd+RVeKyl/AIq2Q="
     },
     "type-check": {
       "version": "0.3.2",
@@ -6558,6 +7889,11 @@
       "resolved": "https://registry.npmjs.org/undefsafe/-/undefsafe-0.0.3.tgz",
       "integrity": "sha1-7Mo6A+VrmvFzhbqsgSrIO5lKli8=",
       "dev": true
+    },
+    "union-find": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/union-find/-/union-find-1.0.2.tgz",
+      "integrity": "sha1-KSusQV5q06iVNdI3AQ20pTYoTlg="
     },
     "unique-stream": {
       "version": "1.0.0",
@@ -6738,6 +8074,11 @@
       "resolved": "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-4.0.1.tgz",
       "integrity": "sha1-gBWherg+fhsxFjhIas6B2mziBqA=",
       "dev": true
+    },
+    "wgs84": {
+      "version": "0.0.0",
+      "resolved": "https://registry.npmjs.org/wgs84/-/wgs84-0.0.0.tgz",
+      "integrity": "sha1-NP3FVZF7blfPKigu0ENxDASc3HY="
     },
     "whatwg-encoding": {
       "version": "1.0.1",
