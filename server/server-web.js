@@ -50,11 +50,11 @@ app.get('/request/new', async (req, res) => {
 
 app.get('/choose_bid', async (req, res) => {
   const { user_id, bid_id } = req.query;
-  const missionId = await createMission({
+  const mission = await createMission({
     user_id, bid_id
   });
-  if (missionId) {
-    res.json({ missionId });
+  if (mission) {
+    res.json({ mission });
   } else {
     res.status(500).send('Something broke!');
   }

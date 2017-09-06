@@ -13,6 +13,7 @@ const createMission = async ({ user_id, bid_id }) => {
 
   // get new unique id for mission
   const missionId = await redis.incrAsync('next_mission_id');
+  const signed_at = Date.now();
 
   // create a new mission entry in Redis
   redis.hmsetAsync(`missions:${missionId}`,
@@ -29,9 +30,23 @@ const createMission = async ({ user_id, bid_id }) => {
     'requested_pickup_time', requested_pickup_time,
     'size', size,
     'weight', weight,
-    'signed_at',Date.now(),
+    'signed_at', signed_at,
   );
-  return missionId;
+  return {
+    mission_id: missionId,
+    vehicle_id,
+    price,
+    time_to_pickup,
+    time_to_dropoff,
+    pickup_lat,
+    pickup_long,
+    dropoff_lat,
+    dropoff_long,
+    requested_pickup_time,
+    size,
+    weight,
+    signed_at,
+  };
 };
 
 module.exports = {
