@@ -5,7 +5,7 @@ const { getRequest } = require('./requests');
 const createMission = async ({ user_id, bid_id }) => {
   // get bid details
   const bid = await getBid(bid_id);
-  const { vehicle_id, price, pickup_time, dropoff_time, request_id } = bid;
+  const { vehicle_id, price, time_to_pickup, time_to_dropoff, request_id } = bid;
 
   // get request details
   const request = await getRequest(request_id);
@@ -19,8 +19,8 @@ const createMission = async ({ user_id, bid_id }) => {
     'user_id', user_id,
     'vehicle_id', vehicle_id,
     'price', price,
-    'pickup_time', pickup_time,
-    'dropoff_time', dropoff_time,
+    'time_to_pickup', time_to_pickup,
+    'time_to_dropoff', time_to_dropoff,
     'request_id', request_id,
     'pickup_lat', pickup_lat,
     'pickup_long', pickup_long,
