@@ -2,7 +2,7 @@ const redis = require('./redis');
 const { randomBid } = require('../simulation/vehicles');
 const { getVehicle } = require('../store/vehicles');
 
-const saveBid = async ({ vehicle_id, bid, pickup, dropoff }, requestId) => {
+const saveBid = async ({ vehicle_id, bid, pickup_time, dropoff_time }, requestId, userId) => {
   // get new unique id for bid
   const bidId = await redis.incrAsync('next_bid_id');
 
@@ -13,9 +13,9 @@ const saveBid = async ({ vehicle_id, bid, pickup, dropoff }, requestId) => {
   redis.hmsetAsync(`bids:${bidId}`,
     'id', bidId,
     'vehicle_id', vehicle_id,
-    'bid', bid,
-    'pickup', pickup,
-    'dropoff', dropoff,
+    'price', bid,
+    'pickup_time', pickup_time,
+    'dropoff_time', dropoff_time,
   );
 
   return bidId;
