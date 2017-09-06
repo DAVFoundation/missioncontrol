@@ -1,5 +1,9 @@
 const redis = require('./redis');
 
+const getRequest = async (requestId) => {
+  return await redis.hgetallAsync(`requests:${requestId}`);
+};
+
 const createRequest = async (requestDetails) => {
   // get new unique id for request
   const requestId = await redis.incrAsync('next_request_id');
@@ -22,5 +26,6 @@ const createRequest = async (requestDetails) => {
 };
 
 module.exports = {
-  createRequest
+  createRequest,
+  getRequest,
 };
