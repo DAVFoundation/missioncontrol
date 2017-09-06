@@ -22,6 +22,10 @@ const saveBid = async ({ vehicle_id, bid, pickup_time, dropoff_time }, requestId
   return bidId;
 };
 
+const getBid = async (bidId) => {
+  return await redis.hgetallAsync(`bids:${bidId}`);
+};
+
 const getBidsForRequest = async (requestId) => {
   // get request details
   const request = await getRequest(requestId);
@@ -57,5 +61,6 @@ const getBidsForRequest = async (requestId) => {
 };
 
 module.exports = {
-  getBidsForRequest
+  getBidsForRequest,
+  getBid,
 };
