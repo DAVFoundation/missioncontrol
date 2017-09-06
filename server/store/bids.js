@@ -14,9 +14,11 @@ const saveBid = async ({ vehicle_id, bid, pickup_time, dropoff_time }, requestId
   redis.hmsetAsync(`bids:${bidId}`,
     'id', bidId,
     'vehicle_id', vehicle_id,
+    'user_id', userId,
     'price', bid,
     'pickup_time', pickup_time,
     'dropoff_time', dropoff_time,
+    'request_id', requestId,
   );
 
   return bidId;
@@ -30,6 +32,8 @@ const getBidsForRequest = async (requestId) => {
   // get request details
   const request = await getRequest(requestId);
   if (!request) return [];
+
+  const userId = request.user_id;
 
   // get bids for request
   const bidIds = await redis.lrangeAsync(`request_bids:${requestId}`, 0, -1);
@@ -51,7 +55,7 @@ const getBidsForRequest = async (requestId) => {
       const origin = {lat: vehicle.lat, long: vehicle.long};
       let newBid = randomBid(origin, pickup, dropoff);
       newBid.vehicle_id = vehicleId;
-      const newBidId = await saveBid(newBid, requestId);
+      const newBidId = await saveBid(newBid, requestId, userId);
       newBid.id = newBidId;
       bids.push(newBid);
     }
