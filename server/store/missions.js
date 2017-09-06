@@ -29,6 +29,7 @@ const createMission = async ({ user_id, bid_id }) => {
     'requested_pickup_time', requested_pickup_time,
     'size', size,
     'weight', weight,
+    'signed_at',Date.now(),
   );
   return missionId;
 };
