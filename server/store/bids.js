@@ -1,6 +1,7 @@
 const redis = require('./redis');
 const { randomBid } = require('../simulation/vehicles');
 const { getVehicle } = require('../store/vehicles');
+const { getRequest } = require('../store/requests');
 
 const saveBid = async ({ vehicle_id, bid, pickup_time, dropoff_time }, requestId, userId) => {
   // get new unique id for bid
@@ -23,9 +24,7 @@ const saveBid = async ({ vehicle_id, bid, pickup_time, dropoff_time }, requestId
 
 const getBidsForRequest = async (requestId) => {
   // get request details
-  //    note: `hgetall` is only used because we want to get the pickup coordinates so we can
-  //    make up some bids. Once we don't need to make them up here we can start using `hexists`
-  const request = await redis.hgetallAsync(`requests:${requestId}`);
+  const request = await getRequest(requestId);
   if (!request) return [];
 
   // get bids for request
