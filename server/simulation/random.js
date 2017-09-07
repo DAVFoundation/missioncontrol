@@ -29,11 +29,12 @@ const randomManufacturerName = () => {
 const randomModelName = () => {
   return modelNames[Math.floor(Math.random()*modelNames.length)];
 };
+
 /**
- * Returns a random combination of a manufacturer name and model name from two * arrays of possbile manufacturers and models
- * @return {String} A string representing a random drone model manufacturer
- * and name
-*/
+ * Returns a random drone model composed of a manufacturer name and model name
+ *
+ * @return {String} Random drone model
+ */
 const randomDroneModel = () => {
   return `${randomManufacturerName()} ${randomModelName()}`;
 };
