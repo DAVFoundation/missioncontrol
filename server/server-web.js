@@ -24,13 +24,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/status', async (req, res) => {
+  const { lat, long, requestId } = req.query;
   const vehicles =
     (!hasStore) ? [] : await getVehiclesInRange(
-      { lat: parseFloat(req.query.lat), long: parseFloat(req.query.long) },
+      { lat: parseFloat(lat), long: parseFloat(long) },
       7000
     );
 
-  const { requestId } = req.query;
   const bids = (!hasStore || !requestId) ? [] : await getBidsForRequest(requestId);
 
   res.json({ vehicles, bids });
