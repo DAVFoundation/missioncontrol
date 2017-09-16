@@ -2,12 +2,11 @@ const { randomDavAddress, randomDroneModel, randomCoords, randomRating, randomMi
 const { getDavIdIconUrl } = require('../lib/davIdIcon');
 
 const generateRandom = ({coords, radius}) => {
-  const davAddress = randomDavAddress();
   const { missionsCompleted, missionsCompleted7Days } = randomMissionsCompleted();
   return {
-    'id': davAddress,
+    'id': randomDavAddress(),
     'model': randomDroneModel(),
-    'icon': getDavIdIconUrl(davAddress),
+    'icon': getDavIdIconUrl(),
     'coords': randomCoords({coords, radius}),
     'rating': randomRating(),
     'missions_completed': missionsCompleted,
