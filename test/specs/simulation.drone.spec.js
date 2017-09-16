@@ -10,4 +10,10 @@ describe('generateRandom()', () => {
     ).toBe('object');
   });
 
+  test('returns an object with an id', () => {
+    expect(
+      generateRandom(sampleArguments)
+    ).toHaveProperty('id');
+  });
+
 });
