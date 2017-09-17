@@ -21,4 +21,11 @@ describe('generateRandom()', () => {
       generateRandom(sampleArguments)
     ).toHaveProperty('model');
   });
+
+  test('returns an object with an icon property', () => {
+    expect(
+      generateRandom(sampleArguments)
+    ).toHaveProperty('icon');
+  });
+  
 });
