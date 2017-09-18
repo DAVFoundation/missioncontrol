@@ -17,7 +17,6 @@ describe('generateRandom()', () => {
   });
 
   test('returns an object with a model', () => {
-    console.log(generateRandom(sampleArguments));
     expect(
       generateRandom(sampleArguments)
     ).toHaveProperty('model');
