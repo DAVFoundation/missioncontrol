@@ -16,4 +16,9 @@ describe('generateRandom()', () => {
     ).toHaveProperty('id');
   });
 
+  test('returns an object with a model', () => {
+    expect(
+      generateRandom(sampleArguments)
+    ).toHaveProperty('model');
+  });
 });
