@@ -7,13 +7,5 @@ describe('hasStore', () => {
     if (process.env.DAV_ENV !== 'simulation') {
       expect(hasStore).toBe(false);
     }
-  });
-
-  test(`returns true when the DAV_ENV environment variable is set to 'simulated'`, () => {
-    expect.assertions();
-    if (process.env.DAV_ENV === 'simulation') {
-      expect(hasStore).toBe(true);
-    }
-  });
-  
+  });  
 });
