@@ -1,6 +1,9 @@
 const davEnv = process.env.DAV_ENV;
 
-const hasStore = ['simulated'].includes(davEnv);
+function hasStore() {
+  const hasStore = ['simulated'].includes(davEnv);
+  return  hasStore;
+}
 
 module.exports = {
   hasStore
