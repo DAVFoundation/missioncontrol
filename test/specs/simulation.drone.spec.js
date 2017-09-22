@@ -21,4 +21,10 @@ describe('generateRandom()', () => {
       generateRandom(sampleArguments)
     ).toHaveProperty('model');
   });
+
+  test('returns an object with coords', () => {
+    expect(
+      generateRandom(sampleArguments)
+    ).toHaveProperty('coords');
+  });
 });
