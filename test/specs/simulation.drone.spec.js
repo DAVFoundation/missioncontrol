@@ -21,4 +21,10 @@ describe('generateRandom()', () => {
       generateRandom(sampleArguments)
     ).toHaveProperty('model');
   });
+
+  test('returns an object with a missions_completed_7_days attribute', () => {
+    expect(
+      generateRandom(sampleArguments)
+    ).toHaveProperty('missions_completed_7_days');
+  });
 });
