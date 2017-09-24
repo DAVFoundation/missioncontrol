@@ -26,12 +26,12 @@ app.get('/', (req, res) => {
 app.get('/status', async (req, res) => {
   const { lat, long, requestId } = req.query;
   const vehicles =
-    (!hasStore) ? [] : await getVehiclesInRange(
+    (!hasStore()) ? [] : await getVehiclesInRange(
       { lat: parseFloat(lat), long: parseFloat(long) },
       7000
     );
 
-  const bids = (!hasStore || !requestId) ? [] : await getBidsForRequest(requestId);
+  const bids = (!hasStore() || !requestId) ? [] : await getBidsForRequest(requestId);
 
   res.json({ vehicles, bids });
 });
