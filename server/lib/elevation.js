@@ -14,7 +14,10 @@ const getFromElevationApi = async (locations = []) => {
   return new Promise((resolve, reject) => {
     request.get(base_url + '?' + query, {json: true}, (err, request, body) => {
       if (err) {
-        reject(err);
+        reject(new Error("Error in request to Google Elevation API" + err));
+      }
+      if (body.status != 'OK'){
+        reject(new Error ("Error in request to Google Elevation API " + body.status + ' ' + body.error_message));
       }
       let newLocations = [];
       body.results.forEach((new_location) => {
@@ -39,7 +42,7 @@ const getElevations = async (coordinates = [], precision = 50) => {
   for (let i = 0; i < coordinates.length; i++) {
     let coordinate = coordinates[i];
     let elevation = await redis.getAsync(generateElevationKey(coordinate, precision));
-    if (elevation) {
+    if (false && elevation) {
       results.push({coord: coordinate, elevation: elevation});
     }
     else {
