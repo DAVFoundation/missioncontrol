@@ -6,18 +6,20 @@ const getFromElevationApi = async (locations = []) => {
   /* TODO - query by batches of 512 locations */
   const base_url = 'https://maps.googleapis.com/maps/api/elevation/json';
   let params = {
-    locations: locations.map((l) => { return l.lat + ',' + l.long}).join("|"),
+    locations: locations.map((l) => {
+      return l.lat + ',' + l.long
+    }).join("|"),
     key: process.env.ELEVATION_API_KEY
   };
-  let query =  Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
+  let query = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
 
   return new Promise((resolve, reject) => {
     request.get(base_url + '?' + query, {json: true}, (err, request, body) => {
       if (err) {
         reject(new Error("Error in request to Google Elevation API" + err));
       }
-      if (body.status != 'OK'){
-        reject(new Error ("Error in request to Google Elevation API " + body.status + '. ' + body.error_message));
+      if (body.status != 'OK') {
+        reject(new Error("Error in request to Google Elevation API " + body.status + '. ' + body.error_message));
       }
       let newLocations = [];
       body.results.forEach((new_location) => {
@@ -58,7 +60,7 @@ const getElevations = async (coordinates = [], precision = 50) => {
       });
       redis_multi.exec();
       results = results.concat(newLocations);
-    } catch(err){
+    } catch (err) {
       console.error("Unable to fetch some locations elevation. ", {locations: unknownLocations, err: err.message});
     }
   }
