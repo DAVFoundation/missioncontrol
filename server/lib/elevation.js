@@ -37,18 +37,37 @@ const generateElevationKey = (coordinate) => {
   return "elv_" + coordinate.lat + '_' + coordinate.long;
 };
 
-const getElevations = async (coordinates = [], precision = 50) => {
+const getNearByLocationElevation = async (coordinate, precisionRadius) => {
+  let nearby_coordinates = await redis.georadiusAsync('location_elevations', coordinate.long, coordinate.lat, precisionRadius, 'm');
+  if (nearby_coordinates.length) {
+    for (let i = 0; i < nearby_coordinates.length; i++) {
+      let nearby_coordinate_key = nearby_coordinates[i];
+      let elevation = await redis.getAsync(nearby_coordinate_key);
+      if (elevation){
+        return elevation
+      }
+    }
+  }
+};
+
+const getElevations = async (coordinates = [], precisionRadius = 50) => {
   let results = [];
   let unknownLocations = [];
 
   for (let i = 0; i < coordinates.length; i++) {
     let coordinate = coordinates[i];
     let elevation = await redis.getAsync(generateElevationKey(coordinate));
-    if (false && elevation) {
+    if (elevation) {
       results.push({coord: coordinate, elevation: elevation});
     }
     else {
-      unknownLocations.push(coordinate);
+      elevation = await getNearByLocationElevation(coordinate, precisionRadius);
+      if (elevation) {
+        results.push({coord: coordinate, elevation: elevation});
+      }
+      else{
+        unknownLocations.push(coordinate);
+      }
     }
   }
   if (unknownLocations.length > 0) {
@@ -56,7 +75,9 @@ const getElevations = async (coordinates = [], precision = 50) => {
       const newLocations = await getFromElevationApi(unknownLocations);
       let redis_multi = redis.multi();
       newLocations.forEach(new_location => {
-        redis_multi.set(generateElevationKey(new_location.coord), new_location.elevation);
+        let newLocationKey = generateElevationKey(new_location.coord);
+        redis_multi.set(newLocationKey, new_location.elevation);
+        redis.geoaddAsync('location_elevations', new_location.coord.long, new_location.coord.lat, newLocationKey);
       });
       redis_multi.exec();
       results = results.concat(newLocations);
