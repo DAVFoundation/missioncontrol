@@ -33,8 +33,8 @@ const getFromElevationApi = async (locations = []) => {
   });
 };
 
-const generateElevationKey = (coordinate, precision) => {
-  return "elv_" + coordinate.lat + ',' + coordinate.long + '_' + precision;
+const generateElevationKey = (coordinate) => {
+  return "elv_" + coordinate.lat + '_' + coordinate.long;
 };
 
 const getElevations = async (coordinates = [], precision = 50) => {
@@ -43,7 +43,7 @@ const getElevations = async (coordinates = [], precision = 50) => {
 
   for (let i = 0; i < coordinates.length; i++) {
     let coordinate = coordinates[i];
-    let elevation = await redis.getAsync(generateElevationKey(coordinate, precision));
+    let elevation = await redis.getAsync(generateElevationKey(coordinate));
     if (false && elevation) {
       results.push({coord: coordinate, elevation: elevation});
     }
@@ -56,7 +56,7 @@ const getElevations = async (coordinates = [], precision = 50) => {
       const newLocations = await getFromElevationApi(unknownLocations);
       let redis_multi = redis.multi();
       newLocations.forEach(new_location => {
-        redis_multi.set(generateElevationKey(new_location.coord, precision), new_location.elevation);
+        redis_multi.set(generateElevationKey(new_location.coord), new_location.elevation);
       });
       redis_multi.exec();
       results = results.concat(newLocations);
