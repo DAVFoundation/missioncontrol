@@ -40,8 +40,7 @@ const generateElevationKey = (coordinate) => {
 const getNearByLocationElevation = async (coordinate, precisionRadius) => {
   let nearby_coordinates = await redis.georadiusAsync('location_elevations', coordinate.long, coordinate.lat, precisionRadius, 'm');
   if (nearby_coordinates.length) {
-    for (let i = 0; i < nearby_coordinates.length; i++) {
-      let nearby_coordinate_key = nearby_coordinates[i];
+    for (let nearby_coordinate_key of nearby_coordinates) {
       let elevation = await redis.getAsync(nearby_coordinate_key);
       if (elevation) {
         return elevation
@@ -54,8 +53,7 @@ const getElevations = async (coordinates = [], precisionRadius = 50) => {
   let results = [];
   let unknownLocations = [];
 
-  for (let i = 0; i < coordinates.length; i++) {
-    let coordinate = coordinates[i];
+  for (let coordinate of coordinates) {
     let elevation = await redis.getAsync(generateElevationKey(coordinate));
     if (elevation) {
       results.push({coord: coordinate, elevation: elevation});
