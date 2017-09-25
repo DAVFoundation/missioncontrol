@@ -61,6 +61,7 @@ const getElevations = async (coordinates = [], precisionRadius = 50) => {
       results.push({coord: coordinate, elevation: elevation});
     }
     else {
+      // check nearby locations for already existing elevation
       elevation = await getNearByLocationElevation(coordinate, precisionRadius);
       if (elevation) {
         results.push({coord: coordinate, elevation: elevation});
