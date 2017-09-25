@@ -43,7 +43,7 @@ const getNearByLocationElevation = async (coordinate, precisionRadius) => {
     for (let i = 0; i < nearby_coordinates.length; i++) {
       let nearby_coordinate_key = nearby_coordinates[i];
       let elevation = await redis.getAsync(nearby_coordinate_key);
-      if (elevation){
+      if (elevation) {
         return elevation
       }
     }
@@ -66,7 +66,7 @@ const getElevations = async (coordinates = [], precisionRadius = 50) => {
       if (elevation) {
         results.push({coord: coordinate, elevation: elevation});
       }
-      else{
+      else {
         unknownLocations.push(coordinate);
       }
     }
