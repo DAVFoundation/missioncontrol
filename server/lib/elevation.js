@@ -17,7 +17,7 @@ const getFromElevationApi = async (locations = []) => {
         reject(new Error("Error in request to Google Elevation API" + err));
       }
       if (body.status != 'OK'){
-        reject(new Error ("Error in request to Google Elevation API " + body.status + ' ' + body.error_message));
+        reject(new Error ("Error in request to Google Elevation API " + body.status + '. ' + body.error_message));
       }
       let newLocations = [];
       body.results.forEach((new_location) => {
@@ -50,13 +50,17 @@ const getElevations = async (coordinates = [], precision = 50) => {
     }
   }
   if (unknownLocations.length > 0) {
-    const newLocations = await getFromElevationApi(unknownLocations);
-    let redis_multi = redis.multi();
-    newLocations.forEach(new_location => {
-      redis_multi.set(generateElevationKey(new_location.coord, precision), new_location.elevation);
-    });
-    redis_multi.exec();
-    results = results.concat(newLocations);
+    try {
+      const newLocations = await getFromElevationApi(unknownLocations);
+      let redis_multi = redis.multi();
+      newLocations.forEach(new_location => {
+        redis_multi.set(generateElevationKey(new_location.coord, precision), new_location.elevation);
+      });
+      redis_multi.exec();
+      results = results.concat(newLocations);
+    } catch(err){
+      console.error("Unable to fetch some locations elevation. ", {locations: unknownLocations, err: err.message});
+    }
   }
   return results;
 };
