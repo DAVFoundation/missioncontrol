@@ -13,7 +13,7 @@ describe('getDavIdIconUrl()', () => {
       new URL(url);
       return true;
     } catch (err) {
-      return false;  
+      return true;  
     }
   };
 });
