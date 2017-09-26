@@ -1,6 +1,6 @@
 const { hasStore } = require('../lib/environment');
 
-if (hasStore) {
+if (hasStore()) {
 
   const host = process.env.REDIS_HOST || 'redis';
   const port = process.env.REDIS_PORT || 6379;
