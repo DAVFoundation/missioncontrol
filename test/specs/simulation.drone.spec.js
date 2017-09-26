@@ -26,6 +26,7 @@ describe('generateRandom()', () => {
     expect(
       generateRandom(sampleArguments)
     ).toHaveProperty('coords');
+  });
 
   test('returns an object with a missions_completed_7_days attribute', () => {
     expect(
