@@ -1,34 +1,27 @@
 const redis = require('../store/redis');
 const Promise = require('bluebird');
-const request = require("request");
+const request = Promise.promisifyAll(require("request"), {multiArgs: true});
 
 const getFromElevationApi = async (locations = []) => {
   /* TODO - query by batches of 512 locations */
   const base_url = 'https://maps.googleapis.com/maps/api/elevation/json';
   let params = {
-    locations: locations.map((l) => {
-      return l.lat + ',' + l.long
+    locations: locations.map((location) => {
+      return location.lat + ',' + location.long
     }).join("|"),
     key: process.env.ELEVATION_API_KEY
   };
   let query = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
 
-  return new Promise((resolve, reject) => {
-    request.get(base_url + '?' + query, {json: true}, (err, request, body) => {
-      if (err) {
-        reject(new Error("Error in request to Google Elevation API" + err));
+  return request.getAsync(base_url + '?' + query, {json: true}).then(([response, body]) => {
+    if (body.status != 'OK') {
+      throw new Error("Error in request to Google Elevation API. Status:" + body.status + '. Message: ' + body.error_message);
+    }
+    return body.results.map((elevation_data) => {
+      return {
+        coord: {lat: elevation_data.location.lat, long: elevation_data.location.lng},
+        elevation: elevation_data.elevation
       }
-      if (body.status != 'OK') {
-        reject(new Error("Error in request to Google Elevation API " + body.status + '. ' + body.error_message));
-      }
-      let newLocations = [];
-      body.results.forEach((new_location) => {
-        newLocations.push({
-          coord: {lat: new_location.location.lat, long: new_location.location.lng},
-          elevation: new_location.elevation
-        })
-      });
-      resolve(newLocations);
     });
   });
 };
