@@ -37,7 +37,7 @@ describe('generateRandom()', () => {
   test('returns an object with a rating attribute', () => {
     expect(
       generateRandom(sampleArguments)
-    ).toHaveProperty('icon');
+    ).toHaveProperty('rating');
   });
 
   test('returns an object with a missions_completed_7_days attribute', () => {
