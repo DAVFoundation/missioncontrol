@@ -1,10 +1,11 @@
 const { getDavIdIconUrl } = require('../../server/lib/davIdIcon.js');
 const { URL } = require('url');
+const dummyDavId = '0xdfddfdfdfdfdfdfdfdfdfdfdfdfddfdfdfdfdfdd';
 
 describe('getDavIdIconUrl()', () => {
   test('returns an absolute URL', () => {
     expect(
-      checkIfAbsoluteURL(getDavIdIconUrl())
+      checkIfAbsoluteURL(getDavIdIconUrl(dummyDavId))
     ).toBeTruthy();
   });
   
