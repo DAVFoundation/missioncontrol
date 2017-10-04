@@ -59,6 +59,9 @@ describe('randomMissionsCompleted()', () => {
     expect(
       Number.isInteger(missionsCompleted7Days)
     ).toBe(true);
+	expect(
+	  missionsCompleted7Days >= 0
+	).toBe(true);
     expect(
       missionsCompleted7Days <= missionsCompleted
     ).toBe(true);
