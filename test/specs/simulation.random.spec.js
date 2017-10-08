@@ -42,17 +42,17 @@ describe('randomMissionsCompleted()', () => {
 
   test('returns an object containing missionsCompleted7Days which is less than or equal to missionsCompleted', () => {
     const prop = randomMissionsCompleted();
-      expect(
-        prop.missionsCompleted7Days
-      ).toBeLessThanOrEqual(prop.missionsCompleted);      
+    expect(
+      prop.missionsCompleted7Days
+    ).toBeLessThanOrEqual(prop.missionsCompleted);      
     
-      expect(
-        Number.isInteger(prop.missionsCompleted7Days)
-      ).toBe(true);     
+    expect(
+      Number.isInteger(prop.missionsCompleted7Days)
+    ).toBe(true);     
   
-      expect(
-        prop.missionsCompleted7Days
-      ).toBeGreaterThan(0);
+    expect(
+      prop.missionsCompleted7Days
+    ).toBeGreaterThan(0);
 
   });
 
