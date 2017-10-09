@@ -67,5 +67,20 @@ describe('randomMissionsCompleted()', () => {
       randomMissionsCompleted().missionsCompleted
     ).toBeGreaterThanOrEqual(4);
   });
+  
+  test('missionsCompleted7Days should return an integer less than or equal to missionsCompleted', () => {
+    var missionsCompletedObject = randomMissionsCompleted();
+    var missionsCompleted7Days = missionsCompletedObject.missionsCompleted7Days, 
+      missionsCompleted = missionsCompletedObject.missionsCompleted;
+    expect(
+      Number.isInteger(missionsCompleted7Days)
+    ).toBe(true);
+    expect(
+      missionsCompleted7Days >= 0
+    ).toBe(true);
+    expect(
+      missionsCompleted7Days <= missionsCompleted
+    ).toBe(true);
+  });
 
 });
