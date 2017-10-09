@@ -6,7 +6,7 @@
  */
 const getDavIdIconUrl = davId => {
   if (!davId){
-    return new Error('No valid davId provided');
+    throw new Error('No valid davId provided');
   }
   return `https://lorempixel.com/100/100/abstract/?${davId}`;
 };
