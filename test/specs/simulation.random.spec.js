@@ -44,12 +44,12 @@ describe('randomMissionsCompleted()', () => {
     const prop = randomMissionsCompleted();
     expect(
       prop.missionsCompleted7Days
-    ).toBeLessThanOrEqual(prop.missionsCompleted);      
-    
+    ).toBeLessThanOrEqual(prop.missionsCompleted);
+
     expect(
       Number.isInteger(prop.missionsCompleted7Days)
-    ).toBe(true);     
-  
+    ).toBe(true);
+
     expect(
       prop.missionsCompleted7Days
     ).toBeGreaterThan(0);
