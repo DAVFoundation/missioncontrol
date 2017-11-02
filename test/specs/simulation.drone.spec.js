@@ -4,46 +4,12 @@ describe('generateRandom()', () => {
 
   const sampleArguments = {coords: {lat: 1, long: 1}, distance: 1000 };
 
-  test('returns an object', () => {
+  test('expected to return an object with attributes id, model, icon, coords, rating, mission_completed, mission_completed_7_days', () => {
+    const actualObject = generateRandom(sampleArguments);
+    const expectedProperties = ['id', 'model', 'icon', 'coords', 'rating', 'missions_completed_7_days', 'missions_completed'];
     expect(
       typeof generateRandom(sampleArguments)
     ).toBe('object');
-  });
-
-  test('returns an object with an id', () => {
-    expect(
-      generateRandom(sampleArguments)
-    ).toHaveProperty('id');
-  });
-
-  test('returns an object with a model', () => {
-    expect(
-      generateRandom(sampleArguments)
-    ).toHaveProperty('model');
-  });
-
-  test('returns an object with an icon property', () => {
-    expect(
-      generateRandom(sampleArguments)
-    ).toHaveProperty('icon');
-  });
-
-  test('returns an object with coords', () => {
-    expect(
-      generateRandom(sampleArguments)
-    ).toHaveProperty('coords');
-  });
-
-  test('returns an object with a rating attribute', () => {
-    expect(
-      generateRandom(sampleArguments)
-    ).toHaveProperty('rating');
-  });
-
-  test('returns an object with a missions_completed_7_days attribute', () => {
-    expect(
-      generateRandom(sampleArguments)
-    ).toHaveProperty('missions_completed_7_days');
-
+    expect(Object.keys(actualObject)).toEqual(expect.arrayContaining(expectedProperties));
   });
 });
