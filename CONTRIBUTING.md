@@ -19,6 +19,13 @@ A lot of **missioncontrol** functionality came from pull requests sent over GitH
 
 - [x] Fork the repository from the [missioncontrol GitHub page](https://github.com/DAVFoundation/missioncontrol).
 - [x] Clone a copy to your local machine with `$ git clone git@github.com:YOUR-GITHUB-USER-NAME/missioncontrol.git`
+- [x] Based on your platform install docker
+        + [mac](https://docs.docker.com/docker-for-mac/install/)
+        + [win](https://docs.docker.com/docker-for-windows/install/)
+- [x] In the missioncontrol directory, run `docker-compose build && docker-compose up`
+- [x] Incase you get the error `ERROR: Network dav declared as external, but could not be found. Please create the network manually using **docker network create dav** and try again.` Run `docker network create dav` and you are good to go.
+- [x] Run `npm install` to install all the dependencies.
+- [x] Run `npm start` to build and launch the project.
 - [x] Code, code, code. 
 - [x] Once you've made sure all your changes work correctly and have been committed, push your local changes back to github with `$ git push -u origin master`
 - [x] Visit your fork on GitHub.com ([https://github.com/YOUR-USER-NAME/missioncontrol](https://github.com/YOUR-USER-NAME/missioncontrol)) and create a pull request for your changes.
@@ -26,6 +33,7 @@ A lot of **missioncontrol** functionality came from pull requests sent over GitH
 
 #### Important:
 
+* To get full experience out of this project you need to get **missions** also up and running. See the CONTRIBUTING.md of missioncontrol for more details.
 * Please stick to the project's existing coding style. Coding styles don't need to have a consensus, they just need to be consistent :smile:.
 * Push your changes to a topic branch in your fork of the repository. Your branch should be based on the `master` branch.
 * When submitting [pull request](https://help.github.com/articles/using-pull-requests/), please elaborate as much as possible about the change, your motivation for the change, etc.
