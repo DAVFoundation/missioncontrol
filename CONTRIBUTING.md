@@ -1,9 +1,6 @@
 # Contributing to missioncontrol
 
-Thank you for taking the time to get involved with DAV Foundation projects! :+1:
-The DAV project you are looking at is **missioncontrol**. 
-
-Mission Control is a service running on the DAV network, and serving as a marketplace connecting DAV users looking to ship packages, with drone owners.
+Thank you for taking the time to lend a hand with the **missions** project ❤️
 
 There are several ways you can help the project out:
 
@@ -15,28 +12,28 @@ There are several ways you can help the project out:
 
 ### Contributing Code
 
-A lot of **missioncontrol** functionality came from pull requests sent over GitHub. Here is how you can contribute too:
+A lot of **missioncontrol** functionality came from pull requests sent by the developer community. Here is how you can contribute too:
 
 - [x] Fork the repository from the [missioncontrol GitHub page](https://github.com/DAVFoundation/missioncontrol).
 - [x] Clone a copy to your local machine with `$ git clone git@github.com:YOUR-GITHUB-USER-NAME/missioncontrol.git`
-- [x] Based on your platform install docker
-        + [mac](https://docs.docker.com/docker-for-mac/install/)
-        + [win](https://docs.docker.com/docker-for-windows/install/)
-- [x] In the missioncontrol directory, run `docker-compose build && docker-compose up`
-- [x] Incase you get the error `ERROR: Network dav declared as external, but could not be found. Please create the network manually using **docker network create dav** and try again.` Run `docker network create dav` and you are good to go.
-- [x] Run `npm install` to install all the dependencies.
-- [x] Run `npm start` to build and launch the project.
+- [x] Based on your platform install docker for:
+  - [mac](https://docs.docker.com/docker-for-mac/install/)
+  - [win](https://docs.docker.com/docker-for-windows/install/)
+- [x] In the console run `docker network create dav`. This simply creates a link between different docker projects, allowing them to communicate (similar to a symlink).
+- [x] In the missioncontrol directory, run `docker-compose build && docker-compose up`. If at any time you stop this process, you can start it again by running `docker-compose build && docker-compose up` again.
+- [x] At this point you might consider also setting up the [Missions](https://github.com/DAVFoundation/missions/blob/master/CONTRIBUTING.md) project. This is the client side app that interacts with Mission Control.
 - [x] Code, code, code. 
+- [x] Before committing your code, stop docker and run `npm test` to make sure all the automated tests still pass
 - [x] Once you've made sure all your changes work correctly and have been committed, push your local changes back to github with `$ git push -u origin master`
 - [x] Visit your fork on GitHub.com ([https://github.com/YOUR-USER-NAME/missioncontrol](https://github.com/YOUR-USER-NAME/missioncontrol)) and create a pull request for your changes.
 - [x] Makes sure your pull request describes exactly what you changed and if it relates to an open issue references that issue (just include the issue number in the title like this: #49)
 
 #### Important:
 
-* To get full experience out of this project you need to get **missions** also up and running. See the CONTRIBUTING.md of missioncontrol for more details.
-* Please stick to the project's existing coding style. Coding styles don't need to have a consensus, they just need to be consistent :smile:.
-* Push your changes to a topic branch in your fork of the repository. Your branch should be based on the `master` branch.
-* When submitting [pull request](https://help.github.com/articles/using-pull-requests/), please elaborate as much as possible about the change, your motivation for the change, etc.
+* To get the full multimedia-🚢🚠🚗🚕🚅-experience, you might want to also run **missions** in another terminal window. See the [missions instructions](https://github.com/DAVFoundation/missions/blob/master/CONTRIBUTING.md) for help
+* Please stick to the project's existing coding style. Coding styles don't need to have a consensus, they just need to be consistent :smile:
+* Push your changes to a topic branch in your fork of the repository. Your branch should be based on the `master` branch
+* When submitting [pull request](https://help.github.com/articles/using-pull-requests/), please elaborate as much as possible about the change, your motivation for the change, etc
 
 #### Automated Testing
 
