@@ -35,9 +35,6 @@ A lot of **missioncontrol** functionality came from pull requests sent by the de
 * Push your changes to a topic branch in your fork of the repository. Your branch should be based on the `master` branch
 * When submitting [pull request](https://help.github.com/articles/using-pull-requests/), please elaborate as much as possible about the change, your motivation for the change, etc
 
-#### Automated Testing
-
-
 ### Reporting Bugs
 
 Bugs are tracked as [GitHub issues](https://github.com/DAVfoundation/missioncontrol/issues). If you found a bug with missioncontrol, the quickest way to get help would be to look through existing open and closed [GitHub issues](https://github.com/DAVfoundation/missioncontrol/issues?q=is%3Aissue). If the issue is already being discussed and hasn't been resolved yet, you can join the discussion and provide details about the problem you are having. If this is a new bug, please open a [new issue](https://github.com/DAVfoundation/missioncontrol/issues/new).
