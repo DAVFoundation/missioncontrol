@@ -9,13 +9,11 @@ Mission Control is a service running on the DAV network, and serving as a market
 
 Mission Control demonstrates how a third party might build their own product, while integrating technologies provided by DAV, and provide a service to users connecting through a mobile app and independent drones connecting directly to Mission Control to offer their services.
 
-### Mission Control is currently under heavy construction!
+### Contributing Code, Reporting Bugs and Suggesting Features
 
-At its current state it is mostly a mock API used to develop the other pieces of the puzzle.
+As an organization committed to extreme transparency, collaboration, and open-sourcing all of our work, we welcome participation from anyone willing to devote some time and energy to help shape DAV - whether you are a first time contributor, a veteran open-sourcerer, or just looking to suggest some ideas.
 
-Feel free to **Star** and **Watch** it, but watch out for falling debris, and a wildly changing API.
-
-Feedback and contributions are always welcome and appreciated.
+For help in getting started, please be sure to read our [contribution guidelines](https://github.com/DAVFoundation/missioncontrol/blob/master/CONTRIBUTING.md).
 
 ### License
 
