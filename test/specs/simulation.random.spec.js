@@ -30,6 +30,11 @@ describe('randomDavAddress()', () => {
     ).toEqual(42);
   });
 
+  test('returns a string that starts with 0x and followed by 40 hexadecimal chars', () => {
+    expect(
+      randomDavAddress()
+    ).toMatch(new RegExp('^0x([0-f]{40})$'));
+  });
 });
 
 describe('randomMissionsCompleted()', () => {
