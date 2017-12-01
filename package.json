@@ -15,9 +15,9 @@
     "thrift": "thrift -gen js:node -strict -recurse -out ./server/thrift ./resources/idl/CaptainMissionControl.thrift"
   },
   "dependencies": {
-    "@turf/turf": "^4.6.1",
-    "bluebird": "^3.5.0",
-    "express": "^4.15.3",
+    "@turf/turf": "^4.7.3",
+    "bluebird": "^3.5.1",
+    "express": "^4.16.2",
     "randomstring": "^1.1.5",
     "redis": "^2.8.0",
     "thrift": "^0.10.0"
