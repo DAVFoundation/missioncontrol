@@ -17,4 +17,18 @@ describe('getDavIdIconUrl()', () => {
       return false;  
     }
   };
+
+  test('Return contains the davID within it options',() => {     
+    expect(       
+      checkIfReturnDavId(getDavIdIconUrl(dummyDavId))     
+    ).toBeTruthy();   
+  });    
+  
+  const checkIfReturnDavId = (url) => {     
+    if (url.toLowerCase().indexOf(dummyDavId) >= 0) {       
+      return true;     
+    } else {       
+      return false;     
+    }   
+  }
 });
