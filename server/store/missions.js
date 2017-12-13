@@ -30,6 +30,7 @@ const createMission = async ({ user_id, bid_id }) => {
     'requested_pickup_time', requested_pickup_time,
     'size', size,
     'weight', weight,
+    'status', 'awaiting_signatures',
     'user_signed_at', user_signed_at,
   );
   return {
