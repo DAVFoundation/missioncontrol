@@ -50,14 +50,12 @@ const getElevations = async (coordinates = [], precisionRadius = 50) => {
     let elevation = await redis.getAsync(generateElevationKey(coordinate));
     if (elevation) {
       results.push({coord: coordinate, elevation: elevation});
-    }
-    else {
+    } else {
       // check nearby locations for already existing elevation
       elevation = await getNearByLocationElevation(coordinate, precisionRadius);
       if (elevation) {
         results.push({coord: coordinate, elevation: elevation});
-      }
-      else {
+      } else {
         unknownLocations.push(coordinate);
       }
     }
