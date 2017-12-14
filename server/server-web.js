@@ -44,7 +44,7 @@ app.get('/request/new', async (req, res) => {
   if (requestId) {
     res.json({ requestId });
   } else {
-    res.status(500).send('Something broke!');
+    res.status(500).send('Something broke!');b
   }
 });
 

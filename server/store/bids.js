@@ -44,8 +44,7 @@ const getBidsForRequest = async (requestId) => {
   const bids = await Promise.all(
     bidIds.map(bidId => {
       redis.expire(`bids:${bidId}`, 3600);
-      return redis.hgetallAsync(`bids:${bidId}`)
-    })
+      return redis.hgetallAsync(`bids:${bidId}`);
   );
 
   // If not enough bids, make some up
