@@ -14,6 +14,6 @@ describe('generateRandomVehicles()', () => {
 
     expect(
       Object.keys(generateRandomVehicles(1, {}, 2000)[0]).sort()
-    ).toEqual(['id', 'model', 'icon', 'coords', 'rating', 'missions_completed', 'missions_completed_7_days'].sort());
+    ).toEqual(['id', 'model', 'icon', 'coords', 'rating', 'missions_completed', 'missions_completed_7_days', 'status'].sort());
   });
 });
