@@ -1,33 +1,33 @@
 const redis = require('../store/redis');
 const Promise = require('bluebird');
-const request = Promise.promisifyAll(require("request"), {multiArgs: true});
+const request = Promise.promisifyAll(require('request'), {multiArgs: true});
 
 const getFromElevationApi = async (locations = []) => {
   /* TODO - query by batches of 512 locations */
   const base_url = 'https://maps.googleapis.com/maps/api/elevation/json';
   let params = {
     locations: locations.map((location) => {
-      return location.lat + ',' + location.long
-    }).join("|"),
+      return location.lat + ',' + location.long;
+    }).join('|'),
     key: process.env.ELEVATION_API_KEY
   };
   let query = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
 
   return request.getAsync(base_url + '?' + query, {json: true}).then(([response, body]) => {
     if (body.status != 'OK') {
-      throw new Error("Error in request to Google Elevation API. Status:" + body.status + '. Message: ' + body.error_message);
+      throw new Error('Error in request to Google Elevation API. Status:' + body.status + '. Message: ' + body.error_message);
     }
     return body.results.map((elevation_data) => {
       return {
         coord: {lat: elevation_data.location.lat, long: elevation_data.location.lng},
         elevation: elevation_data.elevation
-      }
+      };
     });
   });
 };
 
 const generateElevationKey = (coordinate) => {
-  return "elv_" + coordinate.lat + '_' + coordinate.long;
+  return 'elv_' + coordinate.lat + '_' + coordinate.long;
 };
 
 const getNearByLocationElevation = async (coordinate, precisionRadius) => {
@@ -36,7 +36,7 @@ const getNearByLocationElevation = async (coordinate, precisionRadius) => {
     for (let nearby_coordinate_key of nearby_coordinates) {
       let elevation = await redis.getAsync(nearby_coordinate_key);
       if (elevation) {
-        return elevation
+        return elevation;
       }
     }
   }
@@ -74,7 +74,7 @@ const getElevations = async (coordinates = [], precisionRadius = 50) => {
       redis_multi.exec();
       results = results.concat(newLocations);
     } catch (err) {
-      console.error("Unable to fetch some locations elevation. ", {locations: unknownLocations, err: err.message});
+      console.error('Unable to fetch some locations elevation. ', {locations: unknownLocations, err: err.message});
     }
   }
   return results;
