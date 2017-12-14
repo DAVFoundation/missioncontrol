@@ -52,8 +52,8 @@ app.get('/request/cancel', async (req, res) => {
   const { requestId } = req.query;
   const request = await getRequest(requestId);
   if (request) {
-    await deleteRequest(requestId)
-    await deleteBidsForRequest(requestId)
+    await deleteRequest(requestId);
+    await deleteBidsForRequest(requestId);
     res.send('request cancelled');
   } else {
     res.status(500).send('Something broke!');
