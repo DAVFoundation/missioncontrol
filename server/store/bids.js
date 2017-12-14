@@ -64,7 +64,16 @@ const getBidsForRequest = async (requestId) => {
   return bids;
 };
 
+const deleteBidsForRequest = async (requestId) => {
+  const bidIds = await redis.lrangeAsync(`request_bids:${requestId}`, 0, -1);
+  await Promise.all(
+    bidIds.map(bidId => redis.del(`bids:${bidId}`))
+  );
+  return await redis.del(`request_bids:${requestId}`);
+};
+
 module.exports = {
   getBidsForRequest,
   getBid,
+  deleteBidsForRequest
 };
