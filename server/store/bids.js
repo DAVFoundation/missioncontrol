@@ -45,6 +45,7 @@ const getBidsForRequest = async (requestId) => {
     bidIds.map(bidId => {
       redis.expire(`bids:${bidId}`, 3600);
       return redis.hgetallAsync(`bids:${bidId}`);
+    })
   );
 
   // If not enough bids, make some up
