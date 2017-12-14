@@ -20,6 +20,7 @@
     "express": "^4.16.2",
     "randomstring": "^1.1.5",
     "redis": "^2.8.0",
+    "request": "^2.82.0",
     "thrift": "^0.10.0"
   },
   "devDependencies": {
