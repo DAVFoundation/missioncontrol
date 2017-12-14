@@ -13,7 +13,7 @@ const getFromElevationApi = async (locations = []) => {
   };
   let query = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
 
-  return request.getAsync(base_url + '?' + query, {json: true}).then(([response, body]) => {
+  return request.getAsync(base_url + '?' + query, {json: true}).then(([, body]) => {
     if (body.status != 'OK') {
       throw new Error('Error in request to Google Elevation API. Status:' + body.status + '. Message: ' + body.error_message);
     }
