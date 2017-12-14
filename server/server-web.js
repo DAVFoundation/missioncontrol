@@ -1,6 +1,6 @@
 const { getVehiclesInRange } = require('./store/vehicles');
-const { getBidsForRequest } = require('./store/bids');
-const { createRequest } = require('./store/requests');
+const { getBidsForRequest, deleteBidsForRequest } = require('./store/bids');
+const { createRequest, getRequest, deleteRequest } = require('./store/requests');
 const { createMission } = require('./store/missions');
 const { hasStore } = require('./lib/environment');
 
@@ -43,6 +43,18 @@ app.get('/request/new', async (req, res) => {
   });
   if (requestId) {
     res.json({ requestId });
+  } else {
+    res.status(500).send('Something broke!');
+  }
+});
+
+app.get('/request/cancel', async (req, res) => {
+  const { requestId } = req.query;
+  const request = await getRequest(requestId);
+  if (request) {
+    await deleteRequest(requestId);
+    await deleteBidsForRequest(requestId);
+    res.send('request cancelled');
   } else {
     res.status(500).send('Something broke!');
   }

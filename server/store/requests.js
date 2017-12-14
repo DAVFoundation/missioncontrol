@@ -25,7 +25,12 @@ const createRequest = async (requestDetails) => {
   return requestId;
 };
 
+const deleteRequest = async (requestId) => {
+  return await redis.del(`requests:${requestId}`);
+};
+
 module.exports = {
   createRequest,
   getRequest,
+  deleteRequest
 };
