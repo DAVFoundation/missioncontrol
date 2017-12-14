@@ -21,10 +21,14 @@ const saveBid = async ({ vehicle_id, price, time_to_pickup, time_to_dropoff }, r
     'request_id', requestId,
   );
 
+  // Set TTL for bid
+  redis.expire(`bids:${bidId}`, 3600);
   return bidId;
 };
 
 const getBid = async (bidId) => {
+  // Set TTL for bid
+  redis.expire(`bids:${bidId}`, 3600);
   return await redis.hgetallAsync(`bids:${bidId}`);
 };
 
@@ -38,7 +42,10 @@ const getBidsForRequest = async (requestId) => {
   // get bids for request
   const bidIds = await redis.lrangeAsync(`request_bids:${requestId}`, 0, -1);
   const bids = await Promise.all(
-    bidIds.map(bidId => redis.hgetallAsync(`bids:${bidId}`))
+    bidIds.map(bidId => {
+      redis.expire(`bids:${bidId}`, 3600);
+      return redis.hgetallAsync(`bids:${bidId}`);
+    })
   );
 
   // If not enough bids, make some up
