@@ -1,5 +1,6 @@
 const { getVehiclesInRange } = require('./store/vehicles');
 const { getBidsForRequest } = require('./store/bids');
+const { getOrCreateUser } = require('./store/users');
 const { createRequest } = require('./store/requests');
 const { createMission } = require('./store/missions');
 const { hasStore } = require('./lib/environment');
@@ -15,6 +16,14 @@ const port = process.env.WEB_SERVER_PORT || 8888;
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+// Get or create user
+app.use(async (req, res, next) => {
+  const { user_id } = req.query;
+  let user = await getOrCreateUser(user_id);
+  req.user = user;
   next();
 });
 
