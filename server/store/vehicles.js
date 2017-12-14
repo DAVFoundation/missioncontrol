@@ -16,6 +16,7 @@ const addNewVehicle = vehicle => {
     'rating', vehicle.rating,
     'missions_completed', vehicle.missions_completed,
     'missions_completed_7_days', vehicle.missions_completed_7_days,
+    'status', vehicle.status,
   );
   // Send new vehicle to Captain
   createVehicle(vehicle);

@@ -12,6 +12,7 @@ const generateRandom = ({coords, radius}) => {
     'rating': randomRating(),
     'missions_completed': missionsCompleted,
     'missions_completed_7_days': missionsCompleted7Days,
+    'status': 'available'
   };
 };
 
