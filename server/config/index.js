@@ -1,4 +1,5 @@
 const config = {
+  requests_ttl: 43200
 };
 
 module.exports = (key) => {
