@@ -1,8 +1,8 @@
-const { getVehiclesInRange } = require('./store/vehicles');
+const { getVehiclesInRange, updateVehicleStatus } = require('./store/vehicles');
 const { getBidsForRequest } = require('./store/bids');
 const { getOrCreateUser } = require('./store/users');
-const { createRequest } = require('./store/requests');
-const { createMission } = require('./store/missions');
+const { createRequest, getRequest } = require('./store/requests');
+const { createMission, getLatestMissionId, getMission, updateMission } = require('./store/missions');
 const { hasStore } = require('./lib/environment');
 
 // Create thrift connection to Captain
@@ -33,7 +33,19 @@ app.get('/', (req, res) => {
 });
 
 app.get('/status', async (req, res) => {
-  const { lat, long, requestId } = req.query;
+  const { lat, long, requestId, user_id } = req.query;
+  const latestMissionId = await getLatestMissionId(user_id);
+  const latestMission = await getMission(latestMissionId);
+
+  if (latestMission && latestMission.status === "awaiting_signatures") {
+    let elapsedTime = Date.now() - latestMission.signed_at;
+    let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
+    if (elapsedSeconds > 6) {
+      await updateMission(latestMissionId, 'vehicle_signed_at', Date.now());
+      await updateMission(latestMissionId, 'status', 'in_progress');
+      await updateVehicleStatus(latestMission.vehicle_id, 'travelling_pickup');
+    }
+  }
   const vehicles =
     (!hasStore()) ? [] : await getVehiclesInRange(
       { lat: parseFloat(lat), long: parseFloat(long) },
@@ -63,6 +75,7 @@ app.get('/choose_bid', async (req, res) => {
     user_id, bid_id
   });
   if (mission) {
+    await updateVehicleStatus(mission.vehicle_id, 'contract_received');
     res.json({ mission });
   } else {
     res.status(500).send('Something broke!');
