@@ -23,13 +23,13 @@ const saveBid = async ({ vehicle_id, price, time_to_pickup, time_to_dropoff }, r
   );
 
   // Set TTL for bid
-  redis.expire(`bids:${bidId}`, config.bidsTTL);
+  redis.expire(`bids:${bidId}`, config.bids_ttl);
   return bidId;
 };
 
 const getBid = async (bidId) => {
   // Set TTL for bid
-  redis.expire(`bids:${bidId}`, config.bidsTTL);
+  redis.expire(`bids:${bidId}`, config.bids_ttl);
   return await redis.hgetallAsync(`bids:${bidId}`);
 };
 
@@ -44,7 +44,7 @@ const getBidsForRequest = async (requestId) => {
   const bidIds = await redis.lrangeAsync(`request_bids:${requestId}`, 0, -1);
   const bids = await Promise.all(
     bidIds.map(bidId => {
-      redis.expire(`bids:${bidId}`, config.bidsTTL);
+      redis.expire(`bids:${bidId}`, config.bids_ttl);
       return redis.hgetallAsync(`bids:${bidId}`);
     })
   );
