@@ -1,5 +1,5 @@
 const redis = require('./redis');
-const config = require('./config');
+const config = require('../config/index.js');
 
 const getRequest = async (requestId) => {
   // Set TTL for request
