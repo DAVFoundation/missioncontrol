@@ -1,4 +1,5 @@
 const config = {
+  bidsTTL: 3600,
 };
 
 module.exports = (key) => {
