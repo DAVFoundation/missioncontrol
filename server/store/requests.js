@@ -1,8 +1,9 @@
 const redis = require('./redis');
+const config = require('../config');
 
 const getRequest = async (requestId) => {
   // Set TTL for request
-  redis.expire(`requests:${requestId}`, 43200);
+  redis.expire(`requests:${requestId}`, config('requests_ttl'));
   return await redis.hgetallAsync(`requests:${requestId}`);
 };
 
@@ -26,7 +27,7 @@ const createRequest = async (requestDetails) => {
   );
 
   // Set TTL for request
-  redis.expire(`requests:${requestId}`, 43200);
+  redis.expire(`requests:${requestId}`, config('requests_ttl'));
   return requestId;
 };
 
