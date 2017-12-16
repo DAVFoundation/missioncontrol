@@ -9,8 +9,8 @@ const getMission = async (missionId) => {
 const getLatestMissionId = async (userId) => {
   // use zrevrange to reverse sorted set from highest to lowest
   // reversed values will put most recent timestamp at the top
-  const missions = await redis.zrevrangeAsync(`user_missions:${userId}`, 0, -1)
-  const latestMissionId = missions[0]
+  const missions = await redis.zrevrangeAsync(`user_missions:${userId}`, 0, -1);
+  const latestMissionId = missions[0];
   return latestMissionId;
 };
 
@@ -32,7 +32,7 @@ const createMission = async ({ user_id, bid_id }) => {
   const user_signed_at = Date.now();
 
   // Save mission in user missions history
-  redis.zaddAsync(`user_missions:${user_id}`, signed_at, missionId)
+  redis.zaddAsync(`user_missions:${user_id}`, user_signed_at, missionId);
 
   // create a new mission entry in Redis
   redis.hmsetAsync(`missions:${missionId}`,

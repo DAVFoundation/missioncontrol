@@ -1,7 +1,7 @@
 const { getVehiclesInRange, updateVehicleStatus, getVehicle } = require('./store/vehicles');
-const { getBidsForRequest } = require('./store/bids');
+const { getBidsForRequest, deleteBidsForRequest } = require('./store/bids');
 const { getOrCreateUser } = require('./store/users');
-const { createRequest, getRequest } = require('./store/requests');
+const { createRequest, getRequest, deleteRequest } = require('./store/requests');
 const { createMission, getLatestMissionId, getMission, updateMission } = require('./store/missions');
 const { hasStore } = require('./lib/environment');
 
@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 
 app.get('/status', async (req, res) => {
   const { lat, long, requestId, user_id } = req.query;
-  const status = "idle"
+  const status = 'idle';
   const latestMissionId = await getLatestMissionId(user_id);
   const latestMission = await getMission(latestMissionId);
   const vehicles =
@@ -46,22 +46,24 @@ app.get('/status', async (req, res) => {
 
   if (latestMission) {
     switch (latestMission.status) {
-      case "awaiting_signatures":
-        let elapsedTime = Date.now() - latestMission.signed_at;
-        let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
-        if (elapsedSeconds > 6) {
-          await updateMission(latestMissionId, 'vehicle_signed_at', Date.now());
-          await updateMission(latestMissionId, 'status', 'in_progress');
-          await updateVehicleStatus(latestMission.vehicle_id, 'travelling_pickup');
-        }
-        res.json({ status, vehicles, bids });
-        break;
-      case "in_progress":
-        const mission = latestMission;
-        const vehicle = await getVehicle(latestMission.vehicle_id);
-        const status = "in_mission"
-        res.json({ status, mission, vehicle });
-        break;
+    case 'awaiting_signatures': {
+      let elapsedTime = Date.now() - latestMission.signed_at;
+      let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
+      if (elapsedSeconds > 6) {
+        await updateMission(latestMissionId, 'vehicle_signed_at', Date.now());
+        await updateMission(latestMissionId, 'status', 'in_progress');
+        await updateVehicleStatus(latestMission.vehicle_id, 'travelling_pickup');
+      }
+      res.json({status, vehicles, bids});
+      break;
+    }
+    case 'in_progress': {
+      const mission = latestMission;
+      const vehicle = await getVehicle(latestMission.vehicle_id);
+      const status = 'in_mission';
+      res.json({status, mission, vehicle});
+      break;
+    }
     }
   } else {
     res.json({ status, vehicles, bids });
