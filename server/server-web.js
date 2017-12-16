@@ -80,6 +80,18 @@ app.get('/request/new', async (req, res) => {
   }
 });
 
+app.get('/request/cancel', async (req, res) => {
+  const { requestId } = req.query;
+  const request = await getRequest(requestId);
+  if (request) {
+    await deleteRequest(requestId);
+    await deleteBidsForRequest(requestId);
+    res.send('request cancelled');
+  } else {
+    res.status(500).send('Something broke!');
+  }
+});
+
 app.get('/choose_bid', async (req, res) => {
   const { user_id, bid_id } = req.query;
   const mission = await createMission({

@@ -15,6 +15,7 @@ services:
       CAPTAIN_PORT: 9090
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      ELEVATION_API_KEY: AIzaSyBzNsELkqXiZBlMzEB68rX_JwY5Q9CtPys
     volumes:
       - /app/node_modules
       - .:/app

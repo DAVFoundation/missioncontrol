@@ -1,6 +1,8 @@
 const redis = require('./redis');
 
 const getRequest = async (requestId) => {
+  // Set TTL for request
+  redis.expire(`requests:${requestId}`, 43200);
   return await redis.hgetallAsync(`requests:${requestId}`);
 };
 
@@ -22,10 +24,18 @@ const createRequest = async (requestDetails) => {
     'size', size,
     'weight', weight,
   );
+
+  // Set TTL for request
+  redis.expire(`requests:${requestId}`, 43200);
   return requestId;
+};
+
+const deleteRequest = async (requestId) => {
+  return await redis.del(`requests:${requestId}`);
 };
 
 module.exports = {
   createRequest,
   getRequest,
+  deleteRequest
 };
