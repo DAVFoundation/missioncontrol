@@ -24,6 +24,10 @@ const addNewVehicle = vehicle => {
 
 const getVehicle = id => redis.hgetallAsync(`vehicles:${id}`);
 
+const updateVehicleStatus = async (id, status) => {
+  return await redis.hsetAsync(`vehicles:${id}`, 'status', status);
+};
+
 const generateAndAddVehicles = (count, coords, radius) =>
   count > 0 && generateRandomVehicles(count, coords, radius)
     .forEach(vehicle => {
@@ -74,4 +78,5 @@ const getVehiclesInRange = async (coords, radius) => {
 module.exports = {
   getVehiclesInRange,
   getVehicle,
+  updateVehicleStatus
 };

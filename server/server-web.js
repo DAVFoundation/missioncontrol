@@ -1,7 +1,8 @@
-const { getVehiclesInRange } = require('./store/vehicles');
+const { getVehiclesInRange, updateVehicleStatus, getVehicle } = require('./store/vehicles');
 const { getBidsForRequest, deleteBidsForRequest } = require('./store/bids');
+const { getOrCreateUser } = require('./store/users');
 const { createRequest, getRequest, deleteRequest } = require('./store/requests');
-const { createMission } = require('./store/missions');
+const { createMission, getLatestMissionId, getMission, updateMission } = require('./store/missions');
 const { hasStore } = require('./lib/environment');
 
 // Create thrift connection to Captain
@@ -18,22 +19,55 @@ app.use((req, res, next) => {
   next();
 });
 
+// Get or create user
+app.use(async (req, res, next) => {
+  const { user_id } = req.query;
+  let user = await getOrCreateUser(user_id);
+  req.user = user;
+  next();
+});
+
 // Define routes
 app.get('/', (req, res) => {
   res.send('hello world');
 });
 
 app.get('/status', async (req, res) => {
-  const { lat, long, requestId } = req.query;
+  const { lat, long, requestId, user_id } = req.query;
+  const status = 'idle';
+  const latestMissionId = await getLatestMissionId(user_id);
+  const latestMission = await getMission(latestMissionId);
   const vehicles =
     (!hasStore()) ? [] : await getVehiclesInRange(
       { lat: parseFloat(lat), long: parseFloat(long) },
       7000
     );
-
   const bids = (!hasStore() || !requestId) ? [] : await getBidsForRequest(requestId);
 
-  res.json({ vehicles, bids });
+  if (latestMission) {
+    switch (latestMission.status) {
+    case 'awaiting_signatures': {
+      let elapsedTime = Date.now() - latestMission.signed_at;
+      let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
+      if (elapsedSeconds > 6) {
+        await updateMission(latestMissionId, 'vehicle_signed_at', Date.now());
+        await updateMission(latestMissionId, 'status', 'in_progress');
+        await updateVehicleStatus(latestMission.vehicle_id, 'travelling_pickup');
+      }
+      res.json({status, vehicles, bids});
+      break;
+    }
+    case 'in_progress': {
+      const mission = latestMission;
+      const vehicle = await getVehicle(latestMission.vehicle_id);
+      const status = 'in_mission';
+      res.json({status, mission, vehicle});
+      break;
+    }
+    }
+  } else {
+    res.json({ status, vehicles, bids });
+  }
 });
 
 app.get('/request/new', async (req, res) => {
@@ -66,6 +100,7 @@ app.get('/choose_bid', async (req, res) => {
     user_id, bid_id
   });
   if (mission) {
+    await updateVehicleStatus(mission.vehicle_id, 'contract_received');
     res.json({ mission });
   } else {
     res.status(500).send('Something broke!');
