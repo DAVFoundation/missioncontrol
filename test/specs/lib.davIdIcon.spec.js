@@ -17,4 +17,11 @@ describe('getDavIdIconUrl()', () => {
       return false;  
     }
   };
+
+  test('returns a string containing the given davID', () => {
+    expect(
+      getDavIdIconUrl(dummyDavId).includes(dummyDavId)
+    ).toBeTruthy();
+  });  
+  
 });
