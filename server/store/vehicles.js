@@ -3,6 +3,23 @@ const redis = require('./redis');
 const { generateRandomVehicles } = require('../simulation/vehicles');
 const { createVehicle } = require('../client-thrift');
 
+const parseVehiclesArray = vehicles =>
+  vehicles
+    // filter vehicles
+    .filter(vehicle => !!vehicle)
+    // format response objects
+    .map(
+      vehicle => ({
+        id: vehicle.id,
+        model: vehicle.model,
+        icon: vehicle.icon,
+        coords: {lat: parseFloat(vehicle.lat), long: parseFloat(vehicle.long)},
+        rating: parseFloat(vehicle.rating),
+        missions_completed: parseInt(vehicle.missions_completed),
+        missions_completed_7_days: parseInt(vehicle.missions_completed_7_days),
+      })
+    );
+
 const addNewVehicle = vehicle => {
   // Add to vehicle_positions
   redis.geoaddAsync('vehicle_positions', vehicle.coords.long, vehicle.coords.lat, vehicle.id);
@@ -24,11 +41,11 @@ const addNewVehicle = vehicle => {
 
 const getVehicle = id => redis.hgetallAsync(`vehicles:${id}`);
 
-const getVehicles = vehicleIds => Promise.all(
+const getVehicles = async vehicleIds => parseVehiclesArray(await Promise.all(
   vehicleIds.map(
     vehicleId => getVehicle(vehicleId)
   )
-);
+));
 
 const updateVehicleStatus = async (id, status) => {
   return await redis.hsetAsync(`vehicles:${id}`, 'status', status);
@@ -57,24 +74,7 @@ const getVehiclesInRange = async (coords, radius) => {
   generateAndAddVehicles(desiredVehicleCountInLongRange - vehiclesInLongRange.length, coords, radius);
 
   // get details for vehicles in range
-  let vehicles = await getVehicles(vehiclesInLongRange);
-
-  // Prepare response
-  return vehicles
-    // filter vehicles
-    .filter(vehicle => !!vehicle)
-    // format response objects
-    .map(
-      vehicle => ({
-        id: vehicle.id,
-        model: vehicle.model,
-        icon: vehicle.icon,
-        coords: {lat: parseFloat(vehicle.lat), long: parseFloat(vehicle.long)},
-        rating: parseFloat(vehicle.rating),
-        missions_completed: parseInt(vehicle.missions_completed),
-        missions_completed_7_days: parseInt(vehicle.missions_completed_7_days),
-      })
-    );
+  return await getVehicles(vehiclesInLongRange);
 };
 
 module.exports = {
