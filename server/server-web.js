@@ -1,4 +1,4 @@
-const { getVehiclesInRange, updateVehicleStatus, getVehicle } = require('./store/vehicles');
+const { getVehiclesInRange, updateVehicleStatus, getVehicle, getVehicles } = require('./store/vehicles');
 const { getBidsForRequest, deleteBidsForRequest } = require('./store/bids');
 const { getOrCreateUser } = require('./store/users');
 const { createRequest, getRequest, deleteRequest } = require('./store/requests');
@@ -37,12 +37,18 @@ app.get('/status', async (req, res) => {
   const status = 'idle';
   const latestMissionId = await getLatestMissionId(user_id);
   const latestMission = await getMission(latestMissionId);
-  const vehicles =
-    (!hasStore()) ? [] : await getVehiclesInRange(
-      { lat: parseFloat(lat), long: parseFloat(long) },
-      7000
-    );
   const bids = (!hasStore() || !requestId) ? [] : await getBidsForRequest(requestId);
+  let vehicles = [];
+  if (hasStore()) {
+    if (bids.length > 0) {
+      vehicles = await getVehicles(bids.map(bid => bid.vehicle_id));
+    } else {
+      vehicles = await getVehiclesInRange(
+        { lat: parseFloat(lat), long: parseFloat(long) },
+        7000
+      );
+    }
+  }
 
   if (latestMission) {
     switch (latestMission.status) {
