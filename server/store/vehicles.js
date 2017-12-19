@@ -24,6 +24,12 @@ const addNewVehicle = vehicle => {
 
 const getVehicle = id => redis.hgetallAsync(`vehicles:${id}`);
 
+const getVehicles = vehicleIds => Promise.all(
+  vehicleIds.map(
+    vehicleId => getVehicle(vehicleId)
+  )
+);
+
 const updateVehicleStatus = async (id, status) => {
   return await redis.hsetAsync(`vehicles:${id}`, 'status', status);
 };
@@ -51,11 +57,7 @@ const getVehiclesInRange = async (coords, radius) => {
   generateAndAddVehicles(desiredVehicleCountInLongRange - vehiclesInLongRange.length, coords, radius);
 
   // get details for vehicles in range
-  let vehicles = await Promise.all(
-    vehiclesInLongRange.map(
-      vehicleId => getVehicle(vehicleId)
-    )
-  );
+  let vehicles = await getVehicles(vehiclesInLongRange);
 
   // Prepare response
   return vehicles
@@ -78,5 +80,6 @@ const getVehiclesInRange = async (coords, radius) => {
 module.exports = {
   getVehiclesInRange,
   getVehicle,
+  getVehicles,
   updateVehicleStatus
 };
