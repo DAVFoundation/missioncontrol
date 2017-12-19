@@ -10,8 +10,7 @@ const getLatestMissionId = async (userId) => {
   // use zrevrange to reverse sorted set from highest to lowest
   // reversed values will put most recent timestamp at the top
   const missions = await redis.zrevrangeAsync(`user_missions:${userId}`, 0, -1);
-  const latestMissionId = missions[0];
-  return latestMissionId;
+  return missions[0];
 };
 
 const updateMission = async (id, attributeField, attributeValue) => {
