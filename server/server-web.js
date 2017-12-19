@@ -3,6 +3,7 @@ const { getBidsForRequest, deleteBidsForRequest } = require('./store/bids');
 const { getOrCreateUser } = require('./store/users');
 const { createRequest, getRequest, deleteRequest } = require('./store/requests');
 const { createMission, getLatestMissionId, getMission, updateMission } = require('./store/missions');
+const { createMissionUpdate } = require('./store/mission_updates');
 const { hasStore } = require('./lib/environment');
 
 // Create thrift connection to Captain
@@ -53,12 +54,12 @@ app.get('/status', async (req, res) => {
   if (latestMission) {
     switch (latestMission.status) {
     case 'awaiting_signatures': {
-      let elapsedTime = Date.now() - latestMission.signed_at;
+      let elapsedTime = Date.now() - latestMission.user_signed_at;
       let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
       if (elapsedSeconds > 6) {
-        await updateMission(latestMissionId, 'vehicle_signed_at', Date.now());
-        await updateMission(latestMissionId, 'status', 'in_progress');
+        await updateMission(latestMissionId, {'vehicle_signed_at': Date.now(), 'status':'in_progress' });
         await updateVehicleStatus(latestMission.vehicle_id, 'travelling_pickup');
+        await createMissionUpdate(latestMissionId, 'travelling_pickup');
       }
       res.json({status, vehicles, bids});
       break;
@@ -67,7 +68,7 @@ app.get('/status', async (req, res) => {
       const mission = latestMission;
       const vehicle = await getVehicle(latestMission.vehicle_id);
       const status = 'in_mission';
-      res.json({status, mission, vehicle});
+      res.json({status, vehicles, bids, mission, vehicle});
       break;
     }
     }
