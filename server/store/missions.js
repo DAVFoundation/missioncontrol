@@ -1,6 +1,7 @@
 const redis = require('./redis');
 const { getBid } = require('./bids');
 const { getRequest } = require('./requests');
+const { createMissionUpdate} = require('./mission_updates');
 
 const getMission = async (missionId) => {
   return await redis.hgetallAsync(`missions:${missionId}`);
@@ -13,8 +14,9 @@ const getLatestMissionId = async (userId) => {
   return missions[0];
 };
 
-const updateMission = async (id, attributeField, attributeValue) => {
-  return await redis.hsetAsync(`missions:${id}`, attributeField, attributeValue);
+const updateMission = async (id, params) => {
+  const key_value_array = [].concat(...Object.entries(params));
+  return await redis.hmsetAsync(`missions:${id}`, ...key_value_array);
 };
 
 const createMission = async ({ user_id, bid_id }) => {
@@ -32,6 +34,9 @@ const createMission = async ({ user_id, bid_id }) => {
 
   // Save mission in user missions history
   redis.zaddAsync(`user_missions:${user_id}`, user_signed_at, missionId);
+
+  createMissionUpdate(missionId, 'contract_created');
+  createMissionUpdate(missionId, 'user_signed');
 
   // create a new mission entry in Redis
   redis.hmsetAsync(`missions:${missionId}`,
