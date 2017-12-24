@@ -1,4 +1,4 @@
-FROM node:8.2.1
+FROM node:9.3.0-alpine
 
 COPY package.json /app/
 
