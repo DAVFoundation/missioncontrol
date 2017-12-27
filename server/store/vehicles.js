@@ -39,7 +39,11 @@ const addNewVehicle = vehicle => {
   createVehicle(vehicle);
 };
 
-const getVehicle = id => redis.hgetallAsync(`vehicles:${id}`);
+const getVehicle = async (id) => {
+  let vehicle = await redis.hgetallAsync(`vehicles:${id}`);
+  vehicle.coords = {long: vehicle.long, lat: vehicle.lat };
+  return vehicle;
+};
 
 const getVehicles = async vehicleIds => parseVehiclesArray(await Promise.all(
   vehicleIds.map(
