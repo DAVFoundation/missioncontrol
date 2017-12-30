@@ -67,8 +67,9 @@ app.get('/status', async (req, res) => {
     case 'in_progress': {
       const mission = latestMission;
       const vehicle = await getVehicle(latestMission.vehicle_id);
+      vehicles = [vehicle];
       const status = 'in_mission';
-      res.json({status, vehicles, bids, mission, vehicle});
+      res.json({status, vehicles, bids, mission});
       break;
     }
     }
