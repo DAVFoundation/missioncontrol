@@ -41,6 +41,7 @@ const addNewVehicle = vehicle => {
 
 const getVehicle = async (id) => {
   let vehicle = await redis.hgetallAsync(`vehicles:${id}`);
+  vehicle.rating = parseInt(vehicle.rating);
   vehicle.coords = {long: vehicle.long, lat: vehicle.lat };
   return vehicle;
 };
