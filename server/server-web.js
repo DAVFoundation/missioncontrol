@@ -12,7 +12,7 @@ const app = express();
 const port = process.env.WEB_SERVER_PORT || 8888;
 
 app.use(cors);
-app.use(getOrCreateUser());
+app.use(getOrCreateUser);
 
 app.get('/status', StatusController.getStatus);
 
