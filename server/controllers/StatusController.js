@@ -1,8 +1,10 @@
-const { getVehiclesInRange, updateVehicleStatus, getVehicle, getVehicles } = require('./store/vehicles');
-const { getBidsForRequest } = require('./store/bids');
-const { getLatestMissionId, getMission, updateMission } = require('./store/missions');
-const { createMissionUpdate } = require('./store/mission_updates');
-const { hasStore } = require('./lib/environment');
+const { getVehiclesInRange, updateVehicleStatus, getVehicle, getVehicles } = require('../store/vehicles');
+const { getBidsForRequest } = require('../store/bids');
+const { getLatestMissionId, getMission, updateMission } = require('../store/missions');
+const { createMissionUpdate } = require('../store/mission_updates');
+const { hasStore } = require('../lib/environment');
+const missionProgress = require('../simulation/missionProgress');
+const _ = require('lodash');
 
 
 const getStatus = async(req, res) => {
@@ -39,8 +41,17 @@ const getStatus = async(req, res) => {
     case 'in_progress': {
       const mission = latestMission;
       const vehicle = await getVehicle(latestMission.vehicle_id);
-      vehicles = [vehicle];
       const status = 'in_mission';
+      const currentStatus = _.find(missionProgress, {'status': vehicle.status});
+      if (currentStatus.conditionForNextStatus(latestMission)){
+        const timestampString = currentStatus.nextMissionStatus + '_at';
+        let timestampObject = {};
+        timestampObject[timestampString] = Date.now();
+        await updateMission(latestMissionId, timestampObject);
+        await createMissionUpdate(latestMissionId, currentStatus.nextMissionStatus);
+        await updateVehicleStatus(latestMission.vehicle_id, currentStatus.nextVehicleStatus);
+      }
+      vehicles = [vehicle];
       res.json({status, vehicles, bids, mission});
       break;
     }
