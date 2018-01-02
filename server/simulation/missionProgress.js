@@ -59,6 +59,6 @@ module.exports = [
   },
   {
     status: 'available',
-    conditionForNextStatus: (mission) => {return false;}
+    conditionForNextStatus: () => {return false;}
   }
 ];
