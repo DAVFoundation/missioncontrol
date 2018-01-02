@@ -27,5 +27,9 @@ describe('randomBid()', () => {
     expect(
       typeof bid.price
     ).toBe('number');
+    
+    expect(
+      typeof bid.time_to_pickup
+    ).toBe('number');
   });
 });
