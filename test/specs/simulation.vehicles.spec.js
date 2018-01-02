@@ -30,6 +30,6 @@ describe('randomBid()', () => {
     
     expect(
       typeof bid.time_to_pickup
-      ).toBe('number');
+    ).toBe('number');
   });
 });
