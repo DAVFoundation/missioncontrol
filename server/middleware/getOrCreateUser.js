@@ -1,4 +1,4 @@
-const { getOrCreateUser } = require('./store/users');
+const { getOrCreateUser } = require('../store/users');
 
 module.exports = async (req, res, next) => {
   const { user_id } = req.query;

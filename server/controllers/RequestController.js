@@ -1,7 +1,7 @@
-const { createRequest, getRequest, deleteRequest } = require('./store/requests');
-const { deleteBidsForRequest } = require('./store/bids');
-const { createMission } = require('./store/missions');
-const { updateVehicleStatus } = require('./store/vehicles');
+const { createRequest, getRequest, deleteRequest } = require('../store/requests');
+const { deleteBidsForRequest } = require('../store/bids');
+const { createMission } = require('../store/missions');
+const { updateVehicleStatus } = require('../store/vehicles');
 
 const newRequest = async (req, res) => {
   const { user_id, pickup, dropoff, requested_pickup_time, size, weight } = req.query;
