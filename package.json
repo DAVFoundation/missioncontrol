@@ -10,6 +10,9 @@
     "url": "https://github.com/DAVFoundation/missioncontrol.git"
   },
   "homepage": "https://github.com/DAVFoundation/missioncontrol#readme",
+  "bugs": {
+		"url": "https://github.com/DAVFoundation/missioncontrol/issues"
+  },
   "scripts": {
     "start": "node server/start-servers.js",
     "test": "gulp js",
