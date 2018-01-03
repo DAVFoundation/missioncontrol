@@ -1,4 +1,4 @@
-const{generateRandomVehicles,randomBid}=require('../../server/simulation/vehicles.js');
+const { generateRandomVehicles, randomBid } = require('../../server/simulation/vehicles.js');
 const { randomCoords } = require('../../server/simulation/random.js');
 
 describe('generateRandomVehicles()', () => {
