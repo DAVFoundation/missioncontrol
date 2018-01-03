@@ -6,9 +6,8 @@ const { hasStore } = require('../lib/environment');
 const missionProgress = require('../simulation/missionProgress');
 const _ = require('lodash');
 
-
-const getStatus = async(req, res) => {
-  const {lat, long, requestId, user_id} = req.query;
+const getStatus = async (req, res) => {
+  const { lat, long, requestId, user_id } = req.query;
   const status = 'idle';
   const latestMissionId = await getLatestMissionId(user_id);
   const latestMission = await getMission(latestMissionId);
@@ -19,8 +18,8 @@ const getStatus = async(req, res) => {
       vehicles = await getVehicles(bids.map(bid => bid.vehicle_id));
     } else {
       vehicles = await getVehiclesInRange(
-        {lat: parseFloat(lat), long: parseFloat(long)},
-        7000
+        { lat: parseFloat(lat), long: parseFloat(long) },
+        7000,
       );
     }
   }
@@ -57,8 +56,8 @@ const getStatus = async(req, res) => {
     }
     }
   } else {
-    res.json({status, vehicles, bids});
+    res.json({ status, vehicles, bids });
   }
 };
 
-module.exports = {getStatus};
+module.exports = { getStatus };

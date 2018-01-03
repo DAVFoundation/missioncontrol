@@ -15,7 +15,6 @@ const newRequest = async (req, res) => {
   }
 };
 
-
 const cancelRequest = async (req, res) => {
   const { requestId } = req.query;
   const request = await getRequest(requestId);
@@ -28,11 +27,11 @@ const cancelRequest = async (req, res) => {
   }
 };
 
-
 const chooseBid = async (req, res) => {
   const { user_id, bid_id } = req.query;
   const mission = await createMission({
-    user_id, bid_id
+    user_id,
+    bid_id,
   });
   if (mission) {
     await updateVehicleStatus(mission.vehicle_id, 'contract_received');
@@ -42,5 +41,4 @@ const chooseBid = async (req, res) => {
   }
 };
 
-
-module.exports = {newRequest, cancelRequest, chooseBid};
+module.exports = { newRequest, cancelRequest, chooseBid };

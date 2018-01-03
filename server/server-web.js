@@ -5,7 +5,10 @@ const StatusController = require('./controllers/StatusController');
 const RequestController = require('./controllers/RequestController');
 
 // Create thrift connection to Captain
-require('./client-thrift').start({port: process.env.CAPTAIN_PORT, host: process.env.CAPTAIN_HOST});
+require('./client-thrift').start({
+  port: process.env.CAPTAIN_PORT,
+  host: process.env.CAPTAIN_HOST,
+});
 
 const express = require('express');
 const app = express();
@@ -26,5 +29,5 @@ module.exports = {
     app.listen(port, () => {
       console.log(`Web server started. Listening on port ${port}`);
     });
-  }
+  },
 };

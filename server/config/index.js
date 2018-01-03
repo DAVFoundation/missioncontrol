@@ -3,7 +3,7 @@ const config = {
   bids_ttl: 3600,
 };
 
-module.exports = (key) => {
+module.exports = key => {
   if (!(key in config)) {
     throw `The given key "${key}" to config was invalid`;
   } else {

@@ -1,6 +1,6 @@
 const redis = require('../store/redis');
 const Promise = require('bluebird');
-const request = Promise.promisifyAll(require('request'), {multiArgs: true});
+const request = Promise.promisifyAll(require('request'), { multiArgs: true });
 
 const getFromElevationApi = async (locations = []) => {
   /* TODO - query by batches of 512 locations */
@@ -26,7 +26,7 @@ const getFromElevationApi = async (locations = []) => {
   });
 };
 
-const generateElevationKey = (coordinate) => {
+const generateElevationKey = coordinate => {
   return 'elv_' + coordinate.lat + '_' + coordinate.long;
 };
 
@@ -49,12 +49,12 @@ const getElevations = async (coordinates = [], precisionRadius = 50) => {
   for (let coordinate of coordinates) {
     let elevation = await redis.getAsync(generateElevationKey(coordinate));
     if (elevation) {
-      results.push({coord: coordinate, elevation: elevation});
+      results.push({ coord: coordinate, elevation: elevation });
     } else {
       // check nearby locations for already existing elevation
       elevation = await getNearByLocationElevation(coordinate, precisionRadius);
       if (elevation) {
-        results.push({coord: coordinate, elevation: elevation});
+        results.push({ coord: coordinate, elevation: elevation });
       } else {
         unknownLocations.push(coordinate);
       }

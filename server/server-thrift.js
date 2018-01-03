@@ -45,8 +45,8 @@ MultiplexedProcessor.registerProcessor('VehicleCreation', new VehicleCreation.Pr
 const server = thrift.createMultiplexServer(MultiplexedProcessor);
 
 module.exports = {
-  start: ({port = 9090} = {}) => {
+  start: ({ port = 9090 } = {}) => {
     server.listen(port);
     console.log(`Thrift server started. Listening on port ${port}`);
-  }
+  },
 };

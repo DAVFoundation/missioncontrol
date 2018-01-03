@@ -8,17 +8,15 @@ const parseVehiclesArray = vehicles =>
     // filter vehicles
     .filter(vehicle => !!vehicle)
     // format response objects
-    .map(
-      vehicle => ({
-        id: vehicle.id,
-        model: vehicle.model,
-        icon: vehicle.icon,
-        coords: {lat: parseFloat(vehicle.lat), long: parseFloat(vehicle.long)},
-        rating: parseFloat(vehicle.rating),
-        missions_completed: parseInt(vehicle.missions_completed),
-        missions_completed_7_days: parseInt(vehicle.missions_completed_7_days),
-      })
-    );
+    .map(vehicle => ({
+      id: vehicle.id,
+      model: vehicle.model,
+      icon: vehicle.icon,
+      coords: { lat: parseFloat(vehicle.lat), long: parseFloat(vehicle.long) },
+      rating: parseFloat(vehicle.rating),
+      missions_completed: parseInt(vehicle.missions_completed),
+      missions_completed_7_days: parseInt(vehicle.missions_completed_7_days),
+    }));
 
 const addNewVehicle = vehicle => {
   // Add to vehicle_positions
@@ -39,18 +37,17 @@ const addNewVehicle = vehicle => {
   createVehicle(vehicle);
 };
 
-const getVehicle = async (id) => {
+const getVehicle = async id => {
   let vehicle = await redis.hgetallAsync(`vehicles:${id}`);
   vehicle.rating = parseInt(vehicle.rating);
-  vehicle.coords = {long: vehicle.long, lat: vehicle.lat };
+  vehicle.coords = { long: vehicle.long, lat: vehicle.lat };
   return vehicle;
 };
 
-const getVehicles = async vehicleIds => parseVehiclesArray(await Promise.all(
-  vehicleIds.map(
-    vehicleId => getVehicle(vehicleId)
-  )
-));
+const getVehicles = async vehicleIds =>
+  parseVehiclesArray(
+    await Promise.all(vehicleIds.map(vehicleId => getVehicle(vehicleId))),
+  );
 
 const updateVehicleStatus = async (id, status) => {
   return await redis.hsetAsync(`vehicles:${id}`, 'status', status);
@@ -64,7 +61,7 @@ const generateAndAddVehicles = (count, coords, radius) =>
 
 
 const getVehiclesInRange = async (coords, radius) => {
-  const shortRangeRadius = radius/7;
+  const shortRangeRadius = radius / 7;
   const desiredVehicleCountInShortRange = 3;
   const desiredVehicleCountInLongRange = 100;
 
@@ -86,5 +83,5 @@ module.exports = {
   getVehiclesInRange,
   getVehicle,
   getVehicles,
-  updateVehicleStatus
+  updateVehicleStatus,
 };

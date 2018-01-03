@@ -5,12 +5,12 @@
  * @returns {string}  An URL to the icon
  */
 const getDavIdIconUrl = davId => {
-  if (!davId){
+  if (!davId) {
     throw new Error('No valid davId provided');
   }
   return `https://lorempixel.com/100/100/abstract/?${davId}`;
 };
 
 module.exports = {
-  getDavIdIconUrl
+  getDavIdIconUrl,
 };

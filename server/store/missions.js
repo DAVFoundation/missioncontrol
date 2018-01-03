@@ -1,13 +1,13 @@
 const redis = require('./redis');
 const { getBid } = require('./bids');
 const { getRequest } = require('./requests');
-const { createMissionUpdate} = require('./mission_updates');
+const { createMissionUpdate } = require('./mission_updates');
 
-const getMission = async (missionId) => {
+const getMission = async missionId => {
   return await redis.hgetallAsync(`missions:${missionId}`);
 };
 
-const getLatestMissionId = async (userId) => {
+const getLatestMissionId = async userId => {
   // use zrevrange to reverse sorted set from highest to lowest
   // reversed values will put most recent timestamp at the top
   const missions = await redis.zrevrangeAsync(`user_missions:${userId}`, 0, -1);
@@ -77,5 +77,5 @@ module.exports = {
   createMission,
   getMission,
   getLatestMissionId,
-  updateMission
+  updateMission,
 };

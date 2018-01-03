@@ -27,13 +27,13 @@ const saveBid = async ({ vehicle_id, price, time_to_pickup, time_to_dropoff }, r
   return bidId;
 };
 
-const getBid = async (bidId) => {
+const getBid = async bidId => {
   // Set TTL for bid
   redis.expire(`bids:${bidId}`, config('bids_ttl'));
   return await redis.hgetallAsync(`bids:${bidId}`);
 };
 
-const getBidsForRequest = async (requestId) => {
+const getBidsForRequest = async requestId => {
   // get request details
   const request = await getRequest(requestId);
   if (!request) return [];
@@ -46,21 +46,27 @@ const getBidsForRequest = async (requestId) => {
     bidIds.map(bidId => {
       redis.expire(`bids:${bidId}`, config('bids_ttl'));
       return redis.hgetallAsync(`bids:${bidId}`);
-    })
+    }),
   );
 
   // If not enough bids, make some up
   if (bidIds.length < 10) {
     const { pickup_long, pickup_lat, dropoff_lat, dropoff_long } = request;
-    const pickup =  {lat: pickup_lat,  long: pickup_long};
-    const dropoff = {lat: dropoff_lat, long: dropoff_long};
-    const vehicleIds = await redis.georadiusAsync('vehicle_positions', pickup_long, pickup_lat, 2000, 'm');
+    const pickup = { lat: pickup_lat, long: pickup_long };
+    const dropoff = { lat: dropoff_lat, long: dropoff_long };
+    const vehicleIds = await redis.georadiusAsync(
+      'vehicle_positions',
+      pickup_long,
+      pickup_lat,
+      2000,
+      'm',
+    );
     if (vehicleIds.length > bidIds.length) {
       // Just a hacky way to get more bids from different vehicles.
       // Not guaranteed to not have duplicate bids from same vehicle
       const vehicleId = vehicleIds[bidIds.length];
       const vehicle = await getVehicle(vehicleId);
-      const origin = {lat: vehicle.lat, long: vehicle.long};
+      const origin = { lat: vehicle.lat, long: vehicle.long };
       let newBid = randomBid(origin, pickup, dropoff);
       newBid.vehicle_id = vehicleId;
       const newBidId = await saveBid(newBid, requestId, userId);
@@ -72,7 +78,7 @@ const getBidsForRequest = async (requestId) => {
   return bids;
 };
 
-const deleteBidsForRequest = async (requestId) => {
+const deleteBidsForRequest = async requestId => {
   const bidIds = await redis.lrangeAsync(`request_bids:${requestId}`, 0, -1);
   await Promise.all(
     bidIds.map(bidId => redis.del(`bids:${bidId}`))
@@ -83,5 +89,5 @@ const deleteBidsForRequest = async (requestId) => {
 module.exports = {
   getBidsForRequest,
   getBid,
-  deleteBidsForRequest
+  deleteBidsForRequest,
 };

@@ -18,7 +18,7 @@ const mp = new thrift.Multiplexer();
 let connection;
 let clients = {};
 
-const start = ({port = 9090, host = 'localhost'} = {}) => {
+const start = ({ port = 9090, host = 'localhost' } = {}) => {
   connection = thrift.createConnection(host, port, {
     transport: transport,
     protocol: protocol,
@@ -31,7 +31,7 @@ const start = ({port = 9090, host = 'localhost'} = {}) => {
   return connection;
 };
 
-const getClient = (service) => {
+const getClient = service => {
   if (!clients[service]) {
     clients[service] = mp.createClient(service, services[service], connection);
   }
@@ -39,11 +39,10 @@ const getClient = (service) => {
 };
 
 const vehicleIsRegistered = () => {
-  return getClient('Registration')
-    .vehicle_is_registered();
+  return getClient('Registration').vehicle_is_registered();
 };
 
-const createVehicle = (vehicle) => {
+const createVehicle = vehicle => {
   let davUser = new DAVUserTypes.DAVUser();
   davUser.UID = vehicle.id;
 
@@ -59,8 +58,7 @@ const createVehicle = (vehicle) => {
   vehicleDetails.missions_completed_7_days = vehicle.missions_completed_7_days;
   vehicleDetails.coordinates = coordinates;
 
-  return getClient('VehicleCreation')
-    .create_vehicle(vehicleDetails);
+  return getClient('VehicleCreation').create_vehicle(vehicleDetails);
 };
 
 module.exports = {

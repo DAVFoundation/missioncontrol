@@ -1,7 +1,10 @@
-const { randomDroneModel, randomDavAddress, randomMissionsCompleted } = require('../../server/simulation/random');
+const {
+  randomDroneModel,
+  randomDavAddress,
+  randomMissionsCompleted,
+} = require('../../server/simulation/random');
 
 describe('randomDroneModel()', () => {
-
   test('returns a string', () => {
     expect(
       typeof randomDroneModel()
@@ -13,11 +16,9 @@ describe('randomDroneModel()', () => {
       randomDroneModel().split(' ').length
     ).toBeGreaterThanOrEqual(2);
   });
-
 });
 
 describe('randomDavAddress()', () => {
-
   test('returns a string', () => {
     expect(
       typeof randomDavAddress()
@@ -38,7 +39,6 @@ describe('randomDavAddress()', () => {
 });
 
 describe('randomMissionsCompleted()', () => {
-
   test('returns an object', () => {
     expect(
       typeof randomMissionsCompleted()
@@ -72,5 +72,4 @@ describe('randomMissionsCompleted()', () => {
       randomMissionsCompleted().missionsCompleted
     ).toBeGreaterThanOrEqual(4);
   });
-
 });
