@@ -1,10 +1,5 @@
-const {
-  generateRandomVehicles,
-  randomBid
-} = require('../../server/simulation/vehicles.js');
-const {
-  randomCoords
-} = require('../../server/simulation/random.js');
+const{generateRandomVehicles,randomBid}=require('../../server/simulation/vehicles.js');
+const { randomCoords } = require('../../server/simulation/random.js');
 
 describe('generateRandomVehicles()', () => {
   test('returns an array with a length same to the vehicleCount argument', () => {
@@ -25,13 +20,7 @@ describe('generateRandomVehicles()', () => {
 });
 
 describe('randomBid()', () => {
-  const sampleArguments = {
-    coords: {
-      lat: 1,
-      long: 1
-    },
-    radius: 1000
-  };
+  const sampleArguments = { coords: {lat: 1, long: 1}, radius: 1000 };
 
   test('returns an object with a price containing a float', () => {
     const bid = randomBid(randomCoords(sampleArguments), randomCoords(sampleArguments), randomCoords(sampleArguments));

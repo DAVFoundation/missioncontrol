@@ -18,18 +18,13 @@ gulp.task('lint', () => {
 });
 
 gulp.task('jest', (done) => {
-  jest.runCLI({
-    config: Object.assign(jestConfig, {
-      testMatch: ['**/test/specs/*.js']
-    })
+  config: Object.assign(jestConfig, { testMatch: ['**/test/specs/*.js'] })
   }, '.', () => done());
 });
 
 gulp.task('jest:thrift', (done) => {
   jest.runCLI({
-    config: Object.assign(jestConfig, {
-      testMatch: ['**/test/specs/thrift/*.js']
-    })
+config: Object.assign(jestConfig, { testMatch: ['**/test/specs/thrift/*.js'] })
   }, '.', () => done());
 });
 
