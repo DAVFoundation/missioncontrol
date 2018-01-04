@@ -24,7 +24,7 @@ app.get('/request/new', RequestController.newRequest);
 app.get('/request/cancel', RequestController.cancelRequest);
 app.get('/choose_bid', RequestController.chooseBid);
 
-app.get('/mission_command', MissionController.command)
+app.get('/mission_command', MissionController.command);
 
 module.exports = {
   start: () => {
