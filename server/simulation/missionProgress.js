@@ -19,7 +19,7 @@ module.exports = [
     },
   },
   {
-    status: 'waiting_pickup',
+    status: 'takeoff_pickup',
     nextVehicleStatus: 'travelling_dropoff',
     nextMissionStatus: 'travelling_dropoff',
     conditionForNextStatus: mission => {
