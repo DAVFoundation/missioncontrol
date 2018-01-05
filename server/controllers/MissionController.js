@@ -8,7 +8,7 @@ const command = async (req, res) => {
   const mission = await getMission(mission_id);
   const vehicle = await getVehicle(mission.vehicle_id);
 
-  if (user_id !== mission.user_id) res.sendStatus(401);
+  if (user_id !== mission.user_id) return res.sendStatus(401);
 
   if (command === 'takeoff_pickup' && vehicle.status === 'waiting_pickup'){
     await updateMission(mission_id, {'takeoff_pickup_at': Date.now()});
