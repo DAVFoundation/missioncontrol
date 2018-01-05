@@ -35,6 +35,7 @@ describe('randomBid()', () => {
       typeof bid.time_to_pickup
     ).toBe('number');
   });
+
   test('returns an object with a time_to_dropoff containing a float', () => {
     const bid = randomBid(randomCoords(sampleArguments), randomCoords(sampleArguments), randomCoords(sampleArguments));
     expect(
