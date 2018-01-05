@@ -64,10 +64,12 @@ describe('randomMissionsCompleted()', () => {
   test('returns an object containing missionsCompleted which is an integer between 4 and 90', () => {
     expect(
       Number.isInteger(randomMissionsCompleted().missionsCompleted)
-    ).toBeTruthy();
+    ).toBe(true);
+
     expect(
       randomMissionsCompleted().missionsCompleted
     ).toBeLessThanOrEqual(90);
+
     expect(
       randomMissionsCompleted().missionsCompleted
     ).toBeGreaterThanOrEqual(4);
