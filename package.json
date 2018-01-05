@@ -11,7 +11,7 @@
   },
   "homepage": "https://github.com/DAVFoundation/missioncontrol#readme",
   "bugs": {
-		"url": "https://github.com/DAVFoundation/missioncontrol/issues"
+    "url": "https://github.com/DAVFoundation/missioncontrol/issues"
   },
   "scripts": {
     "start": "node server/start-servers.js",
