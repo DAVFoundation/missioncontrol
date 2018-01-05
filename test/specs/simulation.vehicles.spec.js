@@ -30,9 +30,15 @@ describe('randomBid()', () => {
     expect(
       typeof bid.price
     ).toBe('number');
-    
+
     expect(
       typeof bid.time_to_pickup
+    ).toBe('number');
+  });
+  test('returns an object with a time_to_dropoff containing a float', () => {
+    const bid = randomBid(randomCoords(sampleArguments), randomCoords(sampleArguments), randomCoords(sampleArguments));
+    expect(
+      typeof bid.time_to_dropoff
     ).toBe('number');
   });
 });
