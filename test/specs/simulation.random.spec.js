@@ -79,11 +79,12 @@ describe('randomMissionsCompleted()', () => {
 
 describe('randomCoords()', () => {
   const sampleArguments = { coords: { lat: 1, long: 1 }, radius: 1000 };
+  const random = randomCoords(sampleArguments);
   const coords = {
     lat1: sampleArguments.coords.lat,
     long1: sampleArguments.coords.lat,
-    lat2: randomCoords(sampleArguments).lat,
-    long2: randomCoords(sampleArguments).long
+    lat2: random.lat,
+    long2: random.long
   };
   /**
    * Haversine Formula: returns the distance from one point to another
