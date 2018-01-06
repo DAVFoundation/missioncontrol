@@ -4,6 +4,7 @@ const {
   randomMissionsCompleted,
   randomCoords,
 } = require('../../server/simulation/random');
+const turf = require('@turf/turf');
 
 describe('randomDroneModel()', () => {
   test('returns a string', () => {
@@ -79,31 +80,14 @@ describe('randomMissionsCompleted()', () => {
 
 describe('randomCoords()', () => {
   const sampleArguments = { coords: { lat: 1, long: 1 }, radius: 1000 };
-  const random = randomCoords(sampleArguments);
-  const coords = {
-    lat1: sampleArguments.coords.lat,
-    long1: sampleArguments.coords.lat,
-    lat2: random.lat,
-    long2: random.long
-  };
-  /**
-   * Haversine Formula: returns the distance from one point to another
-   * @returns {Number} a number containing distance in meters
-   */
-  const getDistance = ({ lat1, long1, lat2, long2 }) => {
-    const R = 6371; // radius of the earth in km
-    const dLat = degToRad(lat2 - lat1);
-    const dLong = degToRad(long2 - long1);
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(degToRad(lat1)) * Math.cos(degToRad(lat2)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const d = (R * c) * 1000;
-    return d;
-  };
-  const degToRad = (deg) => { return deg * (Math.PI / 180); };
+  const origin = sampleArguments.coords;
+  const pickup = randomCoords(sampleArguments);
+  const originPoint = turf.point([parseFloat(origin.long), parseFloat(origin.lat)]);
+  const pickupPoint = turf.point([parseFloat(pickup.long), parseFloat(pickup.lat)]);
 
   test('returns a coordinate that is no further than given coordinates by given radius', () => {
     expect(
-      getDistance(coords)
+      turf.distance(originPoint, pickupPoint, 'meters')
     ).toBeLessThanOrEqual(sampleArguments.radius);
   });
 });
