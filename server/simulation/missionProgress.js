@@ -19,6 +19,12 @@ module.exports = [
     },
   },
   {
+    status: 'waiting_pickup',
+    conditionForNextStatus: () => {
+      return false;
+    }
+  },
+  {
     status: 'takeoff_pickup',
     nextVehicleStatus: 'travelling_dropoff',
     nextMissionStatus: 'travelling_dropoff',
