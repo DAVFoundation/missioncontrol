@@ -3,9 +3,13 @@ const { getBid } = require('./bids');
 const { getRequest } = require('./requests');
 const { createMissionUpdate } = require('./mission_updates');
 
+const getMission = async missionId => {
+  return await redis.hgetallAsync(`missions:${missionId}`);
+};
+
 const getLatestMission = async userId => {
   const missions = await redis.zrevrangeAsync(`user_missions:${userId}`, 0, -1);
-  const mission = await redis.hgetallAsync(`missions:${missions[0]}`);
+  const mission = await getMission(missions[0]);
   mission.mission_id = missions[0];
   return mission;
 };
@@ -71,6 +75,7 @@ const createMission = async ({ user_id, bid_id }) => {
 
 module.exports = {
   createMission,
+  getMission,
   getLatestMission,
   updateMission,
 };
