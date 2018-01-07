@@ -4,7 +4,6 @@ const { getLatestMissionId, getMission, updateMission } = require('../store/miss
 const { createMissionUpdate } = require('../store/mission_updates');
 const { hasStore } = require('../lib/environment');
 const missionProgress = require('../simulation/missionProgress');
-const _ = require('lodash');
 
 const getStatus = async (req, res) => {
   const { lat, long, requestId, user_id } = req.query;
@@ -41,7 +40,8 @@ const getStatus = async (req, res) => {
       const mission = latestMission;
       const vehicle = await getVehicle(latestMission.vehicle_id);
       const status = 'in_mission';
-      const currentStatus = _.find(missionProgress, {'status': vehicle.status});
+      const currentStatus = missionProgress[''+vehicle.status];
+      console.log(currentStatus);
       if (currentStatus.conditionForNextStatus(latestMission)){
         const timestampString = currentStatus.nextMissionStatus + '_at';
         let timestampObject = {};
