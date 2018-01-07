@@ -40,8 +40,7 @@ const getStatus = async (req, res) => {
       const mission = latestMission;
       const vehicle = await getVehicle(latestMission.vehicle_id);
       const status = 'in_mission';
-      const currentStatus = missionProgress[''+vehicle.status];
-      console.log(currentStatus);
+      const currentStatus = missionProgress[vehicle.status];
       if (currentStatus.conditionForNextStatus(latestMission)){
         const timestampString = currentStatus.nextMissionStatus + '_at';
         let timestampObject = {};
