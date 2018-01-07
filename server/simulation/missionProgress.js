@@ -1,5 +1,5 @@
-module.exports = [
-  {
+module.exports = {
+  'travelling_pickup': {
     status: 'travelling_pickup',
     nextVehicleStatus: 'landing_pickup',
     nextMissionStatus: 'landing_pickup',
@@ -8,7 +8,7 @@ module.exports = [
       return elapsedTime > 0;
     },
   },
-  {
+  'landing_pickup': {
     status: 'landing_pickup',
     nextVehicleStatus: 'waiting_pickup',
     nextMissionStatus: 'waiting_pickup',
@@ -18,7 +18,7 @@ module.exports = [
       return elapsedSeconds > 2;
     },
   },
-  {
+  'takeoff_pickup': {
     status: 'takeoff_pickup',
     nextVehicleStatus: 'travelling_dropoff',
     nextMissionStatus: 'travelling_dropoff',
@@ -28,7 +28,7 @@ module.exports = [
       return elapsedSeconds > 2;
     },
   },
-  {
+  'travelling_dropoff': {
     status: 'travelling_dropoff',
     nextVehicleStatus: 'landing_dropoff',
     nextMissionStatus: 'landing_dropoff',
@@ -37,7 +37,7 @@ module.exports = [
       return elapsedTime > 0;
     },
   },
-  {
+  'landing_dropoff': {
     status: 'landing_dropoff',
     nextVehicleStatus: 'waiting_dropoff',
     nextMissionStatus: 'waiting_dropoff',
@@ -47,7 +47,7 @@ module.exports = [
       return elapsedSeconds > 2;
     },
   },
-  {
+  'waiting_dropoff': {
     status: 'waiting_dropoff',
     nextVehicleStatus: 'available',
     nextMissionStatus: 'completed',
@@ -57,10 +57,10 @@ module.exports = [
       return elapsedSeconds > 2;
     },
   },
-  {
+  'available': {
     status: 'available',
     conditionForNextStatus: () => {
       return false;
     },
   },
-];
+};
