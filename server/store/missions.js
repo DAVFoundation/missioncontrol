@@ -1,6 +1,23 @@
 const redis = require('./redis');
 const { getBid } = require('./bids');
 const { getRequest } = require('./requests');
+const { createMissionUpdate } = require('./mission_updates');
+
+const getMission = async missionId => {
+  return await redis.hgetallAsync(`missions:${missionId}`);
+};
+
+const getLatestMissionId = async userId => {
+  // use zrevrange to reverse sorted set from highest to lowest
+  // reversed values will put most recent timestamp at the top
+  const missions = await redis.zrevrangeAsync(`user_missions:${userId}`, 0, -1);
+  return missions[0];
+};
+
+const updateMission = async (id, params) => {
+  const key_value_array = [].concat(...Object.entries(params));
+  return await redis.hmsetAsync(`missions:${id}`, ...key_value_array);
+};
 
 const createMission = async ({ user_id, bid_id }) => {
   // get bid details
@@ -13,7 +30,13 @@ const createMission = async ({ user_id, bid_id }) => {
 
   // get new unique id for mission
   const missionId = await redis.incrAsync('next_mission_id');
-  const signed_at = Date.now();
+  const user_signed_at = Date.now();
+
+  // Save mission in user missions history
+  redis.zaddAsync(`user_missions:${user_id}`, user_signed_at, missionId);
+
+  createMissionUpdate(missionId, 'contract_created');
+  createMissionUpdate(missionId, 'user_signed');
 
   // create a new mission entry in Redis
   redis.hmsetAsync(`missions:${missionId}`,
@@ -30,7 +53,8 @@ const createMission = async ({ user_id, bid_id }) => {
     'requested_pickup_time', requested_pickup_time,
     'size', size,
     'weight', weight,
-    'signed_at', signed_at,
+    'status', 'awaiting_signatures',
+    'user_signed_at', user_signed_at,
   );
   return {
     mission_id: missionId,
@@ -45,10 +69,13 @@ const createMission = async ({ user_id, bid_id }) => {
     requested_pickup_time,
     size,
     weight,
-    signed_at,
+    user_signed_at,
   };
 };
 
 module.exports = {
-  createMission
+  createMission,
+  getMission,
+  getLatestMissionId,
+  updateMission,
 };

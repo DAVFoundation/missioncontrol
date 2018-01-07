@@ -1,7 +1,12 @@
-const { randomDroneModel, randomDavAddress, randomMissionsCompleted } = require('../../server/simulation/random');
+const {
+  randomDroneModel,
+  randomDavAddress,
+  randomMissionsCompleted,
+  randomCoords,
+} = require('../../server/simulation/random');
+const turf = require('@turf/turf');
 
 describe('randomDroneModel()', () => {
-
   test('returns a string', () => {
     expect(
       typeof randomDroneModel()
@@ -13,11 +18,9 @@ describe('randomDroneModel()', () => {
       randomDroneModel().split(' ').length
     ).toBeGreaterThanOrEqual(2);
   });
-
 });
 
 describe('randomDavAddress()', () => {
-
   test('returns a string', () => {
     expect(
       typeof randomDavAddress()
@@ -38,7 +41,6 @@ describe('randomDavAddress()', () => {
 });
 
 describe('randomMissionsCompleted()', () => {
-
   test('returns an object', () => {
     expect(
       typeof randomMissionsCompleted()
@@ -64,13 +66,28 @@ describe('randomMissionsCompleted()', () => {
   test('returns an object containing missionsCompleted which is an integer between 4 and 90', () => {
     expect(
       Number.isInteger(randomMissionsCompleted().missionsCompleted)
-    ).toBeTruthy();
+    ).toBe(true);
+
     expect(
       randomMissionsCompleted().missionsCompleted
     ).toBeLessThanOrEqual(90);
+
     expect(
       randomMissionsCompleted().missionsCompleted
     ).toBeGreaterThanOrEqual(4);
   });
+});
 
+describe('randomCoords()', () => {
+  const sampleArguments = { coords: { lat: 1, long: 1 }, radius: 1000 };
+  const origin = sampleArguments.coords;
+  const pickup = randomCoords(sampleArguments);
+  const originPoint = turf.point([parseFloat(origin.long), parseFloat(origin.lat)]);
+  const pickupPoint = turf.point([parseFloat(pickup.long), parseFloat(pickup.lat)]);
+
+  test('returns a coordinate that is no further than given coordinates by given radius', () => {
+    expect(
+      turf.distance(originPoint, pickupPoint, 'meters')
+    ).toBeLessThanOrEqual(sampleArguments.radius);
+  });
 });

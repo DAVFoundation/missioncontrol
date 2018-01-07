@@ -1,10 +1,13 @@
 const redis = require('./redis');
+const config = require('../config');
 
-const getRequest = async (requestId) => {
+const getRequest = async requestId => {
+  // Set TTL for request
+  redis.expire(`requests:${requestId}`, config('requests_ttl'));
   return await redis.hgetallAsync(`requests:${requestId}`);
 };
 
-const createRequest = async (requestDetails) => {
+const createRequest = async requestDetails => {
   // get new unique id for request
   const requestId = await redis.incrAsync('next_request_id');
 
@@ -22,10 +25,18 @@ const createRequest = async (requestDetails) => {
     'size', size,
     'weight', weight,
   );
+
+  // Set TTL for request
+  redis.expire(`requests:${requestId}`, config('requests_ttl'));
   return requestId;
+};
+
+const deleteRequest = async requestId => {
+  return await redis.del(`requests:${requestId}`);
 };
 
 module.exports = {
   createRequest,
   getRequest,
+  deleteRequest,
 };

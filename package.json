@@ -9,6 +9,10 @@
     "type": "git",
     "url": "https://github.com/DAVFoundation/missioncontrol.git"
   },
+  "homepage": "https://github.com/DAVFoundation/missioncontrol#readme",
+  "bugs": {
+    "url": "https://github.com/DAVFoundation/missioncontrol/issues"
+  },
   "scripts": {
     "start": "node server/start-servers.js",
     "test": "gulp js",
@@ -20,6 +24,7 @@
     "express": "^4.16.2",
     "randomstring": "^1.1.5",
     "redis": "^2.8.0",
+    "request": "^2.82.0",
     "thrift": "^0.10.0"
   },
   "devDependencies": {

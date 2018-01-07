@@ -1,6 +1,0 @@
-missioncontrol:
-  build: .
-  ports:
-    - '8099:8888'
-  environment:
-    NODE_ENV: production

@@ -4,7 +4,7 @@ const turf = require('@turf/turf');
 const generateRandomVehicles = (vehicleCount = 4, coords, radius = 2000) => {
   let vehicles = [];
   for (let i = 0; i < vehicleCount; i++) {
-    vehicles.push(generateRandom({coords, radius}));
+    vehicles.push(generateRandom({ coords, radius }));
   }
   return vehicles;
 };
@@ -15,15 +15,15 @@ const randomBid = (origin, pickup, dropoff) => {
   const dropoffPoint = turf.point([parseFloat(dropoff.long), parseFloat(dropoff.lat)]);
   const distanceOriginToPickup = turf.distance(originPoint, pickupPoint);
   const distancePickupToDelivery = turf.distance(pickupPoint, dropoffPoint);
-  const price = (distanceOriginToPickup+distancePickupToDelivery).toFixed(2);
+  const price = parseFloat(distanceOriginToPickup + distancePickupToDelivery);
   return {
     price: price,
-    time_to_pickup: distanceOriginToPickup*3,
-    time_to_dropoff: distancePickupToDelivery*3*Math.random(),
+    time_to_pickup: distanceOriginToPickup * 3,
+    time_to_dropoff: distancePickupToDelivery * 3 * Math.random(),
   };
 };
 
 module.exports = {
   generateRandomVehicles,
-  randomBid
+  randomBid,
 };

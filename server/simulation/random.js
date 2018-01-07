@@ -1,9 +1,22 @@
 const randomString = require('randomstring');
 
 const manufacturerNames = ['DJX', 'Parakeet', 'Gruff', 'FlyHawk'];
-const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship', 'Sky Captain',
-  'Sky Master', 'Soar', 'Open Skies', 'Cargo Haul', 'Heavy', 'Flight Master', 'Sky King', 'Power Hauler', 'Cargo Master'];
-
+const modelNames = [
+  'CargoMate',
+  'Postman',
+  'ShipIt',
+  'Air Ship',
+  'Sky Captain',
+  'Sky Master',
+  'Soar',
+  'Open Skies',
+  'Cargo Haul',
+  'Heavy',
+  'Flight Master',
+  'Sky King',
+  'Power Hauler',
+  'Cargo Master',
+];
 
 /**
  * Generates a random DAV address (a UID)
@@ -12,10 +25,13 @@ const modelNames = ['CargoMate', 'Postman', 'ShipIt', 'Air Ship', 'Sky Captain',
  */
 
 const randomDavAddress = () => {
-  return '0x'+randomString.generate({
-    length: 40,
-    charset: 'hex'
-  });
+  return (
+    '0x' +
+    randomString.generate({
+      length: 40,
+      charset: 'hex',
+    })
+  );
 };
 
 /**
@@ -23,7 +39,9 @@ const randomDavAddress = () => {
  * @return {String} A string representing the name of a manufacturer
  */
 const randomManufacturerName = () => {
-  return manufacturerNames[Math.floor(Math.random()*manufacturerNames.length)];
+  return manufacturerNames[
+    Math.floor(Math.random() * manufacturerNames.length)
+  ];
 };
 
 /**
@@ -31,7 +49,7 @@ const randomManufacturerName = () => {
  * @return {String} A string representing the name of a model
  */
 const randomModelName = () => {
-  return modelNames[Math.floor(Math.random()*modelNames.length)];
+  return modelNames[Math.floor(Math.random() * modelNames.length)];
 };
 
 /**
@@ -64,7 +82,7 @@ const randomMissionsCompleted = () => {
   const missionsCompleted = Math.floor(Math.random() * (90 - 4) + 4);
   return {
     missionsCompleted: missionsCompleted,
-    missionsCompleted7Days: Math.floor(Math.sqrt(missionsCompleted))
+    missionsCompleted7Days: Math.floor(Math.sqrt(missionsCompleted)),
   };
 };
 
@@ -81,8 +99,12 @@ const randomCoords = ({ coords, radius }) => {
   const distance = Math.random() * radius;
   const longDegreesPerMeter = 1 / 111321.377778; // longitude degrees per meter
   const latDegreesPerMeter = 1 / 111134.86111; // latitude degrees per meter
-  const x = parseFloat((coords.lat + latDegreesPerMeter * distance * Math.cos(angle)).toFixed(6));
-  const y = parseFloat((coords.long + longDegreesPerMeter * distance * Math.sin(angle)).toFixed(6));
+  const x = parseFloat(
+    (coords.lat + latDegreesPerMeter * distance * Math.cos(angle)).toFixed(6),
+  );
+  const y = parseFloat(
+    (coords.long + longDegreesPerMeter * distance * Math.sin(angle)).toFixed(6),
+  );
   return { lat: x, long: y };
 };
 
