@@ -18,6 +18,12 @@ module.exports = {
       return elapsedSeconds > 2;
     },
   },
+  'waiting_pickup': {
+    status: 'waiting_pickup',
+    conditionForNextStatus: () => {
+      return false;
+    }
+  },
   'takeoff_pickup': {
     status: 'takeoff_pickup',
     nextVehicleStatus: 'travelling_dropoff',
