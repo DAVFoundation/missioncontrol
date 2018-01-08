@@ -4,14 +4,20 @@ const { getRequest } = require('./requests');
 const { createMissionUpdate } = require('./mission_updates');
 
 const getMission = async missionId => {
-  return await redis.hgetallAsync(`missions:${missionId}`);
+  const mission = await redis.hgetallAsync(`missions:${missionId}`);
+  mission.mission_id = missionId;
+  return mission;
 };
 
 const getLatestMission = async userId => {
   const missions = await redis.zrevrangeAsync(`user_missions:${userId}`, 0, -1);
-  const mission = await getMission(missions[0]);
-  mission.mission_id = missions[0];
-  return mission;
+  let mission = null;
+  if (missions.length > 0) {
+    mission = await getMission(missions[0]); 
+  }
+  if (typeof mission === 'object') {
+    return mission;
+  }
 };
 
 const updateMission = async (id, params) => {

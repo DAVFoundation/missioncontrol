@@ -22,8 +22,6 @@
     "@turf/turf": "^4.7.3",
     "bluebird": "^3.5.1",
     "express": "^4.16.2",
-    "lodash": "^4.17.4",
-    "pinkie": "^2.0.4",
     "randomstring": "^1.1.5",
     "redis": "^2.8.0",
     "request": "^2.82.0",
