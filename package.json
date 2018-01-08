@@ -2,6 +2,10 @@
   "name": "missioncontrol",
   "version": "0.2.0",
   "description": "Controls and orchestrates missions between DAV users and vehicles",
+  "homepage": "https://github.com/DAVFoundation/missioncontrol#readme",
+  "bugs": {
+    "url": "https://github.com/DAVFoundation/missioncontrol/issues"
+  },
   "license": "MIT",
   "author": "Tal Ater <tal@talater.com>",
   "main": "./server/server-web.js",
@@ -9,17 +13,13 @@
     "type": "git",
     "url": "https://github.com/DAVFoundation/missioncontrol.git"
   },
-  "homepage": "https://github.com/DAVFoundation/missioncontrol#readme",
-  "bugs": {
-    "url": "https://github.com/DAVFoundation/missioncontrol/issues"
-  },
   "scripts": {
     "start": "node server/start-servers.js",
     "test": "gulp js",
     "thrift": "thrift -gen js:node -strict -recurse -out ./server/thrift ./resources/idl/CaptainMissionControl.thrift"
   },
   "dependencies": {
-    "@turf/turf": "^4.7.3",
+    "@turf/turf": "^5.1.6",
     "bluebird": "^3.5.1",
     "express": "^4.16.2",
     "randomstring": "^1.1.5",
@@ -32,6 +32,6 @@
     "gulp-eslint": "^4.0.0",
     "gulp-nodemon": "^2.2.1",
     "gulp-shell": "^0.6.3",
-    "jest-cli": "^20.0.4"
+    "jest-cli": "^22.0.4"
   }
 }
