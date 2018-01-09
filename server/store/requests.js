@@ -28,7 +28,6 @@ const createRequest = async requestDetails => {
   );
 
   getVehiclesInRange({ lat: parseFloat(pickup_lat), long: parseFloat(pickup_long) }, 7000);
-
   // Set TTL for request
   redis.expire(`requests:${requestId}`, config('requests_ttl'));
   return requestId;
