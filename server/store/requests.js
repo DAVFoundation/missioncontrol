@@ -1,5 +1,6 @@
 const redis = require('./redis');
 const config = require('../config');
+const { getVehiclesInRange } = require('./vehicles');
 
 const getRequest = async requestId => {
   // Set TTL for request
@@ -25,6 +26,8 @@ const createRequest = async requestDetails => {
     'size', size,
     'weight', weight,
   );
+
+  getVehiclesInRange({ lat: parseFloat(pickup_lat), long: parseFloat(pickup_long) }, 7000);
 
   // Set TTL for request
   redis.expire(`requests:${requestId}`, config('requests_ttl'));
