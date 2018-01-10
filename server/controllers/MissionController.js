@@ -5,8 +5,8 @@ const { getVehicle, updateVehicleStatus } = require('../store/vehicles');
 
 const command = async (req, res) => {
   const { user_id, mission_id, command} = req.query;
-  const mission = await getMission(mission_id);
-  const vehicle = await getVehicle(mission.vehicle_id);
+  let mission = await getMission(mission_id);
+  let vehicle = await getVehicle(mission.vehicle_id);
 
   if (user_id !== mission.user_id) return res.sendStatus(401);
 
@@ -15,6 +15,10 @@ const command = async (req, res) => {
     await createMissionUpdate(mission_id, 'takeoff_pickup');
     await updateVehicleStatus(mission.vehicle_id, 'takeoff_pickup');
   }
+
+  // update mission and vehicle
+  mission = await getMission(mission_id);
+  vehicle = await getVehicle(mission.vehicle_id);
 
   res.json({vehicle, mission});
 };
