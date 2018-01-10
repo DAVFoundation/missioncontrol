@@ -17,7 +17,6 @@ const command = async (req, res) => {
   }
 
   // update mission and vehicle
-
   mission = await getMission(mission_id);
   vehicle = await getVehicle(mission.vehicle_id);
 
