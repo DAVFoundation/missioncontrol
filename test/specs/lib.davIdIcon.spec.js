@@ -1,5 +1,5 @@
 const { getDavIdIconUrl } = require('../../server/lib/davIdIcon.js');
-const { URL } = require('url');
+const { checkIfAbsoluteURL } = require('../helpers/index.js');
 const dummyDavId = '0xdfddfdfdfdfdfdfdfdfdfdfdfdfddfdfdfdfdfdd';
 
 describe('getDavIdIconUrl()', () => {
@@ -8,15 +8,6 @@ describe('getDavIdIconUrl()', () => {
       checkIfAbsoluteURL(getDavIdIconUrl(dummyDavId))
     ).toBeTruthy();
   });
-
-  const checkIfAbsoluteURL = url => {
-    try {
-      new URL(url);
-      return true;
-    } catch (err) {
-      return false;
-    }
-  };
 
   test('returns a string containing the given davID', () => {
     expect(
