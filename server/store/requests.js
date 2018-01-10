@@ -27,7 +27,9 @@ const createRequest = async requestDetails => {
     'weight', weight,
   );
 
+  // See if there are any vehicles around the pickup position, if not a few vehicles will be generated there
   getVehiclesInRange({ lat: parseFloat(pickup_lat), long: parseFloat(pickup_long) }, 7000);
+
   // Set TTL for request
   redis.expire(`requests:${requestId}`, config('requests_ttl'));
   return requestId;
