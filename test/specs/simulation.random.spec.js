@@ -87,7 +87,7 @@ describe('randomCoords()', () => {
 
   test('returns a coordinate that is no further than given coordinates by given radius', () => {
     expect(
-      turf.distance(originPoint, pickupPoint, 'meters')
+      turf.distance(originPoint, pickupPoint, { units: 'meters' })
     ).toBeLessThanOrEqual(sampleArguments.radius);
   });
 });
