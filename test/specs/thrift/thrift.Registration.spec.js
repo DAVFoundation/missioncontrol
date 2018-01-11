@@ -12,7 +12,7 @@ afterAll(() => {
   connection.end();
 });
 
-test('vehicle_is_registered to return false', async () => {
+xtest('vehicle_is_registered to return false', async () => {
   expect.assertions(1);
   await vehicleIsRegistered().then(
     response => {
