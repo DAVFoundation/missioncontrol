@@ -14,9 +14,9 @@ const getLatestMission = async userId => {
   let mission = null;
   if (missions.length > 0) {
     mission = await getMission(missions[0]); 
-  }
-  if (typeof mission === 'object') {
-    return mission;
+    if (typeof mission === 'object') {
+      return mission;
+    }
   }
 };
 
