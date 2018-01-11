@@ -79,13 +79,12 @@ describe('randomMissionsCompleted()', () => {
 });
 
 describe('randomCoords()', () => {
-  const sampleArguments = { coords: { lat: 1, long: 1 }, radius: 1000 };
-  const origin = sampleArguments.coords;
-  const pickup = randomCoords(sampleArguments);
-  const originPoint = turf.point([parseFloat(origin.long), parseFloat(origin.lat)]);
-  const pickupPoint = turf.point([parseFloat(pickup.long), parseFloat(pickup.lat)]);
-
   test('returns a coordinate that is no further than given coordinates by given radius', () => {
+    const sampleArguments = { coords: { lat: 1, long: 1 }, radius: 1000 };
+    const origin = sampleArguments.coords;
+    const pickup = randomCoords(sampleArguments);
+    const originPoint = turf.point([parseFloat(origin.long), parseFloat(origin.lat)]);
+    const pickupPoint = turf.point([parseFloat(pickup.long), parseFloat(pickup.lat)]);
     expect(
       turf.distance(originPoint, pickupPoint, { units: 'meters' })
     ).toBeLessThanOrEqual(sampleArguments.radius);
