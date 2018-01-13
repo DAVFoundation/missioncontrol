@@ -23,7 +23,6 @@ const modelNames = [
  *
  * @returns {String} DAV address. A string of length 42 beginning with 0x followed by 40 hexadecimal characters
  */
-
 const randomDavAddress = () => {
   return (
     '0x' +
