@@ -1,5 +1,5 @@
 const redis = require('./redis');
-
+const config = require('../config');
 const { generateRandomVehicles } = require('../simulation/vehicles');
 const { createVehicle } = require('../client-thrift');
 
@@ -33,11 +33,14 @@ const addNewVehicle = vehicle => {
     'missions_completed_7_days', vehicle.missions_completed_7_days,
     'status', vehicle.status,
   );
+  // Set TTL for vehicles
+  redis.expire(`vehicles:${vehicle.id}`, config('vehicles_ttl'));
   // Send new vehicle to Captain
   createVehicle(vehicle);
 };
 
 const getVehicle = async id => {
+  redis.expire(`vehicles:${id}`, config('vehicles_ttl'));
   let vehicle = await redis.hgetallAsync(`vehicles:${id}`);
   vehicle.rating = parseInt(vehicle.rating);
   vehicle.coords = { long: vehicle.long, lat: vehicle.lat };
