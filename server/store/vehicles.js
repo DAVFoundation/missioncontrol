@@ -24,18 +24,18 @@ const addNewVehicle = vehicle => {
     'id', vehicle.id,
     'model', vehicle.model,
     'icon', vehicle.icon,
-    'long', vehicle.coords.long,
-    'lat', vehicle.coords.lat,
     'rating', vehicle.rating,
     'missions_completed', vehicle.missions_completed,
     'missions_completed_7_days', vehicle.missions_completed_7_days,
     'status', vehicle.status,
   );
+
+  updateVehiclePosition(vehicle);
+
   // Set TTL for vehicles
   redis.expire(`vehicles:${vehicle.id}`, config('vehicles_ttl'));
   // Send new vehicle to Captain
   createVehicle(vehicle);
-  updateVehiclePosition(vehicle);
 };
 
 const getVehicle = async id => {
@@ -59,6 +59,11 @@ const updateVehiclePosition = async (vehicle, newLong = vehicle.coords.long, new
   const positionId = await redis.incrAsync('next_position_id');
 
   redis.geoaddAsync('vehicle_positions', newLong, newLat, vehicle.id);
+
+  redis.hmsetAsync(`vehicles:${vehicle.id}`,
+    'long', newLong,
+    'lat', newLat,
+  )
 
   redis.hmsetAsync(`vehicle_position_history:${positionId}`,
     'long', newLong,
