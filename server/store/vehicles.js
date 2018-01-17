@@ -19,8 +19,6 @@ const parseVehiclesArray = vehicles =>
     }));
 
 const addNewVehicle = vehicle => {
-  // Add to vehicle_positions
-  redis.geoaddAsync('vehicle_positions', vehicle.coords.long, vehicle.coords.lat, vehicle.id);
   // Add to vehicles
   redis.hmsetAsync(`vehicles:${vehicle.id}`,
     'id', vehicle.id,
@@ -37,6 +35,7 @@ const addNewVehicle = vehicle => {
   redis.expire(`vehicles:${vehicle.id}`, config('vehicles_ttl'));
   // Send new vehicle to Captain
   createVehicle(vehicle);
+  updateVehiclePosition(vehicle);
 };
 
 const getVehicle = async id => {
@@ -55,6 +54,22 @@ const getVehicles = async vehicleIds =>
 const updateVehicleStatus = async (id, status) => {
   return await redis.hsetAsync(`vehicles:${id}`, 'status', status);
 };
+
+const updateVehiclePosition = async (vehicle, newLong = vehicle.coords.long, newLat = vehicle.coords.lat) => {
+  const positionId = await redis.incrAsync('next_position_id');
+
+  redis.geoaddAsync('vehicle_positions', newLong, newLat, vehicle.id);
+
+  redis.hmsetAsync(`vehicle_position_history:${positionId}`,
+    'long', newLong,
+    'lat', newLat,
+    'status', vehicle.status
+  );
+
+  redis.zaddAsync(`vehicles:${vehicle.id}:positions`,
+    Date.now(), positionId
+  )
+}
 
 const generateAndAddVehicles = (count, coords, radius) =>
   count > 0 && generateRandomVehicles(count, coords, radius)
