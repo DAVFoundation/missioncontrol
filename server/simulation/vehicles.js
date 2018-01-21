@@ -24,10 +24,10 @@ const randomBid = (origin, pickup, dropoff) => {
 };
 
 const calculateNextCoordinate = async (vehicle, mission, leg, positionLastUpdatedAt, previousPosition) => {
-  const legStartTime = leg == 'pickup' ? mission.user_signed_at : mission.travelling_dropoff_at
-  const legCompletionTime = parseFloat(legStartTime) + parseFloat(mission['time_to_' + leg])
+  const legStartTime = leg == 'pickup' ? mission.user_signed_at : mission.travelling_dropoff_at;
+  const legCompletionTime = parseFloat(legStartTime) + parseFloat(mission['time_to_' + leg]);
   const destinationLong = mission[leg + '_long'];
-  const destinationLat = mission[leg + '_lat']
+  const destinationLat = mission[leg + '_lat'];
 
   const timeLeftAtPreviousPosition = legCompletionTime - positionLastUpdatedAt;
 

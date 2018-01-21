@@ -53,8 +53,8 @@ const getStatus = async (req, res) => {
 
       if (currentStatus.vehicleIsMoving){
         const leg = vehicle.status.split('_')[1]; // pickup or dropoff
-        const latestPositionUpdate = await getLatestPositionUpdate(vehicle)
-        const positionLastUpdatedAt = latestPositionUpdate[1]
+        const latestPositionUpdate = await getLatestPositionUpdate(vehicle);
+        const positionLastUpdatedAt = latestPositionUpdate[1];
         const previousPosition =  await getPosition(latestPositionUpdate[0]);
         const newCoords = await calculateNextCoordinate(vehicle, mission, leg, positionLastUpdatedAt, previousPosition);
         await updateVehiclePosition(vehicle, newCoords.long, newCoords.lat);
