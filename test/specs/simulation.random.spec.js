@@ -1,6 +1,7 @@
 const {
   randomDroneModel,
   randomDavAddress,
+  randomRating,
   randomMissionsCompleted,
   randomCoords,
 } = require('../../server/simulation/random');
@@ -39,6 +40,15 @@ describe('randomDavAddress()', () => {
     ).toMatch(new RegExp('^0x([0-f]{40})$'));
   });
 });
+
+describe('randomRating()', () => {
+  test('returns a floating point number between 4.3 and 5.0', () => {
+    var randomValue=randomRating();
+    expect(randomValue).toBeGreaterThanOrEqual(4.3);
+    expect(randomValue).toBeLessThanOrEqual(5.0);
+  });
+});
+
 
 describe('randomMissionsCompleted()', () => {
   test('returns an object', () => {
