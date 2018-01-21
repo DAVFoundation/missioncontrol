@@ -49,7 +49,6 @@ describe('randomRating()', () => {
   });
 });
 
-
 describe('randomMissionsCompleted()', () => {
   test('returns an object', () => {
     expect(
