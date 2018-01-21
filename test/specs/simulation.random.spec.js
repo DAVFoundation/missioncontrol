@@ -43,7 +43,7 @@ describe('randomDavAddress()', () => {
 
 describe('randomRating()', () => {
   test('returns a floating point number between 4.3 and 5.0', () => {
-    var randomValue=randomRating();
+    const randomValue = randomRating();
     expect(randomValue).toBeGreaterThanOrEqual(4.3);
     expect(randomValue).toBeLessThanOrEqual(5.0);
   });
