@@ -3,8 +3,9 @@ module.exports = {
     status: 'travelling_pickup',
     nextVehicleStatus: 'landing_pickup',
     nextMissionStatus: 'landing_pickup',
+    vehicleIsMoving: true,
     conditionForNextStatus: mission => {
-      let elapsedTime = Date.now() - mission.time_to_pickup;
+      let elapsedTime = Date.now() - (parseFloat(mission.user_signed_at) + parseFloat(mission.time_to_pickup));
       return elapsedTime > 0;
     },
   },
@@ -38,8 +39,9 @@ module.exports = {
     status: 'travelling_dropoff',
     nextVehicleStatus: 'landing_dropoff',
     nextMissionStatus: 'landing_dropoff',
+    vehicleIsMoving: true,
     conditionForNextStatus: mission => {
-      let elapsedTime = Date.now() - mission.time_to_dropoff;
+      let elapsedTime = Date.now() - (parseFloat(mission.travelling_dropoff_at) + parseFloat(mission.time_to_dropoff));
       return elapsedTime > 0;
     },
   },

@@ -1,9 +1,10 @@
-const { getVehiclesInRange, updateVehicleStatus, getVehicle, getVehicles } = require('../store/vehicles');
+const { getVehiclesInRange, updateVehicleStatus, getVehicle, getVehicles, updateVehiclePosition, getPosition, getLatestPositionUpdate } = require('../store/vehicles');
 const { getBidsForRequest } = require('../store/bids');
 const { getLatestMission, updateMission } = require('../store/missions');
 const { createMissionUpdate } = require('../store/mission_updates');
 const { hasStore } = require('../lib/environment');
 const missionProgress = require('../simulation/missionProgress');
+const { calculateNextCoordinate } = require('../simulation/vehicles');
 
 const getStatus = async (req, res) => {
   const { lat, long, requestId, user_id } = req.query;
@@ -37,9 +38,10 @@ const getStatus = async (req, res) => {
     }
     case 'in_progress': {
       const mission = latestMission;
-      const vehicle = await getVehicle(latestMission.vehicle_id);
+      let vehicle = await getVehicle(latestMission.vehicle_id);
       const status = 'in_mission';
       const currentStatus = missionProgress[vehicle.status];
+
       if (currentStatus.conditionForNextStatus(latestMission)){
         const timestampString = currentStatus.nextMissionStatus + '_at';
         let timestampObject = {};
@@ -48,6 +50,18 @@ const getStatus = async (req, res) => {
         await createMissionUpdate(latestMission.mission_id, currentStatus.nextMissionStatus);
         await updateVehicleStatus(latestMission.vehicle_id, currentStatus.nextVehicleStatus);
       }
+
+      if (currentStatus.vehicleIsMoving){
+        const leg = vehicle.status.split('_')[1]; // pickup or dropoff
+        const latestPositionUpdate = await getLatestPositionUpdate(vehicle);
+        const positionLastUpdatedAt = latestPositionUpdate[1];
+        const previousPosition =  await getPosition(latestPositionUpdate[0]);
+        const newCoords = await calculateNextCoordinate(vehicle, mission, leg, positionLastUpdatedAt, previousPosition);
+        await updateVehiclePosition(vehicle, newCoords.long, newCoords.lat);
+        // refresh vehicle object
+        vehicle = await getVehicle(vehicle.id);
+      }
+
       vehicles = [vehicle];
       res.json({status, vehicles, bids, mission});
       break;
