@@ -72,7 +72,4 @@ const getStatus = async (req, res) => {
   }
 };
 
-
-
-
 module.exports = { getStatus };
