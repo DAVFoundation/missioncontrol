@@ -42,14 +42,12 @@ const getStatus = async (req, res) => {
       const status = 'in_mission';
       const currentStatus = missionProgress[vehicle.status];
 
-      if (currentStatus.conditionForNextStatus(latestMission)){
-        const timestampString = currentStatus.nextMissionStatus + '_at';
+      if (currentStatus.conditionForNextUpdate(latestMission)){
+        const timestampString = currentStatus.nextMissionUpdate + '_at';
         let timestampObject = {};
         timestampObject[timestampString] = Date.now();
         await updateMission(latestMission.mission_id, timestampObject);
-        if (currentStatus.nextMissionStatus === 'completed')
-          await updateMission(latestMission.mission_id, {status: 'completed'});
-        await createMissionUpdate(latestMission.mission_id, currentStatus.nextMissionStatus);
+        await createMissionUpdate(latestMission.mission_id, currentStatus.nextMissionUpdate);
         await updateVehicleStatus(latestMission.vehicle_id, currentStatus.nextVehicleStatus);
       }
 
