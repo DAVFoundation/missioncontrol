@@ -67,6 +67,7 @@ module.exports = {
   },
   'available': {
     status: 'available',
+    nextMissionStatus: 'completed',
     conditionForNextUpdate: () => {
       return false;
     },
