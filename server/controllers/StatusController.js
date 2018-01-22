@@ -69,7 +69,6 @@ const getStatus = async (req, res) => {
       break;
     }
     }
-    res.json(responseObject)
   } else {
     res.json({ status, vehicles, bids });
   }
