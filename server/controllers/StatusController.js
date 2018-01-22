@@ -47,6 +47,8 @@ const getStatus = async (req, res) => {
         let timestampObject = {};
         timestampObject[timestampString] = Date.now();
         await updateMission(latestMission.mission_id, timestampObject);
+        if (currentStatus.nextMissionStatus === 'completed')
+          await updateMission(latestMission.mission_id, {status: 'completed'});
         await createMissionUpdate(latestMission.mission_id, currentStatus.nextMissionStatus);
         await updateVehicleStatus(latestMission.vehicle_id, currentStatus.nextVehicleStatus);
       }
@@ -67,6 +69,7 @@ const getStatus = async (req, res) => {
       break;
     }
     }
+    res.json(responseObject)
   } else {
     res.json({ status, vehicles, bids });
   }
