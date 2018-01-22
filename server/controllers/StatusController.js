@@ -70,6 +70,9 @@ const getStatus = async (req, res) => {
       res.json({status, vehicles, bids, mission});
       break;
     }
+    default: {
+      res.json({ status, vehicles, bids });
+    }
     }
   } else {
     res.json({ status, vehicles, bids });
