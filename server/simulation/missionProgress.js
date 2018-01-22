@@ -2,9 +2,9 @@ module.exports = {
   'travelling_pickup': {
     status: 'travelling_pickup',
     nextVehicleStatus: 'landing_pickup',
-    nextMissionStatus: 'landing_pickup',
+    nextMissionUpdate: 'landing_pickup',
     vehicleIsMoving: true,
-    conditionForNextStatus: mission => {
+    conditionForNextUpdate: mission => {
       let elapsedTime = Date.now() - (parseFloat(mission.user_signed_at) + parseFloat(mission.time_to_pickup));
       return elapsedTime > 0;
     },
@@ -12,8 +12,8 @@ module.exports = {
   'landing_pickup': {
     status: 'landing_pickup',
     nextVehicleStatus: 'waiting_pickup',
-    nextMissionStatus: 'waiting_pickup',
-    conditionForNextStatus: mission => {
+    nextMissionUpdate: 'waiting_pickup',
+    conditionForNextUpdate: mission => {
       let elapsedTime = Date.now() - mission.landing_pickup_at;
       let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
       return elapsedSeconds > 2;
@@ -21,15 +21,15 @@ module.exports = {
   },
   'waiting_pickup': {
     status: 'waiting_pickup',
-    conditionForNextStatus: () => {
+    conditionForNextUpdate: () => {
       return false;
     }
   },
   'takeoff_pickup': {
     status: 'takeoff_pickup',
     nextVehicleStatus: 'travelling_dropoff',
-    nextMissionStatus: 'travelling_dropoff',
-    conditionForNextStatus: mission => {
+    nextMissionUpdate: 'travelling_dropoff',
+    conditionForNextUpdate: mission => {
       let elapsedTime = Date.now() - mission.waiting_pickup_at;
       let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
       return elapsedSeconds > 2;
@@ -38,9 +38,9 @@ module.exports = {
   'travelling_dropoff': {
     status: 'travelling_dropoff',
     nextVehicleStatus: 'landing_dropoff',
-    nextMissionStatus: 'landing_dropoff',
+    nextMissionUpdate: 'landing_dropoff',
     vehicleIsMoving: true,
-    conditionForNextStatus: mission => {
+    conditionForNextUpdate: mission => {
       let elapsedTime = Date.now() - (parseFloat(mission.travelling_dropoff_at) + parseFloat(mission.time_to_dropoff));
       return elapsedTime > 0;
     },
@@ -48,8 +48,8 @@ module.exports = {
   'landing_dropoff': {
     status: 'landing_dropoff',
     nextVehicleStatus: 'waiting_dropoff',
-    nextMissionStatus: 'waiting_dropoff',
-    conditionForNextStatus: mission => {
+    nextMissionUpdate: 'waiting_dropoff',
+    conditionForNextUpdate: mission => {
       let elapsedTime = Date.now() - mission.landing_dropoff_at;
       let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
       return elapsedSeconds > 2;
@@ -58,8 +58,8 @@ module.exports = {
   'waiting_dropoff': {
     status: 'waiting_dropoff',
     nextVehicleStatus: 'available',
-    nextMissionStatus: 'completed',
-    conditionForNextStatus: mission => {
+    nextMissionUpdate: 'completed',
+    conditionForNextUpdate: mission => {
       let elapsedTime = Date.now() - mission.waiting_dropoff_at;
       let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
       return elapsedSeconds > 2;
@@ -67,7 +67,7 @@ module.exports = {
   },
   'available': {
     status: 'available',
-    conditionForNextStatus: () => {
+    conditionForNextUpdate: () => {
       return false;
     },
   },
