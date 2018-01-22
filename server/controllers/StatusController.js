@@ -51,6 +51,10 @@ const getStatus = async (req, res) => {
         await updateVehicleStatus(latestMission.vehicle_id, currentStatus.nextVehicleStatus);
       }
 
+      if (currentStatus.nextMissionStatus){
+        await updateMission(latestMission.mission_id, {status: currentStatus.nextMissionStatus});
+      }
+
       if (currentStatus.vehicleIsMoving){
         const leg = vehicle.status.split('_')[1]; // pickup or dropoff
         const latestPositionUpdate = await getLatestPositionUpdate(vehicle);
