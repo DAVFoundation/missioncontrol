@@ -13,7 +13,6 @@ const parseVehiclesArray = vehicles =>
       model: vehicle.model,
       icon: vehicle.icon,
       coords: {lat: parseFloat(vehicle.lat), long: parseFloat(vehicle.long)},
-      rating: parseFloat(vehicle.rating),
       missions_completed: parseInt(vehicle.missions_completed),
       missions_completed_7_days: parseInt(vehicle.missions_completed_7_days),
     }));
@@ -24,7 +23,6 @@ const addNewVehicle = vehicle => {
     'id', vehicle.id,
     'model', vehicle.model,
     'icon', vehicle.icon,
-    'rating', vehicle.rating,
     'missions_completed', vehicle.missions_completed,
     'missions_completed_7_days', vehicle.missions_completed_7_days,
     'status', vehicle.status,
@@ -41,7 +39,6 @@ const addNewVehicle = vehicle => {
 const getVehicle = async id => {
   redis.expire(`vehicles:${id}`, config('vehicles_ttl'));
   let vehicle = await redis.hgetallAsync(`vehicles:${id}`);
-  vehicle.rating = parseInt(vehicle.rating);
   vehicle.coords = {long: vehicle.long, lat: vehicle.lat};
   return vehicle;
 };

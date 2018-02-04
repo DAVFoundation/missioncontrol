@@ -18,7 +18,6 @@ struct VehicleDetails {
   1: required DAVUser.DAVUser vehicleId,
   2: optional string model,
   3: optional Types.Coordinates coordinates,
-  4: optional double rating,
-  5: optional i16 missions_completed,
-  6: optional i16 missions_completed_7_days,
+  4: optional i16 missions_completed,
+  5: optional i16 missions_completed_7_days,
 }

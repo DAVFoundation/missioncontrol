@@ -53,7 +53,6 @@ const createVehicle = vehicle => {
   let vehicleDetails = new VehicleTypes.VehicleDetails();
   vehicleDetails.vehicleId = davUser;
   vehicleDetails.model = vehicle.model;
-  vehicleDetails.rating = vehicle.rating;
   vehicleDetails.missions_completed = vehicle.missions_completed;
   vehicleDetails.missions_completed_7_days = vehicle.missions_completed_7_days;
   vehicleDetails.coordinates = coordinates;

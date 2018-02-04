@@ -33,12 +33,6 @@ describe('generateRandom()', () => {
     ).toHaveProperty('coords');
   });
 
-  test('returns an object with a rating attribute', () => {
-    expect(
-      generateRandom(sampleArguments)
-    ).toHaveProperty('rating');
-  });
-
   test('returns an object with a missions_completed attribute', () => {
     expect(
       generateRandom(sampleArguments)

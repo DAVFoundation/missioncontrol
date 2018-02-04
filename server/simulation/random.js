@@ -61,17 +61,6 @@ const randomDroneModel = () => {
 };
 
 /**
- * Returns a random rating between 4.3 and 5.0 (with a slightly greater chance for perfect 5s)
- *
- * @returns {Number} A floating point number representing a rating
- */
-const randomRating = () => {
-  let rating = (Math.random() + 4.3).toFixed(1);
-  if (rating > 5) rating = 5.0;
-  return parseFloat(rating);
-};
-
-/**
  * Returns an object with two properties containing a random number of missions completed, and a smaller random number of missions completed
  * in the last 7 days.
  *
@@ -110,7 +99,6 @@ const randomCoords = ({ coords, radius }) => {
 module.exports = {
   randomDavAddress,
   randomDroneModel,
-  randomRating,
   randomMissionsCompleted,
   randomCoords,
 };
