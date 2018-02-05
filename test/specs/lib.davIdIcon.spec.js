@@ -6,13 +6,13 @@ describe('getDavIdIconUrl()', () => {
   test('returns an absolute URL', () => {
     expect(
       checkIfAbsoluteURL(getDavIdIconUrl(dummyDavId))
-    ).toBeTruthy();
+    ).toBe(true);
   });
 
   test('returns a string containing the given davID', () => {
     expect(
       getDavIdIconUrl(dummyDavId).includes(dummyDavId)
-    ).toBeTruthy();
+    ).toBe(true);
   });  
   
 });
