@@ -1,9 +1,11 @@
+const {updateMission } = require('../store/missions');
+
+
 module.exports = {
   'travelling_pickup': {
     status: 'travelling_pickup',
     nextVehicleStatus: 'landing_pickup',
     nextMissionUpdate: 'landing_pickup',
-    vehicleIsMoving: true,
     conditionForNextUpdate: mission => {
       let elapsedTime = Date.now() - (parseFloat(mission.user_signed_at) + parseFloat(mission.time_to_pickup));
       return elapsedTime > 0;
@@ -29,6 +31,13 @@ module.exports = {
     status: 'takeoff_pickup',
     nextVehicleStatus: 'travelling_dropoff',
     nextMissionUpdate: 'travelling_dropoff',
+    beforeUpdate: async (mission) => {
+      const waitTime = Date.now() - parseFloat(mission.waiting_pickup_at);
+      const newTimeToDropoff = parseFloat(mission.time_to_dropoff) + waitTime;
+      console.log(mission.time_to_dropoff);
+      console.log(newTimeToDropoff);
+      await updateMission(mission.id, {'time_to_dropoff': newTimeToDropoff});
+    },
     conditionForNextUpdate: mission => {
       let elapsedTime = Date.now() - mission.waiting_pickup_at;
       let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
@@ -39,7 +48,6 @@ module.exports = {
     status: 'travelling_dropoff',
     nextVehicleStatus: 'landing_dropoff',
     nextMissionUpdate: 'landing_dropoff',
-    vehicleIsMoving: true,
     conditionForNextUpdate: mission => {
       let elapsedTime = Date.now() - (parseFloat(mission.travelling_dropoff_at) + parseFloat(mission.time_to_dropoff));
       return elapsedTime > 0;
