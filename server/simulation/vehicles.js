@@ -42,12 +42,6 @@ const calculateNextCoordinate = async (vehicle, mission, leg, positionLastUpdate
   let long = (destinationLong - (timeLeftAtNewPosition * speedLong)).toFixed(6);
   let lat = (destinationLat - (timeLeftAtNewPosition * speedLat)).toFixed(6);
 
-  if ((destinationLong - mission.vehicle_start_long) > 0) {
-    long = long > destinationLong ? destinationLong : long;
-  } else {
-    long = long < destinationLong ? destinationLong : long;
-  }
-
   switch(leg){
   case 'pickup':{
     long = dontMoveAtDestination(destinationLong, mission.vehicle_start_long, long);
