@@ -69,7 +69,6 @@ const getStatus = async (req, res) => {
       const previousPosition = await getPosition(latestPositionUpdate[0]);
       const newCoords = await calculateNextCoordinate(vehicle, mission, leg, positionLastUpdatedAt, previousPosition);
       if (!(isNaN(newCoords.long) || isNaN(newCoords.lat))){
-        console.log(newCoords);
         await updateVehiclePosition(vehicle, newCoords.long, newCoords.lat);
       }
       // refresh vehicle object
