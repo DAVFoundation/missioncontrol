@@ -34,8 +34,6 @@ module.exports = {
     beforeUpdate: async (mission) => {
       const waitTime = Date.now() - parseFloat(mission.waiting_pickup_at);
       const newTimeToDropoff = parseFloat(mission.time_to_dropoff) + waitTime;
-      console.log(mission.time_to_dropoff);
-      console.log(newTimeToDropoff);
       await updateMission(mission.id, {'time_to_dropoff': newTimeToDropoff});
     },
     conditionForNextUpdate: mission => {
