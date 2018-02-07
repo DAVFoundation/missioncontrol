@@ -73,7 +73,9 @@ module.exports = {
   },
   'available': {
     status: 'available',
-    nextMissionStatus: 'completed',
+    beforeUpdate: async (mission) => {
+      await updateMission(mission.mission_id, {'status': 'completed'});
+    },
     conditionForNextUpdate: () => {
       return false;
     },
