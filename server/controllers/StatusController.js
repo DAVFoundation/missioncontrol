@@ -48,19 +48,14 @@ const getStatus = async (req, res) => {
       const status = 'in_mission';
       const currentStatus = missionProgress[vehicle.status];
 
+      if (currentStatus.beforeUpdate) await currentStatus.beforeUpdate(latestMission);
       if (currentStatus.conditionForNextUpdate(latestMission)) {
         const timestampString = currentStatus.nextMissionUpdate + '_at';
         let timestampObject = {};
         timestampObject[timestampString] = Date.now();
-
-        if (currentStatus.beforeUpdate) await currentStatus.beforeUpdate(latestMission);
         await updateMission(latestMission.mission_id, timestampObject);
         await createMissionUpdate(latestMission.mission_id, currentStatus.nextMissionUpdate);
         await updateVehicleStatus(latestMission.vehicle_id, currentStatus.nextVehicleStatus);
-      }
-
-      if (currentStatus.nextMissionStatus) {
-        await updateMission(latestMission.mission_id, {status: currentStatus.nextMissionStatus});
       }
 
       const leg = vehicle.status.split('_')[1]; // pickup or dropoff
@@ -79,7 +74,7 @@ const getStatus = async (req, res) => {
       break;
     }
     default: {
-      res.json({status, vehicles, bids});
+      res.json({status, vehicles, bids, mission: latestMission});
     }
     }
   } else {
