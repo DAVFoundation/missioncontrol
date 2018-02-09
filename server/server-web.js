@@ -13,9 +13,11 @@ require('./client-thrift').start({
 
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 const port = process.env.WEB_SERVER_PORT || 8888;
 
 app.use(cors);
+app.use(bodyParser.json());
 app.use(getOrCreateUser);
 
 app.get('/healthy', (req, res) => {
@@ -24,8 +26,8 @@ app.get('/healthy', (req, res) => {
 
 app.get('/status', StatusController.getStatus);
 
-app.post('/requests', NeedController.newRequest);
-app.delete('/requests/:requestId', NeedController.cancelRequest);
+app.post('/needs', NeedController.create);
+app.delete('/needs/:needId', NeedController.cancel);
 app.get('/choose_bid', NeedController.chooseBid);
 
 app.get('/mission_command', MissionController.command);
