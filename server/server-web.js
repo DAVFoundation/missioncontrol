@@ -2,7 +2,7 @@ const cors = require('./middleware/cors');
 const getOrCreateUser = require('./middleware/getOrCreateUser');
 
 const StatusController = require('./controllers/StatusController');
-const RequestController = require('./controllers/RequestController');
+const NeedController = require('./controllers/NeedController');
 const MissionController = require('./controllers/MissionController');
 
 // Create thrift connection to Captain
@@ -24,9 +24,9 @@ app.get('/healthy', (req, res) => {
 
 app.get('/status', StatusController.getStatus);
 
-app.get('/request/new', RequestController.newRequest);
-app.get('/request/cancel', RequestController.cancelRequest);
-app.get('/choose_bid', RequestController.chooseBid);
+app.post('/requests', NeedController.newRequest);
+app.delete('/requests/:requestID', NeedController.cancelRequest);
+app.get('/choose_bid', NeedController.chooseBid);
 
 app.get('/mission_command', MissionController.command);
 
