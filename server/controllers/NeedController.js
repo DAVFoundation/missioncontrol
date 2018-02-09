@@ -16,7 +16,7 @@ const newRequest = async (req, res) => {
 };
 
 const cancelRequest = async (req, res) => {
-  const { requestId } = req.query;
+  const requestId = req.param('requestId');
   const request = await getRequest(requestId);
   if (request) {
     await deleteRequest(requestId);

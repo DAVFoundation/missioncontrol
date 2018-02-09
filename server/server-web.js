@@ -25,7 +25,7 @@ app.get('/healthy', (req, res) => {
 app.get('/status', StatusController.getStatus);
 
 app.post('/requests', NeedController.newRequest);
-app.delete('/requests/:requestID', NeedController.cancelRequest);
+app.delete('/requests/:requestId', NeedController.cancelRequest);
 app.get('/choose_bid', NeedController.chooseBid);
 
 app.get('/mission_command', MissionController.command);
