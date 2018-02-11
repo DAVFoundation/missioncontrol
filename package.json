@@ -32,6 +32,6 @@
     "gulp-eslint": "^4.0.2",
     "gulp-nodemon": "^2.2.1",
     "gulp-shell": "^0.6.5",
-    "jest-cli": "^22.1.4"
+    "jest-cli": "^22.2.2"
   }
 }
