@@ -1,5 +1,5 @@
 const {getVehiclesInRange, updateVehicleStatus, getVehicle, getVehicles, updateVehiclePosition, getPosition, getLatestPositionUpdate} = require('../store/vehicles');
-const {getBidsForRequest} = require('../store/bids');
+const {getBidsForNeed} = require('../store/bids');
 const {getLatestMission, updateMission} = require('../store/missions');
 const {createMissionUpdate} = require('../store/mission_updates');
 const {hasStore} = require('../lib/environment');
@@ -7,10 +7,10 @@ const missionProgress = require('../simulation/missionProgress');
 const {calculateNextCoordinate} = require('../simulation/vehicles');
 
 const getStatus = async (req, res) => {
-  const {lat, long, requestId, user_id} = req.query;
+  const {lat, long, needId, user_id} = req.query;
   const status = 'idle';
   const latestMission = await getLatestMission(user_id);
-  const bids = (!hasStore() || !requestId) ? [] : await getBidsForRequest(requestId);
+  const bids = (!hasStore() || !needId) ? [] : await getBidsForNeed(needId);
   let vehicles = [];
   if (hasStore()) {
     if (bids.length > 0) {

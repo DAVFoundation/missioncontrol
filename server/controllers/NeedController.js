@@ -1,16 +1,16 @@
-const {createRequest, getRequest, deleteRequest} = require('../store/requests');
-const {deleteBidsForRequest} = require('../store/bids');
+const {createNeed, getNeed, deleteNeed} = require('../store/needs');
+const {deleteBidsForNeed} = require('../store/bids');
 const {createMission} = require('../store/missions');
 const {updateVehicleStatus} = require('../store/vehicles');
 
 const create = async (req, res) => {
   const {user_id} = req.query;
   const {pickup, dropoff, requested_pickup_time, size, weight} = req.body
-  const requestId = await createRequest({
+  const needId = await createNeed({
     user_id, pickup, dropoff, requested_pickup_time, size, weight
   });
-  if (requestId) {
-    res.json({requestId});
+  if (needId) {
+    res.json({needId});
   } else {
     res.status(500).send('Something broke!');
   }
@@ -18,10 +18,10 @@ const create = async (req, res) => {
 
 const cancel = async (req, res) => {
   const {needId} = req.params;
-  const need = await getRequest(needId);
+  const need = await getNeed(needId);
   if (need) {
-    await deleteRequest(need);
-    await deleteBidsForRequest(need);
+    await deleteNeed(need);
+    await deleteBidsForNeed(need);
     res.send('need cancelled');
   } else {
     res.status(500).send('Something broke!');
