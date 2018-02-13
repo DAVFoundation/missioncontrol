@@ -8,14 +8,14 @@ const createConstraints = require('./constraints/need/create');
 const validate = require('../lib/validate');
 
 const create = async (req, res) => {
-  const params = req.body
+  const params = req.body;
   const validationErrors = validate(params, createConstraints);
   if (validationErrors) {
     res.status(422).json(validationErrors);
   } else {
     const allowedParamsKeys = Object.keys(createConstraints);
-    Object.keys(params).forEach(key => {if (!allowedParamsKeys.includes(key)) delete params[key]})
-    params.user_id = req.query.user_id
+    Object.keys(params).forEach(key => {if (!allowedParamsKeys.includes(key)) delete params[key];});
+    params.user_id = req.query.user_id;
     const needId = await createNeed(params);
     if (needId) {
       res.json({needId});

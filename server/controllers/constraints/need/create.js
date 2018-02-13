@@ -42,19 +42,19 @@ module.exports = {
     presence: true,
     type: 'number',
     inclusion: {
-      within: Array.from(new Array(18), (x,i) => i + 1)
+      within: Array.from(new Array(18), (x, i) => i + 1)
     }
   },
   hazardous_goods: {
     type: 'number',
     inclusion: {
-      within: Array.from(new Array(9), (x,i) => i + 1)
+      within: Array.from(new Array(9), (x, i) => i + 1)
     }
   },
   ip_protection_level: {
     type: 'number',
     inclusion: {
-      within: Array.from(new Array(69), (x,i) => i + 54)
+      within: Array.from(new Array(69), (x, i) => i + 54)
     }
   },
   height: {
@@ -70,7 +70,7 @@ module.exports = {
     type: 'number'
   },
   insurance_required: {
-   type: 'boolean'
+    type: 'boolean'
   },
   insured_value: {
     type: 'number'

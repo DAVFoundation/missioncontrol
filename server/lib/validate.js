@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*!
  * validate.js 0.12.0
  *
