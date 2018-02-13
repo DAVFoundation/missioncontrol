@@ -11,24 +11,11 @@ const getNeed = async needId => {
 const createNeed = async needDetails => {
   // get new unique id for need
   const needId = await redis.incrAsync('next_need_id');
-
-  // create a new need entry in Redis
-  const {user_id, pickup, dropoff, requested_pickup_time, size, weight} = needDetails;
-  const [pickup_lat, pickup_long] = pickup.split(',');
-  const [dropoff_lat, dropoff_long] = dropoff.split(',');
-  redis.hmsetAsync(`needs:${needId}`,
-    'user_id', user_id,
-    'pickup_lat', pickup_lat,
-    'pickup_long', pickup_long,
-    'dropoff_lat', dropoff_lat,
-    'dropoff_long', dropoff_long,
-    'requested_pickup_time', requested_pickup_time,
-    'size', size,
-    'weight', weight,
-  );
+  const key_value_array = [].concat(...Object.entries(needDetails));
+  redis.hmsetAsync(`needs:${needId}`, ...key_value_array);
 
   // See if there are any vehicles around the pickup position, if not a few vehicles will be generated there
-  getVehiclesInRange({ lat: parseFloat(pickup_lat), long: parseFloat(pickup_long) }, 7000);
+  getVehiclesInRange({ lat: parseFloat(needDetails.pickup_latitude), long: parseFloat(needDetails.pickup_longitude) }, 7000);
 
   // Set TTL for need
   redis.expire(`needs:${needId}`, config('needs_ttl'));

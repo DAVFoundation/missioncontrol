@@ -51,13 +51,13 @@ const getBidsForNeed = async needId => {
 
   // If not enough bids, make some up
   if (bidIds.length < 10) {
-    const { pickup_long, pickup_lat, dropoff_lat, dropoff_long } = need;
-    const pickup = { lat: pickup_lat, long: pickup_long };
-    const dropoff = { lat: dropoff_lat, long: dropoff_long };
+    const { pickup_longitude, pickup_latitude, dropoff_latitude, dropoff_longitude } = need;
+    const pickup = { lat: pickup_latitude, long: pickup_longitude };
+    const dropoff = { lat: dropoff_latitude, long: dropoff_longitude };
     const vehicleIds = await redis.georadiusAsync(
       'vehicle_positions',
-      pickup_long,
-      pickup_lat,
+      pickup_longitude,
+      pickup_latitude,
       2000,
       'm',
     );

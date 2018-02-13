@@ -2,19 +2,26 @@ const {createNeed, getNeed, deleteNeed} = require('../store/needs');
 const {deleteBidsForNeed} = require('../store/bids');
 const {createMission} = require('../store/missions');
 const {updateVehicleStatus} = require('../store/vehicles');
-const validate = require('validate.js');
-const createConstraints = require('./constraints/create');
+const createConstraints = require('./constraints/need/create');
+
+// using downloaded validate.js file because latest version does not have type checking and docker fails with git source in package.json
+const validate = require('../lib/validate');
 
 const create = async (req, res) => {
-  const {user_id} = req.query;
-  const {pickup, dropoff, requested_pickup_time, size, weight} = req.body
-  const needId = await createNeed({
-    user_id, pickup, dropoff, requested_pickup_time, size, weight
-  });
-  if (needId) {
-    res.json({needId});
+  const params = req.body
+  const validationErrors = validate(params, createConstraints);
+  if (validationErrors) {
+    res.status(422).json(validationErrors);
   } else {
-    res.status(500).send('Something broke!');
+    const allowedParamsKeys = Object.keys(createConstraints);
+    Object.keys(params).forEach(key => {if (!allowedParamsKeys.includes(key)) delete params[key]})
+    params.user_id = req.query.user_id
+    const needId = await createNeed(params);
+    if (needId) {
+      res.json({needId});
+    } else {
+      res.status(500).send('Something broke!');
+    }
   }
 };
 

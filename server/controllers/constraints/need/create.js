@@ -51,6 +51,24 @@ module.exports = {
       within: Array.from(new Array(9), (x,i) => i + 1)
     }
   },
+  ip_protection_level: {
+    type: 'number',
+    inclusion: {
+      within: Array.from(new Array(69), (x,i) => i + 54)
+    }
+  },
+  height: {
+    type: 'number'
+  },
+  width: {
+    type: 'number'
+  },
+  length: {
+    type: 'number'
+  },
+  weight: {
+    type: 'number'
+  },
   insurance_required: {
    type: 'boolean'
   },

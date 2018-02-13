@@ -27,8 +27,8 @@ const calculateNextCoordinate = async (vehicle, mission, leg, positionLastUpdate
   const legStartTime = leg === 'pickup' ? mission.vehicle_signed_at : mission.travelling_dropoff_at;
   let legCompletionTime = parseFloat(legStartTime) + parseFloat(mission['time_to_' + leg]);
 
-  const destinationLong = mission[leg + '_long'];
-  const destinationLat = mission[leg + '_lat'];
+  const destinationLong = mission[leg + '_longitude'];
+  const destinationLat = mission[leg + '_latitude'];
 
   const timeLeftAtPreviousPosition = legCompletionTime - positionLastUpdatedAt;
 
@@ -44,13 +44,13 @@ const calculateNextCoordinate = async (vehicle, mission, leg, positionLastUpdate
 
   switch(leg){
   case 'pickup':{
-    long = dontMoveAtDestination(destinationLong, mission.vehicle_start_long, long);
-    lat = dontMoveAtDestination(destinationLat, mission.vehicle_start_lat, lat);
+    long = dontMoveAtDestination(destinationLong, mission.vehicle_start_longitude, long);
+    lat = dontMoveAtDestination(destinationLat, mission.vehicle_start_latitude, lat);
     break;
   }
   case 'dropoff':{
-    long = dontMoveAtDestination(destinationLong, mission.pickup_long, long);
-    lat = dontMoveAtDestination(destinationLat, mission.pickup_lat, lat);
+    long = dontMoveAtDestination(destinationLong, mission.pickup_longitude, long);
+    lat = dontMoveAtDestination(destinationLat, mission.pickup_latitude, lat);
     break;
   }
   }

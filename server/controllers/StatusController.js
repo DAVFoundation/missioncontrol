@@ -33,8 +33,8 @@ const getStatus = async (req, res) => {
         await updateMission(latestMission.mission_id, {
           'vehicle_signed_at': Date.now(),
           'status': 'in_progress',
-          'vehicle_start_long': vehicle.long,
-          'vehicle_start_lat': vehicle.lat
+          'vehicle_start_longitude': vehicle.long,
+          'vehicle_start_latitude': vehicle.lat
         });
         await updateVehicleStatus(latestMission.vehicle_id, 'travelling_pickup');
         await createMissionUpdate(latestMission.mission_id, 'travelling_pickup');
