@@ -3,8 +3,6 @@ const {deleteBidsForNeed} = require('../store/bids');
 const {createMission} = require('../store/missions');
 const {updateVehicleStatus} = require('../store/vehicles');
 const createConstraints = require('./constraints/need/create');
-
-// using downloaded validate.js file because latest version does not have type checking and docker fails with git source in package.json
 const validate = require('../lib/validate');
 
 const create = async (req, res) => {

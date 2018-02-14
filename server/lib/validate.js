@@ -1,5 +1,9 @@
 /* eslint-disable */
 
+/* using downloaded validate.js file because latest version on npm does not have type checking
+ * and docker fails with git source in package.json
+ */
+
 /*!
  * validate.js 0.12.0
  *
