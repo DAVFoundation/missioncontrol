@@ -42,4 +42,17 @@ describe('randomBid()', () => {
       typeof bid.time_to_dropoff
     ).toBe('number');
   });
+
+  test('returns a price proportional to the total distance travelled', () => {
+    const origin = randomCoords(sampleArguments);
+    const bidShort = randomBid(origin, {lat: origin.lat + 0.05, long: origin.long}, {lat: origin.lat + 0.10, long: origin.long});
+    
+    expect(
+      bidShort.price
+    ).toBeLessThan(randomBid(origin, {lat: origin.lat + 0.05, long: origin.long}, {lat: origin.lat + 0.15, long: origin.long}).price);
+
+    expect(
+      bidShort.price
+    ).toBeLessThan(randomBid(origin, {lat: origin.lat + 0.10, long: origin.long}, {lat: origin.lat + 0.15, long: origin.long}).price);
+  });
 });
