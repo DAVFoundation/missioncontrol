@@ -66,12 +66,14 @@ const getBidsForNeed = async needId => {
       // Not guaranteed to not have duplicate bids from same vehicle
       const vehicleId = vehicleIds[bidIds.length];
       const vehicle = await getVehicle(vehicleId);
-      const origin = { lat: vehicle.lat, long: vehicle.long };
-      let newBid = randomBid(origin, pickup, dropoff);
-      newBid.vehicle_id = vehicleId;
-      const newBidId = await saveBid(newBid, needId, userId);
-      newBid.id = newBidId;
-      bids.push(newBid);
+      if (vehicle.status === 'available') {
+        const origin = { lat: vehicle.lat, long: vehicle.long };
+        let newBid = randomBid(origin, pickup, dropoff);
+        newBid.vehicle_id = vehicleId;
+        const newBidId = await saveBid(newBid, needId, userId);
+        newBid.id = newBidId;
+        bids.push(newBid);
+      }
     }
   }
 
