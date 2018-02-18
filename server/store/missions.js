@@ -1,6 +1,6 @@
 const redis = require('./redis');
 const { getBid } = require('./bids');
-const { getRequest } = require('./requests');
+const { getNeed } = require('./needs');
 const { createMissionUpdate } = require('./mission_updates');
 
 const getMission = async missionId => {
@@ -28,11 +28,11 @@ const updateMission = async (id, params) => {
 const createMission = async ({ user_id, bid_id }) => {
   // get bid details
   const bid = await getBid(bid_id);
-  const { vehicle_id, price, time_to_pickup, time_to_dropoff, request_id } = bid;
+  const { vehicle_id, price, time_to_pickup, time_to_dropoff, need_id } = bid;
 
-  // get request details
-  const request = await getRequest(request_id);
-  const { pickup_lat, pickup_long, dropoff_lat, dropoff_long, requested_pickup_time, size, weight } = request;
+  // get neeed details
+  const need = await getNeed(need_id);
+  const { pickup_latitude, pickup_longitude, dropoff_latitude, dropoff_longitude, pickup_at, cargo_type, weight } = need;
 
   // get new unique id for mission
   const missionId = await redis.incrAsync('next_mission_id');
@@ -51,13 +51,13 @@ const createMission = async ({ user_id, bid_id }) => {
     'price', price,
     'time_to_pickup', time_to_pickup,
     'time_to_dropoff', time_to_dropoff,
-    'request_id', request_id,
-    'pickup_lat', pickup_lat,
-    'pickup_long', pickup_long,
-    'dropoff_lat', dropoff_lat,
-    'dropoff_long', dropoff_long,
-    'requested_pickup_time', requested_pickup_time,
-    'size', size,
+    'need_id', need_id,
+    'pickup_latitude', pickup_latitude,
+    'pickup_longitude', pickup_longitude,
+    'dropoff_latitude', dropoff_latitude,
+    'dropoff_longitude', dropoff_longitude,
+    'pickup_at', pickup_at,
+    'cargo_type', cargo_type,
     'weight', weight,
     'status', 'awaiting_signatures',
     'user_signed_at', user_signed_at,
@@ -68,12 +68,12 @@ const createMission = async ({ user_id, bid_id }) => {
     price,
     time_to_pickup,
     time_to_dropoff,
-    pickup_lat,
-    pickup_long,
-    dropoff_lat,
-    dropoff_long,
-    requested_pickup_time,
-    size,
+    pickup_latitude,
+    pickup_longitude,
+    dropoff_latitude,
+    dropoff_longitude,
+    pickup_at,
+    cargo_type,
     weight,
     user_signed_at,
   };

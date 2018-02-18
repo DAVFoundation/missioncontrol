@@ -15,6 +15,4 @@ As an organization committed to extreme transparency, collaboration, and open-so
 
 For help in getting started, please be sure to read our [contribution guidelines](https://github.com/DAVFoundation/missioncontrol/blob/master/CONTRIBUTING.md).
 
-### License
 
-Licensed under [MIT](https://github.com/DAVFoundation/missioncontrol/blob/master/LICENSE).

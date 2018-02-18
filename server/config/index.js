@@ -1,5 +1,5 @@
 const config = {
-  requests_ttl: 43200,
+  needs_ttl: 43200,
   bids_ttl: 3600,
   vehicles_ttl: 86400,
 };
