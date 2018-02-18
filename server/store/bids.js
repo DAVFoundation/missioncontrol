@@ -92,4 +92,4 @@ module.exports = {
   deleteBidsForNeed,
 };
 
-const setBidTTL = async bidId => redis.expire(`bids:${bidId}`, config('bids_ttl'));
+const setBidTTL = bidId => redis.expire(`bids:${bidId}`, config('bids_ttl'));
