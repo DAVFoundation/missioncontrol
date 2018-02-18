@@ -31,17 +31,20 @@ const addNewVehicle = vehicle => {
   updateVehiclePosition(vehicle);
 
   // Set TTL for vehicles
-  redis.expire(`vehicles:${vehicle.id}`, config('vehicles_ttl'));
+  setVehicleTTL(vehicle.id);
   // Send new vehicle to Captain
   createVehicle(vehicle);
 };
 
 const getVehicle = async id => {
-  redis.expire(`vehicles:${id}`, config('vehicles_ttl'));
+  setVehicleTTL(id);
   let vehicle = await redis.hgetallAsync(`vehicles:${id}`);
   vehicle.coords = {long: vehicle.long, lat: vehicle.lat};
   return vehicle;
 };
+
+const setVehicleTTL = vehicleId => 
+  redis.expire(`vehicles:${vehicleId}`, config('vehicles_ttl'));
 
 const getVehicles = async vehicleIds =>
   parseVehiclesArray(await Promise.all(vehicleIds.map(vehicleId => getVehicle(vehicleId))),);
