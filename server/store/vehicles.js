@@ -43,7 +43,7 @@ const getVehicle = async id => {
   return vehicle;
 };
 
-const setVehicleTTL = async vehicleId => 
+const setVehicleTTL = vehicleId => 
   redis.expire(`vehicles:${vehicleId}`, config('vehicles_ttl'));
 
 const getVehicles = async vehicleIds =>
