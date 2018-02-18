@@ -26,7 +26,7 @@ const deleteNeed = async needId => {
   return await redis.del(`needs:${needId}`);
 };
 
-const setNeedTTL = async needId => redis.expire(`needs:${needId}`, config('needs_ttl'));
+const setNeedTTL = needId => redis.expire(`needs:${needId}`, config('needs_ttl'));
 
 module.exports = {
   createNeed,
