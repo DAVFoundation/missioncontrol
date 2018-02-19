@@ -1,6 +1,6 @@
 # Contributing to missioncontrol
 
-Thank you for taking the time to lend a hand with the **missions** project ❤️
+Thank you for taking the time to lend a hand with the **missioncontrol** project ❤️
 
 There are several ways you can help the project out:
 
