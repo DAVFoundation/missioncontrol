@@ -1,5 +1,4 @@
 const {getVehiclesInRange, updateVehicleStatus, getVehicle, getVehicles, updateVehiclePosition, getPosition, getLatestPositionUpdate} = require('../store/vehicles');
-const {getBidsForNeed} = require('../store/bids');
 const {getLatestMission, updateMission} = require('../store/missions');
 const {createMissionUpdate} = require('../store/mission_updates');
 const {hasStore} = require('../lib/environment');
@@ -7,10 +6,9 @@ const missionProgress = require('../simulation/missionProgress');
 const {calculateNextCoordinate} = require('../simulation/vehicles');
 
 const getStatus = async (req, res) => {
-  const {lat, long, needId, user_id} = req.query;
+  const {lat, long, user_id} = req.query;
   const status = 'idle';
   const latestMission = await getLatestMission(user_id);
-  const bids = (!hasStore() || !needId) ? [] : await getBidsForNeed(needId);
   let vehicles = [];
   if (hasStore()) {
     if (bids.length > 0) {
@@ -39,7 +37,7 @@ const getStatus = async (req, res) => {
         await updateVehicleStatus(latestMission.vehicle_id, 'travelling_pickup');
         await createMissionUpdate(latestMission.mission_id, 'travelling_pickup');
       }
-      res.json({status, vehicles, bids});
+      res.json({status, vehicles});
       break;
     }
     case 'in_progress': {
@@ -70,15 +68,15 @@ const getStatus = async (req, res) => {
       vehicle = await getVehicle(vehicle.id);
 
       vehicles = [vehicle];
-      res.json({status, vehicles, bids, mission});
+      res.json({status, vehicles, mission});
       break;
     }
     default: {
-      res.json({status, vehicles, bids, mission: latestMission});
+      res.json({status, vehicles, mission: latestMission});
     }
     }
   } else {
-    res.json({status, vehicles, bids});
+    res.json({status, vehicles});
   }
 };
 
