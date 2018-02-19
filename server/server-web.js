@@ -5,6 +5,7 @@ const StatusController = require('./controllers/StatusController');
 const NeedController = require('./controllers/NeedController');
 const MissionController = require('./controllers/MissionController');
 const BidController = require('./controllers/BidController');
+const VehicleController = require('./controllers/VehicleController');
 
 // Create thrift connection to Captain
 require('./client-thrift').start({
@@ -31,6 +32,7 @@ app.post('/needs', NeedController.create);
 app.delete('/needs/:needId', NeedController.cancel);
 
 app.get('/bids/:needId', BidController.fetch);
+app.get('/vehicles', VehicleController.fetch);
 
 app.get('/choose_bid', NeedController.chooseBid);
 
