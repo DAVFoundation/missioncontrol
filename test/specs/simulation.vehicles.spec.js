@@ -29,7 +29,7 @@ describe('randomBid()', () => {
     const bid = randomBid(randomCoords(sampleArguments), randomCoords(sampleArguments), randomCoords(sampleArguments));
     expect(
       typeof bid.price
-    ).toBe('number');
+    ).toBe('string');
 
     expect(
       typeof bid.time_to_pickup
