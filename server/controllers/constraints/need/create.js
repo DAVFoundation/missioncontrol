@@ -1,7 +1,7 @@
 module.exports = {
   pickup_at: {
     numericality: {
-      greaterThanOrEqualTo: Date.now()
+      greaterThanOrEqualTo: Date.now() - 60000
     }
   },
   pickup_latitude: {
