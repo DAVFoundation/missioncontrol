@@ -43,7 +43,7 @@ describe('randomBid()', () => {
     ).toBe('number');
   });
 
-  test('returns a price proportional to the total distance travelled', () => {
+  test('returns a price that is influenced by the total distance travelled', () => {
     const origin = randomCoords(sampleArguments);
     const bidShort = randomBid(origin, {lat: origin.lat + 0.05, long: origin.long}, {lat: origin.lat + 0.10, long: origin.long});
     
