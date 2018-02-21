@@ -7,7 +7,7 @@ const fetch = async (req, res) => {
   const {needId} = req.params;
   const bids = (!hasStore() || !needId) ? [] : await getBidsForNeed(needId);
   res.status(200).json(bids);
-}
+};
 
 const chooseBid = async (req, res) => {
   const {user_id } = req.query;
@@ -24,4 +24,4 @@ const chooseBid = async (req, res) => {
   }
 };
 
-module.exports = {fetch, chooseBid}
+module.exports = {fetch, chooseBid};
