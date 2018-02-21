@@ -1,5 +1,4 @@
-const {updateMission } = require('../store/missions');
-
+const { updateMission } = require('../store/missions');
 
 module.exports = {
   'travelling_pickup': {
