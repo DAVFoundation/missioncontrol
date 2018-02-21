@@ -39,7 +39,7 @@ const getStatus = async (req, res) => {
         await updateVehicleStatus(latestMission.vehicle_id, 'travelling_pickup');
         await createMissionUpdate(latestMission.mission_id, 'travelling_pickup');
       }
-      res.json({status, vehicles, bids});
+      res.json({status, vehicles});
       break;
     }
     case 'in_progress': {
@@ -70,15 +70,15 @@ const getStatus = async (req, res) => {
       vehicle = await getVehicle(vehicle.id);
 
       vehicles = [vehicle];
-      res.json({status, vehicles, bids, mission});
+      res.json({status, vehicles, mission});
       break;
     }
     default: {
-      res.json({status, vehicles, bids, mission: latestMission});
+      res.json({status, vehicles, mission: latestMission});
     }
     }
   } else {
-    res.json({status, vehicles, bids});
+    res.json({status, vehicles});
   }
 };
 

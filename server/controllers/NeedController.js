@@ -1,7 +1,5 @@
 const {createNeed, getNeed, deleteNeed} = require('../store/needs');
 const {deleteBidsForNeed} = require('../store/bids');
-const {createMission} = require('../store/missions');
-const {updateVehicleStatus} = require('../store/vehicles');
 const createConstraints = require('./constraints/need/create');
 const validate = require('../lib/validate');
 
@@ -36,18 +34,5 @@ const cancel = async (req, res) => {
   }
 };
 
-const chooseBid = async (req, res) => {
-  const {user_id, bid_id} = req.query;
-  const mission = await createMission({
-    user_id,
-    bid_id,
-  });
-  if (mission) {
-    await updateVehicleStatus(mission.vehicle_id, 'contract_received');
-    res.json({mission});
-  } else {
-    res.status(500).send('Something broke!');
-  }
-};
 
-module.exports = {create, cancel, chooseBid};
+module.exports = {create, cancel};

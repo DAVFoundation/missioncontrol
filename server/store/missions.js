@@ -13,7 +13,7 @@ const getLatestMission = async userId => {
   const missions = await redis.zrevrangeAsync(`user_missions:${userId}`, 0, -1);
   let mission = null;
   if (missions.length > 0) {
-    mission = await getMission(missions[0]); 
+    mission = await getMission(missions[0]);
     if (typeof mission === 'object') {
       return mission;
     }
@@ -25,9 +25,9 @@ const updateMission = async (id, params) => {
   return await redis.hmsetAsync(`missions:${id}`, ...key_value_array);
 };
 
-const createMission = async ({ user_id, bid_id }) => {
+const createMission = async ({ user_id, bidId }) => {
   // get bid details
-  const bid = await getBid(bid_id);
+  const bid = await getBid(bidId);
   const { vehicle_id, price, time_to_pickup, time_to_dropoff, need_id } = bid;
 
   // get neeed details

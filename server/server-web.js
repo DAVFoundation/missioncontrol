@@ -3,6 +3,7 @@ const getOrCreateUser = require('./middleware/getOrCreateUser');
 
 const StatusController = require('./controllers/StatusController');
 const NeedController = require('./controllers/NeedController');
+const BidController = require('./controllers/BidController');
 const MissionController = require('./controllers/MissionController');
 
 // Create thrift connection to Captain
@@ -28,7 +29,9 @@ app.get('/status', StatusController.getStatus);
 
 app.post('/needs', NeedController.create);
 app.delete('/needs/:needId', NeedController.cancel);
-app.get('/choose_bid', NeedController.chooseBid);
+
+app.get('/bids/:needId', BidController.fetch);
+app.put('/bids/:bidId/choose', BidController.chooseBid)
 
 app.get('/mission_command', MissionController.command);
 
