@@ -45,14 +45,14 @@ describe('randomBid()', () => {
 
   test('returns a price that is influenced by the total distance travelled', () => {
     const origin = randomCoords(sampleArguments);
-    const bidShortPrice = Number(randomBid(origin, {lat: origin.lat + 0.05, long: origin.long}, {lat: origin.lat + 0.10, long: origin.long}).price);
+    const bidShort = randomBid(origin, {lat: origin.lat + 0.05, long: origin.long}, {lat: origin.lat + 0.10, long: origin.long});
     
     expect(
-      bidShortPrice
-    ).toBeLessThan(Number(randomBid(origin, {lat: origin.lat + 0.05, long: origin.long}, {lat: origin.lat + 0.15, long: origin.long}).price));
+      bidShort.price
+    ).toBeLessThan(randomBid(origin, {lat: origin.lat + 0.05, long: origin.long}, {lat: origin.lat + 0.15, long: origin.long}).price);
 
     expect(
-      bidShortPrice
-    ).toBeLessThan(Number(randomBid(origin, {lat: origin.lat + 0.10, long: origin.long}, {lat: origin.lat + 0.15, long: origin.long}).price));
+      bidShort.price
+    ).toBeLessThan(randomBid(origin, {lat: origin.lat + 0.10, long: origin.long}, {lat: origin.lat + 0.15, long: origin.long}).price);
   });
 });
