@@ -84,8 +84,9 @@ const generateAndAddVehicles = (count, coords, radius) =>
   count > 0 && generateRandomVehicles(count, coords, radius)
     .forEach(vehicle => {
       addNewVehicle(vehicle);
+      // returns the specific solo vehicle for bid creation
+      if (count === 1) { return vehicle; }
     });
-
 
 const getVehiclesInRange = async (coords, radius) => {
   const shortRangeRadius = radius / 7;
@@ -107,6 +108,7 @@ const getVehiclesInRange = async (coords, radius) => {
 };
 
 module.exports = {
+  generateAndAddVehicles,
   getVehiclesInRange,
   getVehicle,
   getVehicles,
