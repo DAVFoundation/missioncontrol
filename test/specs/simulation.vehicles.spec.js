@@ -55,4 +55,28 @@ describe('randomBid()', () => {
       bidShortPrice
     ).toBeLessThan(Number(randomBid(origin, {lat: origin.lat + 0.10, long: origin.long}, {lat: origin.lat + 0.15, long: origin.long}).price));
   });
+
+  test('throws an error when called with no parameters', () => {
+    expect( () => {
+      randomBid();
+    }).toThrow();
+  });
+
+  test('throws an error when called with 1 parameters', () => {
+    const origin = randomCoords(sampleArguments);
+
+    expect( () => {
+      randomBid(origin);
+    }).toThrow();
+  });
+
+  test('throws an error when called with 2 parameters', () => {
+    const origin = randomCoords(sampleArguments);
+    const pickup = {lat: origin.lat + 0.05, long: origin.long};
+
+    expect( () => {
+      randomBid(origin, pickup);
+    }).toThrow();
+  });
+
 });
