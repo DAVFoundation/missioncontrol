@@ -1,7 +1,7 @@
 const redis = require('./redis');
 const config = require('../config');
 const { randomBid } = require('../simulation/vehicles');
-const { getVehicle, generateAndAddVehicles } = require('../store/vehicles');
+const { getVehicle, generateSoloVehicleForBid } = require('../store/vehicles');
 const { getNeed } = require('./needs');
 
 const saveBid = async ({ vehicle_id, price, time_to_pickup, time_to_dropoff }, needId, userId) => {
@@ -69,7 +69,7 @@ const getBidsForNeed = async needId => {
       if (vehicle.status !== 'available') {
         // if the vehicle is not available then we will generate
         // some new vehicle to simulate the entry of new providers (default radius)
-        vehicle = generateAndAddVehicles(1, pickup);
+        vehicle = generateSoloVehicleForBid(pickup);
       }
       let newBid = await generateBidFromVehicle(vehicle, pickup, dropoff, needId, userId);
       bids.push(newBid);
