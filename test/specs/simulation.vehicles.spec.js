@@ -57,7 +57,7 @@ describe('randomBid()', () => {
   });
 
   test('throws an error when called with no parameters', () => {
-    expect( () => {
+    expect(() => {
       randomBid();
     }).toThrow();
   });
@@ -65,7 +65,7 @@ describe('randomBid()', () => {
   test('throws an error when called with 1 parameters', () => {
     const origin = randomCoords(sampleArguments);
 
-    expect( () => {
+    expect(() => {
       randomBid(origin);
     }).toThrow();
   });
@@ -74,7 +74,7 @@ describe('randomBid()', () => {
     const origin = randomCoords(sampleArguments);
     const pickup = {lat: origin.lat + 0.05, long: origin.long};
 
-    expect( () => {
+    expect(() => {
       randomBid(origin, pickup);
     }).toThrow();
   });
