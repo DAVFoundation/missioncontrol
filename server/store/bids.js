@@ -69,7 +69,8 @@ const getBidsForNeed = async needId => {
       if (vehicle.status !== 'available') {
         // if the vehicle is not available then we will generate
         // some new vehicle to simulate the entry of new providers (default radius)
-        vehicle = generateSoloVehicleForBid(pickup);
+        const pickupNumber = {lat: parseFloat(pickup.lat), long: parseFloat(pickup.long)};
+        vehicle = generateSoloVehicleForBid(pickupNumber);
       }
       let newBid = await generateBidFromVehicle(vehicle, pickup, dropoff, needId, userId);
       bids.push(newBid);
@@ -79,7 +80,7 @@ const getBidsForNeed = async needId => {
 };
 
 const generateBidFromVehicle = async (vehicle, pickup, dropoff, needId, userId) => {
-  const origin = { lat: vehicle.lat, long: vehicle.long };
+  const origin = { lat: vehicle.coords.lat, long: vehicle.coords.long };
   let newBid = randomBid(origin, pickup, dropoff);
   newBid.vehicle_id = vehicle.id;
   const newBidId = await saveBid(newBid, needId, userId);
