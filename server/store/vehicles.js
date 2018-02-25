@@ -83,12 +83,18 @@ const getLatestPositionUpdate = async (vehicle) => {
   return await redis.zrevrangeAsync(`vehicles:${vehicle.id}:positions`, 0, -1, 'withscores');
 };
 
+// returns the specific solo vehicle for bid creation
+const generateSoloVehicleForBid = (coords) => {
+  const vehicle = generateRandomVehicles(1, coords)[0];
+  addNewVehicle(vehicle);
+  return vehicle;
+};
+
 const generateAndAddVehicles = (count, coords, radius) =>
   count > 0 && generateRandomVehicles(count, coords, radius)
     .forEach(vehicle => {
       addNewVehicle(vehicle);
     });
-
 
 const getVehiclesInRange = async (coords, radius) => {
   const shortRangeRadius = radius / 7;
@@ -110,6 +116,7 @@ const getVehiclesInRange = async (coords, radius) => {
 };
 
 module.exports = {
+  generateSoloVehicleForBid,
   getVehiclesInRange,
   getVehicle,
   getVehicles,
