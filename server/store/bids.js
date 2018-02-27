@@ -1,7 +1,7 @@
 const redis = require('./redis');
 const config = require('../config');
 const { randomBid } = require('../simulation/vehicles');
-const { getVehicle } = require('../store/vehicles');
+const { getVehicle, generateSoloVehicleForBid } = require('../store/vehicles');
 const { getNeed } = require('./needs');
 
 const saveBid = async ({ vehicle_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at  }, needId, userId) => {
@@ -26,13 +26,13 @@ const saveBid = async ({ vehicle_id, time_to_pickup, time_to_dropoff, price, pri
   );
 
   // Set TTL for bid
-  redis.expire(`bids:${bidId}`, config('bids_ttl'));
+  setBidTTL(bidId);
   return bidId;
 };
 
 const getBid = async bidId => {
   // Set TTL for bid
-  redis.expire(`bids:${bidId}`, config('bids_ttl'));
+  setBidTTL(bidId);
   return await redis.hgetallAsync(`bids:${bidId}`);
 };
 
@@ -47,7 +47,7 @@ const getBidsForNeed = async needId => {
   const bidIds = await redis.lrangeAsync(`need_bids:${needId}`, 0, -1);
   const bids = await Promise.all(
     bidIds.map(bidId => {
-      redis.expire(`bids:${bidId}`, config('bids_ttl'));
+      setBidTTL(bidId);
       return redis.hgetallAsync(`bids:${bidId}`);
     }),
   );
@@ -68,17 +68,27 @@ const getBidsForNeed = async needId => {
       // Just a hacky way to get more bids from different vehicles.
       // Not guaranteed to not have duplicate bids from same vehicle
       const vehicleId = vehicleIds[bidIds.length];
-      const vehicle = await getVehicle(vehicleId);
-      const origin = { lat: vehicle.lat, long: vehicle.long };
-      let newBid = randomBid(origin, pickup, dropoff);
-      newBid.vehicle_id = vehicleId;
-      const newBidId = await saveBid(newBid, needId, userId);
-      newBid.id = newBidId;
+      let vehicle = await getVehicle(vehicleId);
+      if (vehicle.status !== 'available') {
+        // if the vehicle is not available then we will generate
+        // some new vehicle to simulate the entry of new providers (default radius)
+        const pickupNumber = {lat: parseFloat(pickup.lat), long: parseFloat(pickup.long)};
+        vehicle = generateSoloVehicleForBid(pickupNumber);
+      }
+      let newBid = await generateBidFromVehicle(vehicle, pickup, dropoff, needId, userId);
       bids.push(newBid);
     }
   }
-
   return bids;
+};
+
+const generateBidFromVehicle = async (vehicle, pickup, dropoff, needId, userId) => {
+  const origin = { lat: vehicle.coords.lat, long: vehicle.coords.long };
+  let newBid = randomBid(origin, pickup, dropoff);
+  newBid.vehicle_id = vehicle.id;
+  const newBidId = await saveBid(newBid, needId, userId);
+  newBid.id = newBidId;
+  return newBid;
 };
 
 const deleteBidsForNeed = async needId => {
@@ -94,3 +104,5 @@ module.exports = {
   getBid,
   deleteBidsForNeed,
 };
+
+const setBidTTL = bidId => redis.expire(`bids:${bidId}`, config('bids_ttl'));
