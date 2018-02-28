@@ -1,11 +1,10 @@
 const {getBidsForNeed} = require('../store/bids');
-const {hasStore} = require('../lib/environment');
 const {createMission} = require('../store/missions');
 const {updateVehicleStatus} = require('../store/vehicles');
 
 const fetch = async (req, res) => {
   const {needId} = req.params;
-  const bids = (!hasStore() || !needId) ? [] : await getBidsForNeed(needId);
+  const bids = (!needId) ? [] : await getBidsForNeed(needId);
   res.status(200).json(bids);
 };
 
