@@ -27,6 +27,7 @@ A lot of **missioncontrol** functionality came from pull requests sent by the de
 - [x] Once you've made sure all your changes work correctly and have been committed, push your local changes back to github with `$ git push -u origin master`
 - [x] Visit your fork on GitHub.com ([https://github.com/YOUR-USER-NAME/missioncontrol](https://github.com/YOUR-USER-NAME/missioncontrol)) and create a pull request for your changes.
 - [x] Makes sure your pull request describes exactly what you changed and if it relates to an open issue references that issue (just include the issue number in the title like this: #49)
+- [x] Having trouble? Make sure you've pulled the latest changes from both Mission Control and Missions, and run the command `docker exec -it missioncontrol_redis_1 redis-cli FLUSHALL` to clear the Redis cache.
 
 #### Important:
 
