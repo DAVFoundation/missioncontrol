@@ -46,7 +46,7 @@ describe('randomBid()', () => {
   test('returns a price that is influenced by the total distance travelled', () => {
     const origin = randomCoords(sampleArguments);
     const bidShortPrice = Number(randomBid(origin, {lat: origin.lat + 0.05, long: origin.long}, {lat: origin.lat + 0.10, long: origin.long}).price);
-    
+
     expect(
       bidShortPrice
     ).toBeLessThan(Number(randomBid(origin, {lat: origin.lat + 0.05, long: origin.long}, {lat: origin.lat + 0.15, long: origin.long}).price));
@@ -54,6 +54,24 @@ describe('randomBid()', () => {
     expect(
       bidShortPrice
     ).toBeLessThan(Number(randomBid(origin, {lat: origin.lat + 0.10, long: origin.long}, {lat: origin.lat + 0.15, long: origin.long}).price));
+  });
+
+  test('throws an error when first argument is not a coordinate object', () => {
+    expect(function(){
+      randomBid({}, randomCoords(sampleArguments), randomCoords(sampleArguments));
+    }).toThrow(new Error('coordinates must contain numbers'));
+  });
+
+  test('throws an error when second argument is not a coordinate object', () => {
+    expect(function(){
+      randomBid(randomCoords(sampleArguments), {}, randomCoords(sampleArguments));
+    }).toThrow(new Error('coordinates must contain numbers'));
+  });
+
+  test('throws an error when third argument is not a coordinate object', () => {
+    expect(function(){
+      randomBid(randomCoords(sampleArguments), randomCoords(sampleArguments), {});
+    }).toThrow(new Error('coordinates must contain numbers'));
   });
 
   test('throws an error when called with no parameters', () => {
@@ -78,5 +96,4 @@ describe('randomBid()', () => {
       randomBid(origin, pickup);
     }).toThrow();
   });
-
 });
