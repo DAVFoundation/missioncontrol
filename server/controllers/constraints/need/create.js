@@ -18,6 +18,9 @@ module.exports = {
       greaterThanOrEqualTo: -180
     }
   },
+  pickup_address: {
+    presence: true,
+  },
   dropoff_latitude: {
     presence: true,
     numericality: {
