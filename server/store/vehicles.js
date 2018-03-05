@@ -3,19 +3,22 @@ const config = require('../config');
 const {generateRandomVehicles} = require('../simulation/vehicles');
 const {createVehicle} = require('../client-thrift');
 
+const parseVehicleFromRedis = vehicle => ({
+  id: vehicle.id,
+  model: vehicle.model,
+  icon: vehicle.icon,
+  status: vehicle.status,
+  coords: {lat: parseFloat(vehicle.lat), long: parseFloat(vehicle.long)},
+  missions_completed: parseInt(vehicle.missions_completed),
+  missions_completed_7_days: parseInt(vehicle.missions_completed_7_days),
+});
+
 const parseVehiclesArray = vehicles =>
   vehicles
   // filter vehicles
     .filter(vehicle => !!vehicle)
     // format response objects
-    .map(vehicle => ({
-      id: vehicle.id,
-      model: vehicle.model,
-      icon: vehicle.icon,
-      coords: {lat: parseFloat(vehicle.lat), long: parseFloat(vehicle.long)},
-      missions_completed: parseInt(vehicle.missions_completed),
-      missions_completed_7_days: parseInt(vehicle.missions_completed_7_days),
-    }));
+    .map(parseVehicleFromRedis);
 
 const addNewVehicle = vehicle => {
   // Add to vehicles
@@ -36,18 +39,21 @@ const addNewVehicle = vehicle => {
   createVehicle(vehicle);
 };
 
-const getVehicle = async id => {
+const getRedisVehicleObject = async id => {
   setVehicleTTL(id);
-  let vehicle = await redis.hgetallAsync(`vehicles:${id}`);
-  vehicle.coords = {long: vehicle.long, lat: vehicle.lat};
-  return vehicle;
+  return await redis.hgetallAsync(`vehicles:${id}`);
+};
+
+const getVehicle = async id => {
+  let vehicle = await getRedisVehicleObject(id);
+  return parseVehicleFromRedis(vehicle);
 };
 
 const setVehicleTTL = vehicleId => 
   redis.expire(`vehicles:${vehicleId}`, config('vehicles_ttl'));
 
 const getVehicles = async vehicleIds =>
-  parseVehiclesArray(await Promise.all(vehicleIds.map(vehicleId => getVehicle(vehicleId))),);
+  parseVehiclesArray(await Promise.all(vehicleIds.map(vehicleId => getRedisVehicleObject(vehicleId))),);
 
 const updateVehicleStatus = async (id, status) => {
   return await redis.hsetAsync(`vehicles:${id}`, 'status', status);
