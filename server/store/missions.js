@@ -32,7 +32,7 @@ const createMission = async ({ user_id, bidId }) => {
 
   // get neeed details
   const need = await getNeed(need_id);
-  const { pickup_latitude, pickup_longitude, dropoff_latitude, dropoff_longitude, pickup_at, cargo_type, weight } = need;
+  const { pickup_latitude, pickup_longitude, pickup_address, dropoff_latitude, dropoff_longitude, pickup_at, cargo_type, weight } = need;
 
   // get new unique id for mission
   const missionId = await redis.incrAsync('next_mission_id');
@@ -54,6 +54,7 @@ const createMission = async ({ user_id, bidId }) => {
     'need_id', need_id,
     'pickup_latitude', pickup_latitude,
     'pickup_longitude', pickup_longitude,
+    'pickup_address', pickup_address,
     'dropoff_latitude', dropoff_latitude,
     'dropoff_longitude', dropoff_longitude,
     'pickup_at', pickup_at,
@@ -70,6 +71,7 @@ const createMission = async ({ user_id, bidId }) => {
     time_to_dropoff,
     pickup_latitude,
     pickup_longitude,
+    pickup_address,
     dropoff_latitude,
     dropoff_longitude,
     pickup_at,
