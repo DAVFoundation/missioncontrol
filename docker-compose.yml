@@ -3,10 +3,11 @@ version: '3'
 services:
   missioncontrol:
     build: .
-    command: 'nodemon server/start-servers.js'
+    command: 'nodemon --inspect=0.0.0.0:9229 server/start-servers.js'
     ports:
       - '8888:8443'
       - '9090:9090'
+      - '9229:9229'
     environment:
       NODE_ENV: development
       DAV_ENV: simulated
