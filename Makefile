@@ -1,7 +1,7 @@
-all:
+test-run:
+	npm test
 
-
-up:
+up: test-run
 	docker-compose build && docker-compose up
 
 down:
