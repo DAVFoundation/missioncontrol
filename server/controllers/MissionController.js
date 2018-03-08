@@ -5,6 +5,11 @@ const { getVehicle, updateVehicleStatus } = require('../store/vehicles');
 
 const command = async (req, res) => {
   const { user_id, mission_id, command} = req.query;
+  if(mission_id==="undefined")
+  {
+    res.sendStatus(404);
+    return;
+  }
   let mission = await getMission(mission_id);
   let vehicle = await getVehicle(mission.vehicle_id);
 
