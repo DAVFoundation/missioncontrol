@@ -5,9 +5,9 @@
 
 <img src="./resources/images/mission_control.gif" align="right" />
 
-Mission Control is a service running on the DAV network, and serving as a marketplace connecting DAV users looking to ship packages, with drone owners.
+Mission Control is a service running on the DAV network, and serving as a marketplace connecting DAV users, vehicles, and services.
 
-Mission Control demonstrates how a third party might build their own product, while integrating technologies provided by DAV, and provide a service to users connecting through a mobile app and independent drones connecting directly to Mission Control to offer their services.
+Mission Control demonstrates how a third party might build their own product, while integrating technologies provided by DAV, and provide a service to users connecting through a mobile app and independent vehicles connecting directly to Mission Control to offer their services.
 
 ### Contributing Code, Reporting Bugs and Suggesting Features
 
