@@ -3,7 +3,7 @@
 [![Gitter](https://img.shields.io/gitter/room/DAVFoundation/DAV-Contributors.svg?style=flat-square)](https://gitter.im/DAVFoundation/DAV-Contributors)
 [![License](https://img.shields.io/github/license/DAVFoundation/missioncontrol.svg?style=flat-square)](https://github.com/DAVFoundation/missioncontrol/blob/master/LICENSE)
 
-<img src="./resources/images/logo-missioncontrol.jpg" align="right" />
+<img src="./resources/images/mission_control.gif" align="right" />
 
 Mission Control is a service running on the DAV network, and serving as a marketplace connecting DAV users looking to ship packages, with drone owners.
 
