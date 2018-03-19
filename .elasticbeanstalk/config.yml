@@ -1,0 +1,18 @@
+branch-defaults:
+  master:
+    environment: missioncontrol-prod
+    group_suffix: null
+global:
+  application_name: missioncontrol-prod
+  branch: null
+  default_ec2_keyname: missioncontrol-prod-key
+  default_platform: Docker 17.09.1-ce
+  default_region: us-east-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli-dav
+  repository: null
+  sc: git
+  workspace_type: Application
