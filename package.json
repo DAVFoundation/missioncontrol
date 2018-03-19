@@ -1,6 +1,6 @@
 {
   "name": "missioncontrol",
-  "version": "0.2.0",
+  "version": "1.1.1",
   "description": "Controls and orchestrates missions between DAV users and vehicles",
   "homepage": "https://github.com/DAVFoundation/missioncontrol#readme",
   "bugs": {
