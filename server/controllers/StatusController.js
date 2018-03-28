@@ -1,9 +1,9 @@
-const {getVehiclesInRange, updateVehicleStatus, getVehicle, getVehicles, updateVehiclePosition, getPosition, getLatestPositionUpdate} = require('../store/vehicles');
+const {getVehiclesInRange, /* updateVehicleStatus, getVehicle, */ getVehicles, /* updateVehiclePosition, getPosition, getLatestPositionUpdate */} = require('../store/vehicles');
 const {getBidsForNeed} = require('../store/bids');
-const {getLatestMission, updateMission} = require('../store/missions');
-const {createMissionUpdate} = require('../store/mission_updates');
-const missionProgress = require('../simulation/missionProgress');
-const {calculateNextCoordinate} = require('../simulation/vehicles');
+const {getLatestMission/* , updateMission */} = require('../store/missions');
+// const {createMissionUpdate} = require('../store/mission_updates');
+// const missionProgress = require('../simulation/missionProgress');
+// const {calculateNextCoordinate} = require('../simulation/vehicles');
 
 const getStatus = async (req, res) => {
   const {lat, long, needId, user_id} = req.query;
@@ -21,7 +21,8 @@ const getStatus = async (req, res) => {
   }
 
   if (latestMission) {
-    switch (latestMission.status) {
+    res.json({status, vehicles, mission: latestMission});
+    /* switch (latestMission.status) {
     case 'awaiting_signatures': {
       let elapsedTime = Date.now() - latestMission.user_signed_at;
       let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
@@ -73,7 +74,7 @@ const getStatus = async (req, res) => {
     default: {
       res.json({status, vehicles, mission: latestMission});
     }
-    }
+    } */
   } else {
     res.json({status, vehicles});
   }

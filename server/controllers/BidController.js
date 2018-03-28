@@ -1,6 +1,7 @@
 const { getBidsForNeed } = require('../store/bids');
 const { createMission } = require('../store/missions');
 const { updateVehicleStatus } = require('../store/vehicles');
+const droneApi = require('../coex/drone');
 
 const fetch = async (req, res) => {
   try {
@@ -22,6 +23,7 @@ const chooseBid = async (req, res) => {
     bidId,
   });
   if (mission) {
+    droneApi.beginMission(mission.vehicle_id, mission.mission_id);
     await updateVehicleStatus(mission.vehicle_id, 'contract_received');
     res.json({ mission });
   } else {

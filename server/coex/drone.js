@@ -1,5 +1,6 @@
 
-const { getVehicle, getVehicles, addNewVehicle, updateVehiclePosition } = require('../store/vehicles');
+const { /* getVehicle,  */getVehicles, addNewVehicle, updateVehiclePosition } = require('../store/vehicles');
+const { getMission } = require('../store/missions');
 const Rx = require('rxjs/Rx');
 const DroneApi = require('../lib/drone-api');
 const geolib = require('geolib');
@@ -16,7 +17,8 @@ const DRONE_ID_MAP = {
 class CoExDrone {
   constructor() {
     this.droneApi = new DroneApi();
-    this.drones = {};
+    this.dronesByCoexId = {};
+    this.dronesByDavID = {};
   }
 
   async init() {
@@ -35,13 +37,24 @@ class CoExDrone {
   }
 
   async addDrone(drone) {
-    if (!this.drones[drone.id]) {
-      this.drones[drone.id] = drone;
-      drone.statusChanges = Rx.Observable.timer(0, 1000)
-        .mergeMap(async () => {
-          await getVehicle(drone.id);
-        });
+    if (!this.dronesByCoexId[drone.id]) {
+      this.dronesByCoexId[drone.id] = drone;
+      this.dronesByDavID[drone.davId] = drone;
     }
+  }
+
+  async beginMission(vehicleId, missionId) {
+    /* const missionUpdates =  */Rx.Observable.timer(0, 1000)
+      .mergeMap(async () => await getMission(missionId))
+      .distinctUntilChanged(mission =>
+        mission.status)
+      .subscribe(mission => {
+        console.log(`mission status: ${mission.status}`);
+        switch (mission.status) {
+          case 'contract':
+            break;
+        }
+      });
   }
 
   async updateVehicles() {

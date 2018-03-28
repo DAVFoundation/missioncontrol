@@ -1,5 +1,4 @@
 const redis = require('./redis');
-const { getBid } = require('./bids');
 const { getNeed } = require('./needs');
 const { createMissionUpdate } = require('./mission_updates');
 
@@ -26,6 +25,7 @@ const updateMission = async (id, params) => {
 };
 
 const createMission = async ({ user_id, bidId }) => {
+  const { getBid } = require('./bids');
   // get bid details
   const bid = await getBid(bidId);
   const { vehicle_id, price, time_to_pickup, time_to_dropoff, need_id } = bid;
