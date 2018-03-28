@@ -1,21 +1,21 @@
 const redis = require('./redis');
 const config = require('../config');
-const {generateRandomVehicles} = require('../simulation/vehicles');
-const {createVehicle} = require('../client-thrift');
+const { generateRandomVehicles } = require('../simulation/vehicles');
+// const { createVehicle } = require('../client-thrift');
 
 const parseVehicleFromRedis = vehicle => ({
   id: vehicle.id,
   model: vehicle.model,
   icon: vehicle.icon,
   status: vehicle.status,
-  coords: {lat: parseFloat(vehicle.lat), long: parseFloat(vehicle.long)},
+  coords: { lat: parseFloat(vehicle.lat), long: parseFloat(vehicle.long) },
   missions_completed: parseInt(vehicle.missions_completed),
   missions_completed_7_days: parseInt(vehicle.missions_completed_7_days),
 });
 
 const parseVehiclesArray = vehicles =>
   vehicles
-  // filter vehicles
+    // filter vehicles
     .filter(vehicle => !!vehicle)
     // format response objects
     .map(parseVehicleFromRedis);
@@ -36,7 +36,7 @@ const addNewVehicle = vehicle => {
   // Set TTL for vehicles
   setVehicleTTL(vehicle.id);
   // Send new vehicle to Captain
-  createVehicle(vehicle);
+  // createVehicle(vehicle);
 };
 
 const getRedisVehicleObject = async id => {
@@ -49,11 +49,11 @@ const getVehicle = async id => {
   return parseVehicleFromRedis(vehicle);
 };
 
-const setVehicleTTL = vehicleId => 
+const setVehicleTTL = vehicleId =>
   redis.expire(`vehicles:${vehicleId}`, config('vehicles_ttl'));
 
 const getVehicles = async vehicleIds =>
-  parseVehiclesArray(await Promise.all(vehicleIds.map(vehicleId => getRedisVehicleObject(vehicleId))),);
+  parseVehiclesArray(await Promise.all(vehicleIds.map(vehicleId => getRedisVehicleObject(vehicleId))), );
 
 const updateVehicleStatus = async (id, status) => {
   return await redis.hsetAsync(`vehicles:${id}`, 'status', status);
@@ -96,26 +96,47 @@ const generateSoloVehicleForBid = (coords) => {
   return vehicle;
 };
 
-const generateAndAddVehicles = (count, coords, radius) =>
+const { generateRandom } = require('../simulation/drone');
+
+const generateVehicle = async () => {
+  let vehicles = await getVehicles(['COEX-SITL']);
+  if (vehicles.length > 0) {
+    return vehicles[1];
+  } else {
+    let vehicle = generateRandom(
+      {
+        coords: {
+          long: 8.5455935,
+          lat: 47.397742,
+        }, radius: 2000
+      });
+    vehicle.id = 'COEX-SITL';
+    addNewVehicle(vehicle);
+    return vehicle;
+  }
+};
+
+/* const generateAndAddVehicles = (count, coords, radius) =>
   count > 0 && generateRandomVehicles(count, coords, radius)
     .forEach(vehicle => {
       addNewVehicle(vehicle);
-    });
+    }); */
 
 const getVehiclesInRange = async (coords, radius) => {
-  const shortRangeRadius = radius / 7;
-  const desiredVehicleCountInShortRange = 3;
-  const desiredVehicleCountInLongRange = 100;
+  generateVehicle();
+  // const shortRangeRadius = radius / 7;
+  // const desiredVehicleCountInShortRange = 3;
+  // const desiredVehicleCountInLongRange = 100;
 
   // get list of known vehicles in short range
-  const vehiclesInShortRange = await redis.georadiusAsync('vehicle_positions', coords.long, coords.lat, shortRangeRadius, 'm');
+  // const vehiclesInShortRange = await redis.georadiusAsync('vehicle_positions', coords.long, coords.lat, shortRangeRadius, 'm');
   // if not enough vehicles in short range generate new ones
-  generateAndAddVehicles(desiredVehicleCountInShortRange - vehiclesInShortRange.length, coords, shortRangeRadius);
+  //generateAndAddVehicles(desiredVehicleCountInShortRange - vehiclesInShortRange.length, coords, shortRangeRadius);
 
   // get list of known vehicles in long range
   const vehiclesInLongRange = await redis.georadiusAsync('vehicle_positions', coords.long, coords.lat, radius, 'm');
   // if not enough vehicles in long range generate new ones
-  generateAndAddVehicles(desiredVehicleCountInLongRange - vehiclesInLongRange.length, coords, radius);
+  //generateAndAddVehicles(desiredVehicleCountInLongRange - vehiclesInLongRange.length, coords, radius);
 
   // get details for vehicles in range
   return await getVehicles(vehiclesInLongRange);

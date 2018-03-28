@@ -1,4 +1,4 @@
-const {generateRandom} = require('./drone');
+const { generateRandom } = require('./drone');
 const turf = require('@turf/turf');
 
 const generateRandomVehicles = (vehicleCount = 4, coords, radius = 2000) => {
@@ -45,20 +45,20 @@ const calculateNextCoordinate = async (vehicle, mission, leg, positionLastUpdate
   let long = (destinationLong - (timeLeftAtNewPosition * speedLong)).toFixed(6);
   let lat = (destinationLat - (timeLeftAtNewPosition * speedLat)).toFixed(6);
 
-  switch(leg){
-  case 'pickup':{
+  switch (leg) {
+  case 'pickup': {
     long = dontMoveAtDestination(destinationLong, mission.vehicle_start_longitude, long);
     lat = dontMoveAtDestination(destinationLat, mission.vehicle_start_latitude, lat);
     break;
   }
-  case 'dropoff':{
+  case 'dropoff': {
     long = dontMoveAtDestination(destinationLong, mission.pickup_longitude, long);
     lat = dontMoveAtDestination(destinationLat, mission.pickup_latitude, lat);
     break;
   }
   }
 
-  return {long, lat};
+  return { long, lat };
 };
 
 const dontMoveAtDestination = (destination, startingCoordinate, nextCoordinate) => {
