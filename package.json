@@ -20,12 +20,15 @@
   },
   "dependencies": {
     "@turf/turf": "^5.1.6",
+    "axios": "^0.18.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
+    "geolib": "^2.0.24",
     "randomstring": "^1.1.5",
     "redis": "^2.8.0",
     "request": "^2.85.0",
+    "rxjs": "^5.5.8",
     "thrift": "^0.11.0"
   },
   "devDependencies": {

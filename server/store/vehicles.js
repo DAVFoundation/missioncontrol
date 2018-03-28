@@ -96,49 +96,8 @@ const generateSoloVehicleForBid = (coords) => {
   return vehicle;
 };
 
-const { generateRandom } = require('../simulation/drone');
-
-const generateVehicle = async () => {
-  let vehicles = await getVehicles(['COEX-SITL']);
-  if (vehicles.length > 0) {
-    return vehicles[1];
-  } else {
-    let vehicle = generateRandom(
-      {
-        coords: {
-          long: 8.5455935,
-          lat: 47.397742,
-        }, radius: 2000
-      });
-    vehicle.id = 'COEX-SITL';
-    addNewVehicle(vehicle);
-    return vehicle;
-  }
-};
-
-/* const generateAndAddVehicles = (count, coords, radius) =>
-  count > 0 && generateRandomVehicles(count, coords, radius)
-    .forEach(vehicle => {
-      addNewVehicle(vehicle);
-    }); */
-
 const getVehiclesInRange = async (coords, radius) => {
-  generateVehicle();
-  // const shortRangeRadius = radius / 7;
-  // const desiredVehicleCountInShortRange = 3;
-  // const desiredVehicleCountInLongRange = 100;
-
-  // get list of known vehicles in short range
-  // const vehiclesInShortRange = await redis.georadiusAsync('vehicle_positions', coords.long, coords.lat, shortRangeRadius, 'm');
-  // if not enough vehicles in short range generate new ones
-  //generateAndAddVehicles(desiredVehicleCountInShortRange - vehiclesInShortRange.length, coords, shortRangeRadius);
-
-  // get list of known vehicles in long range
   const vehiclesInLongRange = await redis.georadiusAsync('vehicle_positions', coords.long, coords.lat, radius, 'm');
-  // if not enough vehicles in long range generate new ones
-  //generateAndAddVehicles(desiredVehicleCountInLongRange - vehiclesInLongRange.length, coords, radius);
-
-  // get details for vehicles in range
   return await getVehicles(vehiclesInLongRange);
 };
 
@@ -150,5 +109,6 @@ module.exports = {
   updateVehicleStatus,
   updateVehiclePosition,
   getLatestPositionUpdate,
-  getPosition
+  getPosition,
+  addNewVehicle
 };

@@ -35,8 +35,11 @@ app.put('/bids/:bidId/choose', BidController.chooseBid);
 
 app.get('/mission_command', MissionController.command);
 
+const coexDrone = require('./coex/drone');
+
 module.exports = {
-  start: () => {
+  start: async () => {
+    await coexDrone.init();
     // Start the server
     app.listen(port, () => {
       console.log(`Web server started. Listening on port ${port}`);

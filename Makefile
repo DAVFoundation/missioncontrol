@@ -1,8 +1,16 @@
 test-run:
 	npm test
 
-up: test-run
-	docker-compose build && docker-compose up
+build:
+	docker-compose build
+
+dispose:
+	-docker rm missioncontrol_missioncontrol_1
+
+rebuild: dispose build
+
+up: test-run build
+	docker-compose up
 
 down:
 	docker-compose down
@@ -14,7 +22,7 @@ log:
 	docker logs missioncontrol_missioncontrol_1 -f
 
 create-aws-prod-env:
-	@eb init missioncontrol-prod --profile eb-cli-dav --cname missioncontrol-prod -k missioncontrol-prod-key 
+	@eb init missioncontrol-prod --profile eb-cli-dav --cname missioncontrol-prod -k missioncontrol-prod-key
 	@eb create missioncontrol-prod --profile eb-cli-dav
 
 deploy-aws-prod-env:
