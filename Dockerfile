@@ -1,5 +1,8 @@
 FROM node:9.3.0-alpine
 
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+
 RUN npm install -g nodemon
 
 WORKDIR /app

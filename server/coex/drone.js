@@ -1,6 +1,6 @@
 
 const { /* getVehicle,  */getVehicles, addNewVehicle, updateVehiclePosition } = require('../store/vehicles');
-const { getMission } = require('../store/missions');
+const { getMission, updateMission } = require('../store/missions');
 const Rx = require('rxjs/Rx');
 const DroneApi = require('../lib/drone-api');
 const geolib = require('geolib');
@@ -48,10 +48,23 @@ class CoExDrone {
       .mergeMap(async () => await getMission(missionId))
       .distinctUntilChanged(mission =>
         mission.status)
-      .subscribe(mission => {
+      .subscribe(async mission => {
         console.log(`mission status: ${mission.status}`);
         switch (mission.status) {
-          case 'contract':
+          case 'awaiting_signatures':
+            // TODO: this should be implemented by Ethereum integration - NOT HERE!
+            await updateMission(missionId, {
+              'vehicle_signed_at': Date.now(),
+              'status': 'in_progress',
+              'vehicle_start_longitude': vehicle.coords.long,
+              'vehicle_start_latitude': vehicle.coords.lat
+            });
+            break;
+          case 'in_progress':
+            // TODO: this should be implemented by Ethereum integration - NOT HERE!
+            break;
+          case 'in_mission':
+            // TODO: this should be implemented by Ethereum integration - NOT HERE!
             break;
         }
       });
