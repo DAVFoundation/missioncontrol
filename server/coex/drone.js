@@ -139,6 +139,9 @@ class CoExDrone {
         }, 1000);
         break;
       case 'available':
+        await updateMission(mission.mission_id, {
+          'status': 'complete'
+        });
         missionUpdates.unsubscribe();
         break;
       default:
