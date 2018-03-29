@@ -49,25 +49,30 @@ class CoExDrone {
 
   async beginMission(vehicleId, missionId) {
     const missionUpdates = Rx.Observable.timer(0, 1000)
-      .mergeMap(async () => await getMission(missionId))
-      .distinctUntilChanged((mission1, mission2) => mission1.status === mission2.status)
-      .subscribe(async mission => {
+      .mergeMap(async () => {
+        let mission = await getMission(missionId);
+        let vehicle = await getVehicle(mission.vehicle_id);
+        return { mission, vehicle };
+      })
+      .distinctUntilChanged((state1, state2) =>
+        state1.mission.status === state2.mission.status && state1.vehicle.status === state2.vehicle.status)
+      .subscribe(async state => {
         try {
           const drone = this.dronesByDavID[vehicleId];
           const droneState = await this.droneApi.getState(drone.id);
           droneState.id = drone.id;
 
-          switch (mission.status) {
+          switch (state.mission.status) {
             case 'awaiting_signatures':
               break;
             case 'in_progress':
-              await this.onInProgress(mission, droneState, missionUpdates);
+              await this.onInProgress(state.mission, state.vehicle, droneState, missionUpdates);
               break;
             case 'in_mission':
-              await this.onInMission(mission, droneState, missionUpdates);
+              await this.onInMission(state.mission, state.vehicle, droneState, missionUpdates);
               break;
             default:
-              console.log(`bad mission.status ${mission}`);
+              console.log(`bad mission.status ${state.mission}`);
               break;
           }
         }
@@ -79,18 +84,17 @@ class CoExDrone {
       });
   }
 
-  async onInProgress(mission, droneState, missionUpdates) {
+  async onInProgress(mission, vehicle, droneState, missionUpdates) {
     await updateMission(mission.mission_id, {
       'status': 'in_mission',
       'vehicle_start_longitude': droneState.location.lon,
       'vehicle_start_latitude': droneState.location.lat
     });
 
-    await this.onInMission(mission, droneState, missionUpdates);
+    await this.onInMission(mission, vehicle, droneState, missionUpdates);
   }
 
-  async onInMission(mission, droneState, missionUpdates) {
-    let vehicle = await getVehicle(mission.vehicle_id);
+  async onInMission(mission, vehicle, droneState, missionUpdates) {
     await updateVehiclePosition(vehicle, droneState.location.lon, droneState.location.lat);
     /*     const [{ elevation: pickupAlt }, { elevation: dropoffAlt }] = (await getElevations([
           { lat: mission.pickup_latitude, long: mission.pickup_longitude },
