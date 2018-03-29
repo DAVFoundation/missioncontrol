@@ -5,11 +5,11 @@ const { createMissionUpdate } = require('../store/mission_updates');
 const Rx = require('rxjs/Rx');
 const DroneApi = require('../lib/drone-api');
 const geolib = require('geolib');
-const { getElevations } = require('../lib/elevation');
+// const { getElevations } = require('../lib/elevation');
 
 const DRONE_AVG_VELOCITY = 10.0; // m/s
 const DRONE_PRICE_RATE = 1e-14 / 1000; // DAV/m
-const DRONE_CRUISE_ALT = 1000;
+// const DRONE_CRUISE_ALT = 1000;
 
 const DRONE_ID_MAP = {
   9: { pubkey: '0xa050930bc8c5762c7994a35eb27b5b619254c438', privatekey: '' } //    `0x${Array(40).fill().map(() => Math.floor((Math.random() * 15)).toString(16)).join('')}`
@@ -94,33 +94,51 @@ class CoExDrone {
   async onInMission(mission, droneState, missionUpdates) {
     let vehicle = await getVehicle(mission.vehicle_id);
     await updateVehiclePosition(vehicle, droneState.location.lon, droneState.location.lat);
-    const [{ elevation: pickupAlt }, { elevation: dropoffAlt }] = (await getElevations([
-      { lat: mission.pickup_latitude, long: mission.pickup_longitude },
-      { lat: mission.dropoff_latitude, long: mission.dropoff_longitude }
-    ])).map(o => { o.elevation = parseFloat(o.elevation); return o; });
+    /*     const [{ elevation: pickupAlt }, { elevation: dropoffAlt }] = (await getElevations([
+          { lat: mission.pickup_latitude, long: mission.pickup_longitude },
+          { lat: mission.dropoff_latitude, long: mission.dropoff_longitude }
+        ])).map(o => { o.elevation = parseFloat(o.elevation); return o; }); */
 
     switch (vehicle.status) {
       case 'contract_received':
-        await this.droneApi.goto(droneState.id, mission.pickup_latitude, mission.pickup_longitude,
-          DRONE_CRUISE_ALT - droneState.location.alt, pickupAlt - droneState.location.alt, false);
+        /*         await this.droneApi.goto(droneState.id, mission.pickup_latitude, mission.pickup_longitude,
+                  DRONE_CRUISE_ALT - droneState.location.alt, pickupAlt - droneState.location.alt, false);
+         */
         await this.updateStatus(mission, 'travelling_pickup', 'travelling_pickup');
         break;
       case 'travelling_pickup':
+        setTimeout(async () => {
+          await this.updateStatus(mission, 'landing_pickup', 'landing_pickup');
+        }, 1000);
         break;
       case 'landing_pickup':
+        setTimeout(async () => {
+          await this.updateStatus(mission, 'waiting_pickup', 'waiting_pickup');
+        }, 1000);
         break;
       case 'waiting_pickup':
+        console.log(`drone waiting for pickup`);
         break;
       case 'takeoff_pickup':
-        await this.droneApi.goto(droneState.id, mission.dropoff_latitude, mission.dropoff_longitude,
-          DRONE_CRUISE_ALT - droneState.location.alt, dropoffAlt - droneState.location.alt, true);
+        /*         await this.droneApi.goto(droneState.id, mission.dropoff_latitude, mission.dropoff_longitude,
+                  DRONE_CRUISE_ALT - droneState.location.alt, dropoffAlt - droneState.location.alt, true);
+         */
         await this.updateStatus(mission, 'travelling_dropoff', 'travelling_dropoff');
         break;
       case 'travelling_dropoff':
+        setTimeout(async () => {
+          await this.updateStatus(mission, 'landing_dropoff', 'landing_dropoff');
+        }, 1000);
         break;
       case 'landing_dropoff':
+        setTimeout(async () => {
+          await this.updateStatus(mission, 'waiting_dropoff', 'waiting_dropoff');
+        }, 1000);
         break;
       case 'waiting_dropoff':
+        setTimeout(async () => {
+          await this.updateStatus(mission, 'available', 'available');
+        }, 1000);
         break;
       case 'available':
         missionUpdates.unsubscribe();
