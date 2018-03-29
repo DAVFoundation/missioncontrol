@@ -66,10 +66,13 @@ class CoExDrone {
             case 'awaiting_signatures':
               break;
             case 'in_progress':
-              await this.onInProgress(state.mission, state.vehicle, droneState, missionUpdates);
+              await this.onInProgress(state.mission, state.vehicle, droneState);
               break;
             case 'in_mission':
-              await this.onInMission(state.mission, state.vehicle, droneState, missionUpdates);
+              await this.onInMission(state.mission, state.vehicle, droneState);
+              break;
+            case 'completed':
+              missionUpdates.unsubscribe();
               break;
             default:
               console.log(`bad mission.status ${state.mission}`);
@@ -84,17 +87,17 @@ class CoExDrone {
       });
   }
 
-  async onInProgress(mission, vehicle, droneState, missionUpdates) {
+  async onInProgress(mission, vehicle, droneState) {
     await updateMission(mission.mission_id, {
       'status': 'in_mission',
       'vehicle_start_longitude': droneState.location.lon,
       'vehicle_start_latitude': droneState.location.lat
     });
 
-    await this.onInMission(mission, vehicle, droneState, missionUpdates);
+    await this.onInMission(mission, vehicle, droneState);
   }
 
-  async onInMission(mission, vehicle, droneState, missionUpdates) {
+  async onInMission(mission, vehicle, droneState) {
     await updateVehiclePosition(vehicle, droneState.location.lon, droneState.location.lat);
     /*     const [{ elevation: pickupAlt }, { elevation: dropoffAlt }] = (await getElevations([
           { lat: mission.pickup_latitude, long: mission.pickup_longitude },
@@ -114,12 +117,12 @@ class CoExDrone {
          } */
         setTimeout(async () => {
           await this.updateStatus(mission, 'landing_pickup', 'landing_pickup');
-        }, 1000);
+        }, 3000);
         break;
       case 'landing_pickup':
         setTimeout(async () => {
           await this.updateStatus(mission, 'waiting_pickup', 'waiting_pickup');
-        }, 1000);
+        }, 3000);
         break;
       case 'waiting_pickup':
         console.log(`drone waiting for pickup`);
@@ -136,23 +139,22 @@ class CoExDrone {
            } */
         setTimeout(async () => {
           await this.updateStatus(mission, 'landing_dropoff', 'landing_dropoff');
-        }, 1000);
+        }, 3000);
         break;
       case 'landing_dropoff':
         setTimeout(async () => {
           await this.updateStatus(mission, 'waiting_dropoff', 'waiting_dropoff');
-        }, 1000);
+        }, 3000);
         break;
       case 'waiting_dropoff':
         setTimeout(async () => {
-          await this.updateStatus(mission, 'available', 'available');
-        }, 1000);
+          await this.updateStatus(mission, 'completed', 'available');
+        }, 3000);
         break;
       case 'available':
         await updateMission(mission.mission_id, {
-          'status': 'complete'
+          'status': 'completed'
         });
-        missionUpdates.unsubscribe();
         break;
       default:
         console.log(`bad vehicle.status ${vehicle}`);
