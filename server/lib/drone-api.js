@@ -8,7 +8,8 @@ const Rx = require('rxjs/Rx');
 const API_ROOT = 'https://hub.copterexpress.com/api';
 const DAV_API_KEY = '6049a4c4ebe54b769b11f6c9f5b57e5e';
 const API_HEADERS = {
-  'X-Token': DAV_API_KEY
+  'X-Token': DAV_API_KEY,
+  'Content-type': 'application/x-www-form-urlencoded'
 };
 
 module.exports =
@@ -38,7 +39,7 @@ module.exports =
     goto(id, lat, lng, cruiseAlt, landAlt, release = false) {
       return axios.post(`${API_ROOT}/drones/${id}/command`, {
         headers: API_HEADERS,
-        params: {
+        data: {
           'command': 'run_mission',
           'params': {
             'type': 'Delivery',

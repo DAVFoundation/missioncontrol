@@ -49,54 +49,60 @@ class CoExDrone {
       .mergeMap(async () => await getMission(missionId))
       .distinctUntilChanged((mission1, mission2) => mission1.status === mission2.status)
       .subscribe(async mission => {
-        console.log(`mission status: ${mission.status}`);
-        const drone = this.dronesByDavID[vehicleId];
-        const droneState = await this.droneApi.getState(drone.id);
+        try {
+          const drone = this.dronesByDavID[vehicleId];
+          const droneState = await this.droneApi.getState(drone.id);
+          droneState.id = drone.id;
 
-        switch (mission.status) {
-          case 'awaiting_signatures':
-            // TODO: this should be implemented by Ethereum integration - NOT HERE!
-            await updateMission(missionId, {
-              'vehicle_signed_at': Date.now(),
-              'status': 'in_progress'
-            });
-            break;
-          case 'in_progress':
-            await this.onInProgress(mission, droneState, missionUpdates);
-            break;
-          case 'in_mission':
-            await this.onInMission(mission, droneState, missionUpdates);
-            break;
-          default:
-            console.log(mission);
-            break;
+          switch (mission.status) {
+            case 'awaiting_signatures':
+              // TODO: this should be implemented by Ethereum integration - NOT HERE!
+              await updateMission(missionId, {
+                'vehicle_signed_at': Date.now(),
+                'status': 'in_progress'
+              });
+              break;
+            case 'in_progress':
+              await this.onInProgress(mission, droneState, missionUpdates);
+              break;
+            case 'in_mission':
+              await this.onInMission(mission, droneState, missionUpdates);
+              break;
+            default:
+              console.log(`bad mission.status ${mission}`);
+              break;
+          }
         }
+        catch (error) {
+          console.error(error);
+        }
+      }, (error) => {
+        console.error(error);
       });
   }
 
-  async onInProgress(mission, drone, missionUpdates) {
+  async onInProgress(mission, droneState, missionUpdates) {
     await updateMission(mission.mission_id, {
       'status': 'in_mission',
-      'vehicle_start_longitude': drone.location.lon,
-      'vehicle_start_latitude': drone.location.lat
+      'vehicle_start_longitude': droneState.location.lon,
+      'vehicle_start_latitude': droneState.location.lat
     });
 
-    this.onInMission(mission, drone, missionUpdates);
+    await this.onInMission(mission, droneState, missionUpdates);
   }
 
-  async onInMission(mission, drone, missionUpdates) {
+  async onInMission(mission, droneState, missionUpdates) {
     let vehicle = await getVehicle(mission.vehicle_id);
-    await updateVehiclePosition(vehicle, drone.location.lon, drone.location.lat);
+    await updateVehiclePosition(vehicle, droneState.location.lon, droneState.location.lat);
     const [{ elevation: pickupAlt }, { elevation: dropoffAlt }] = (await getElevations([
       { lat: mission.pickup_latitude, long: mission.pickup_longitude },
       { lat: mission.dropoff_latitude, long: mission.dropoff_longitude }
     ])).map(o => { o.elevation = parseFloat(o.elevation); return o; });
 
-    console.log(vehicle);
     switch (vehicle.status) {
       case 'contract_received':
-        this.droneApi.goto(drone.id, mission.pickup_latitude, mission.pickup_longitude,
-          DRONE_CRUISE_ALT - drone.location.alt, pickupAlt - drone.location.alt, false);
+        await this.droneApi.goto(droneState.id, mission.pickup_latitude, mission.pickup_longitude,
+          DRONE_CRUISE_ALT - droneState.location.alt, pickupAlt - droneState.location.alt, false);
         await this.updateStatus(mission, 'travelling_pickup', 'travelling_pickup');
         break;
       case 'travelling_pickup':
@@ -106,8 +112,8 @@ class CoExDrone {
       case 'waiting_pickup':
         break;
       case 'takeoff_pickup':
-        this.droneApi.goto(drone.id, mission.dropoff_latitude, mission.dropoff_longitude,
-          DRONE_CRUISE_ALT - drone.location.alt, dropoffAlt - drone.location.alt, true);
+        await this.droneApi.goto(droneState.id, mission.dropoff_latitude, mission.dropoff_longitude,
+          DRONE_CRUISE_ALT - droneState.location.alt, dropoffAlt - droneState.location.alt, true);
         await this.updateStatus(mission, 'travelling_dropoff', 'travelling_dropoff');
         break;
       case 'travelling_dropoff':
@@ -118,6 +124,9 @@ class CoExDrone {
         break;
       case 'available':
         missionUpdates.unsubscribe();
+        break;
+      default:
+        console.log(`bad vehicle.status ${vehicle}`);
         break;
     }
   }
