@@ -5,11 +5,11 @@ const { createMissionUpdate } = require('../store/mission_updates');
 const Rx = require('rxjs/Rx');
 const DroneApi = require('../lib/drone-api');
 const geolib = require('geolib');
-// const getElevations = require('../lib/elevation');
+const { getElevations } = require('../lib/elevation');
 
 const DRONE_AVG_VELOCITY = 10.0; // m/s
 const DRONE_PRICE_RATE = 1e-14 / 1000; // DAV/m
-// const DRONE_CRUISE_ALT = 1000;
+const DRONE_CRUISE_ALT = 1000;
 
 const DRONE_ID_MAP = {
   9: { pubkey: '0xa050930bc8c5762c7994a35eb27b5b619254c438', privatekey: '' } //    `0x${Array(40).fill().map(() => Math.floor((Math.random() * 15)).toString(16)).join('')}`
@@ -45,7 +45,7 @@ class CoExDrone {
   }
 
   async beginMission(vehicleId, missionId) {
-    /* const missionUpdates =  */Rx.Observable.timer(0, 1000)
+    const missionUpdates = Rx.Observable.timer(0, 1000)
       .mergeMap(async () => await getMission(missionId))
       .distinctUntilChanged((mission1, mission2) => mission1.status === mission2.status)
       .subscribe(async mission => {
@@ -62,10 +62,10 @@ class CoExDrone {
             });
             break;
           case 'in_progress':
-            await this.onInProgress(mission, droneState);
+            await this.onInProgress(mission, droneState, missionUpdates);
             break;
           case 'in_mission':
-            await this.onInMission(mission, droneState);
+            await this.onInMission(mission, droneState, missionUpdates);
             break;
           default:
             console.log(mission);
@@ -74,32 +74,41 @@ class CoExDrone {
       });
   }
 
-  async onInProgress(mission, drone) {
+  async onInProgress(mission, drone, missionUpdates) {
     await updateMission(mission.mission_id, {
-      'vehicle_signed_at': Date.now(),
       'status': 'in_mission',
       'vehicle_start_longitude': drone.location.lon,
       'vehicle_start_latitude': drone.location.lat
     });
-    await this.updateStatus(mission, 'travelling_pickup', 'travelling_pickup');
 
-    // this.droneApi.goto(drone.id,)
+    this.onInMission(mission, drone, missionUpdates);
   }
 
-  async onInMission(mission, drone) {
+  async onInMission(mission, drone, missionUpdates) {
     let vehicle = await getVehicle(mission.vehicle_id);
     await updateVehiclePosition(vehicle, drone.location.lon, drone.location.lat);
+    const [{ elevation: pickupAlt }, { elevation: dropoffAlt }] = (await getElevations([
+      { lat: mission.pickup_latitude, long: mission.pickup_longitude },
+      { lat: mission.dropoff_latitude, long: mission.dropoff_longitude }
+    ])).map(o => { o.elevation = parseFloat(o.elevation); return o; });
 
     console.log(vehicle);
     switch (vehicle.status) {
+      case 'contract_received':
+        this.droneApi.goto(drone.id, mission.pickup_latitude, mission.pickup_longitude,
+          DRONE_CRUISE_ALT - drone.location.alt, pickupAlt - drone.location.alt, false);
+        await this.updateStatus(mission, 'travelling_pickup', 'travelling_pickup');
+        break;
       case 'travelling_pickup':
-
         break;
       case 'landing_pickup':
         break;
       case 'waiting_pickup':
         break;
       case 'takeoff_pickup':
+        this.droneApi.goto(drone.id, mission.dropoff_latitude, mission.dropoff_longitude,
+          DRONE_CRUISE_ALT - drone.location.alt, dropoffAlt - drone.location.alt, true);
+        await this.updateStatus(mission, 'travelling_dropoff', 'travelling_dropoff');
         break;
       case 'travelling_dropoff':
         break;
@@ -108,6 +117,7 @@ class CoExDrone {
       case 'waiting_dropoff':
         break;
       case 'available':
+        missionUpdates.unsubscribe();
         break;
     }
   }
@@ -119,88 +129,6 @@ class CoExDrone {
     await createMissionUpdate(mission.mission_id, missionStatus);
     await updateVehicleStatus(mission.vehicle_id, vehicleStatus);
   }
-
-  /*
-  {
-  'travelling_pickup': {
-    status: 'travelling_pickup',
-    nextVehicleStatus: 'landing_pickup',
-    nextMissionUpdate: 'landing_pickup',
-    conditionForNextUpdate: mission => {
-      let elapsedTime = Date.now() - (parseFloat(mission.user_signed_at) + parseFloat(mission.time_to_pickup));
-      return elapsedTime > 0;
-    },
-  },
-  'landing_pickup': {
-    status: 'landing_pickup',
-    nextVehicleStatus: 'waiting_pickup',
-    nextMissionUpdate: 'waiting_pickup',
-    conditionForNextUpdate: mission => {
-      let elapsedTime = Date.now() - mission.landing_pickup_at;
-      let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
-      return elapsedSeconds > 2;
-    },
-  },
-  'waiting_pickup': {
-    status: 'waiting_pickup',
-    conditionForNextUpdate: () => {
-      return false;
-    }
-  },
-  'takeoff_pickup': {
-    status: 'takeoff_pickup',
-    nextVehicleStatus: 'travelling_dropoff',
-    nextMissionUpdate: 'travelling_dropoff',
-    beforeUpdate: async (mission) => {
-      const waitTime = Date.now() - parseFloat(mission.waiting_pickup_at);
-      const newTimeToDropoff = parseFloat(mission.time_to_dropoff) + waitTime;
-      await updateMission(mission.id, {'time_to_dropoff': newTimeToDropoff});
-    },
-    conditionForNextUpdate: mission => {
-      let elapsedTime = Date.now() - mission.waiting_pickup_at;
-      let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
-      return elapsedSeconds > 2;
-    },
-  },
-  'travelling_dropoff': {
-    status: 'travelling_dropoff',
-    nextVehicleStatus: 'landing_dropoff',
-    nextMissionUpdate: 'landing_dropoff',
-    conditionForNextUpdate: mission => {
-      let elapsedTime = Date.now() - (parseFloat(mission.travelling_dropoff_at) + parseFloat(mission.time_to_dropoff));
-      return elapsedTime > 0;
-    },
-  },
-  'landing_dropoff': {
-    status: 'landing_dropoff',
-    nextVehicleStatus: 'waiting_dropoff',
-    nextMissionUpdate: 'waiting_dropoff',
-    conditionForNextUpdate: mission => {
-      let elapsedTime = Date.now() - mission.landing_dropoff_at;
-      let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
-      return elapsedSeconds > 2;
-    },
-  },
-  'waiting_dropoff': {
-    status: 'waiting_dropoff',
-    nextVehicleStatus: 'available',
-    nextMissionUpdate: 'completed',
-    conditionForNextUpdate: mission => {
-      let elapsedTime = Date.now() - mission.waiting_dropoff_at;
-      let elapsedSeconds = ((elapsedTime % 60000) / 1000).toFixed(0);
-      return elapsedSeconds > 2;
-    },
-  },
-  'available': {
-    status: 'available',
-    beforeUpdate: async (mission) => {
-      await updateMission(mission.mission_id, {'status': 'completed'});
-    },
-    conditionForNextUpdate: () => {
-      return false;
-    },
-  },
-  } */
 
   async updateVehicles() {
     const drones = await this.droneApi.listDrones();
