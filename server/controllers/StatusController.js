@@ -1,13 +1,12 @@
-const {getVehiclesInRange, /* updateVehicleStatus, getVehicle, */ getVehicles, /* updateVehiclePosition, getPosition, getLatestPositionUpdate */} = require('../store/vehicles');
-const {getBidsForNeed} = require('../store/bids');
-const {getLatestMission/* , updateMission */} = require('../store/missions');
+const { getVehiclesInRange, /* updateVehicleStatus, getVehicle, */ getVehicles, /* updateVehiclePosition, getPosition, getLatestPositionUpdate */ } = require('../store/vehicles');
+const { getBidsForNeed } = require('../store/bids');
+const { getLatestMission/* , updateMission */ } = require('../store/missions');
 // const {createMissionUpdate} = require('../store/mission_updates');
 // const missionProgress = require('../simulation/missionProgress');
 // const {calculateNextCoordinate} = require('../simulation/vehicles');
 
 const getStatus = async (req, res) => {
-  const {lat, long, needId, user_id} = req.query;
-  const status = 'idle';
+  const { lat, long, needId, user_id } = req.query;
   const latestMission = await getLatestMission(user_id);
   const bids = (!needId) ? [] : await getBidsForNeed(needId);
   let vehicles = [];
@@ -15,13 +14,13 @@ const getStatus = async (req, res) => {
     vehicles = await getVehicles(bids.map(bid => bid.vehicle_id));
   } else {
     vehicles = await getVehiclesInRange(
-      {lat: parseFloat(lat), long: parseFloat(long)},
+      { lat: parseFloat(lat), long: parseFloat(long) },
       7000,
     );
   }
 
   if (latestMission) {
-    res.json({status, vehicles, mission: latestMission});
+    res.json({ status: latestMission.status, vehicles, mission: latestMission });
     /* switch (latestMission.status) {
     case 'awaiting_signatures': {
       let elapsedTime = Date.now() - latestMission.user_signed_at;
@@ -76,8 +75,8 @@ const getStatus = async (req, res) => {
     }
     } */
   } else {
-    res.json({status, vehicles});
+    res.json({ status: 'idle', vehicles });
   }
 };
 
-module.exports = {getStatus};
+module.exports = { getStatus };

@@ -35,13 +35,13 @@ class DavSDK {
     this.createMissionEvent.watch(
       async (error, response) => {
         if(error) {
-          console.log(error);
+          console.error(error);
         } else {
-          console.log(response);
+          // console.log(response);
           let contractId = response.args.id.toLowerCase();
           let userId = response.args.buyerId;
           let vehicleId = response.args.sellerId;
-          console.log(userId);
+          // console.log(userId);
           let mission = null;
           while(!mission) {
             mission = await getLatestMission(userId);
@@ -49,7 +49,7 @@ class DavSDK {
               mission = null;
             }
           }
-          console.log(mission);
+          // console.log(mission);
           await updateMission(mission.mission_id, {
             'status': 'in_progress',
             'vehicle_signed_at': Date.now(),
