@@ -34,7 +34,7 @@ class DavSDK {
 
     this.createMissionEvent.watch(
       async (error, response) => {
-        if(error) {
+        if (error) {
           console.error(error);
         } else {
           // console.log(response);
@@ -43,9 +43,9 @@ class DavSDK {
           let vehicleId = response.args.sellerId;
           // console.log(userId);
           let mission = null;
-          while(!mission) {
+          while (!mission) {
             mission = await getLatestMission(userId);
-            if(mission.status !== 'awaiting_signatures' || mission.vehicle_id !== vehicleId) {
+            if (mission && mission.status !== 'awaiting_signatures' || mission.vehicle_id !== vehicleId) {
               mission = null;
             }
           }
