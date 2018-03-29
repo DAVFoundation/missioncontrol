@@ -56,8 +56,8 @@ class CoExDrone {
             await updateMission(missionId, {
               'vehicle_signed_at': Date.now(),
               'status': 'in_progress',
-              'vehicle_start_longitude': vehicle.coords.long,
-              'vehicle_start_latitude': vehicle.coords.lat
+              'vehicle_start_longitude': 1,
+              'vehicle_start_latitude': 1
             });
             break;
           case 'in_progress':
