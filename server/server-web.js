@@ -36,10 +36,14 @@ app.put('/bids/:bidId/choose', BidController.chooseBid);
 app.get('/mission_command', MissionController.command);
 
 const coexDrone = require('./coex/drone');
+const davSDK = require('./lib/dav');
 
 module.exports = {
   start: async () => {
     await coexDrone.init();
+    davSDK.init().catch(err => {
+      console.log(err);
+    });
     // Start the server
     app.listen(port, () => {
       console.log(`Web server started. Listening on port ${port}`);

@@ -17,6 +17,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       ELEVATION_API_KEY: AIzaSyBzNsELkqXiZBlMzEB68rX_JwY5Q9CtPys
+      ETH_NODE_URL: 'http://dav-contracts:8545'
     volumes:
       - /app/node_modules
       - .:/app
@@ -24,10 +25,13 @@ services:
       - redis:redis
     external_links:
       - captain_captain-server_1:cap
+      - dav-contracts:dav-contracts
     networks:
       - dav
   redis:
     image: redis
+    ports:
+      - '6379:6379'
     networks:
       - dav
 

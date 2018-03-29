@@ -12,7 +12,10 @@ const DRONE_PRICE_RATE = 1e-14 / 1000; // DAV/m
 const DRONE_CRUISE_ALT = 1000;
 
 const DRONE_ID_MAP = {
-  9: { pubkey: '0xa050930bc8c5762c7994a35eb27b5b619254c438', privatekey: '' } //    `0x${Array(40).fill().map(() => Math.floor((Math.random() * 15)).toString(16)).join('')}`
+  9: { 
+    pubkey: '0x1df62f291b2e969fb0849d99d9ce41e2f137006e', 
+    privatekey: 'b0057716d5917badaf911b193b12b910811c1497b5bada8d7711f758981c3773' 
+  } //    `0x${Array(40).fill().map(() => Math.floor((Math.random() * 15)).toString(16)).join('')}`
 };
 
 class CoExDrone {
@@ -57,10 +60,6 @@ class CoExDrone {
           switch (mission.status) {
             case 'awaiting_signatures':
               // TODO: this should be implemented by Ethereum integration - NOT HERE!
-              await updateMission(missionId, {
-                'vehicle_signed_at': Date.now(),
-                'status': 'in_progress'
-              });
               break;
             case 'in_progress':
               await this.onInProgress(mission, droneState, missionUpdates);
@@ -140,7 +139,7 @@ class CoExDrone {
   }
 
   async updateVehicles() {
-    const drones = await this.droneApi.listDrones();
+    const drones = (await this.droneApi.listDrones()) || [];
 
     drones.filter(drone => drone.description.match(/\bSITL\b/))
       .forEach(async (drone) => {

@@ -9,7 +9,7 @@ dispose:
 
 rebuild: dispose build
 
-up: test-run build
+up: copy-contracts test-run build 
 	docker-compose up
 
 down:
@@ -27,3 +27,7 @@ create-aws-prod-env:
 
 deploy-aws-prod-env:
 	@eb deploy --profile eb-cli-dav --staged
+
+copy-contracts:
+	-rm -rf ./server/build
+	-cp -r ../contracts/build ./server
