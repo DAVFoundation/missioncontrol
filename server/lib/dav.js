@@ -45,8 +45,12 @@ class DavSDK {
           let mission = null;
           while (!mission) {
             mission = await getLatestMission(userId);
-            if (mission && mission.status !== 'awaiting_signatures' || mission.vehicle_id !== vehicleId) {
-              mission = null;
+            if (mission) {
+              if(mission.status !== 'awaiting_signatures' 
+                || mission.vehicle_id !== vehicleId 
+                || mission.contract_id ) {
+                mission = null;
+              }
             }
           }
           // console.log(mission);
