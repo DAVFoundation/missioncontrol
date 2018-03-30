@@ -1,8 +1,12 @@
 const axios = require('axios');
 const Rx = require('rxjs/Rx');
+const querystring = require('querystring');
+
 
 /*
-  curl -H "X-Token:6049a4c4ebe54b769b11f6c9f5b57e5e" https://hub.copterexpress.com/api/drones/list
+
+curl -H "X-Token:6049a4c4ebe54b769b11f6c9f5b57e5e" https://hub.copterexpress.com/api/drones/list
+
 */
 
 const API_ROOT = 'https://hub.copterexpress.com/api';
@@ -36,23 +40,23 @@ module.exports =
         });
     }
 
-    goto(id, lat, lng, cruiseAlt, landAlt, release = false) {
-      return axios.post(`${API_ROOT}/drones/${id}/command`, {
+    goto(id, lat, lng, cruiseAlt, release = false) {
+      return axios.request({
+        url: `${API_ROOT}/drones/${id}/command`,
+        method: 'post',
         headers: API_HEADERS,
-        data: {
+        data: querystring.stringify({
           'command': 'run_mission',
           'params': {
             'type': 'Delivery',
             'locations': [{
               lat: lat,
               lon: lng,
-              altitude_offset: landAlt,
               release_cargo: release
             }],
             'altitude': cruiseAlt
           }
-        }
-      })
-        .then(res => res.data);
+        })
+      }).then(res => res.data);
     }
   };

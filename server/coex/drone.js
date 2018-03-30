@@ -187,6 +187,7 @@ class CoExDrone {
     drone.davId = DRONE_ID_MAP[drone.id].pubkey;
     this.addDrone(drone);
     const state = await this.droneApi.getState(drone.id);
+    console.log(`${JSON.stringify(state.location)} ${state.status}`);
 
     let vehicles = await getVehicles([drone.davId]);
     if (vehicles.length > 0) {
