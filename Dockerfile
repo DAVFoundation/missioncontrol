@@ -1,7 +1,4 @@
-FROM node:9.3.0-alpine
-
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh python make g++
+FROM node:9
 
 RUN npm install -g nodemon
 
