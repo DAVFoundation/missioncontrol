@@ -200,7 +200,7 @@ class CoExDrone {
         break;
       case 'travelling_dropoff':
         if (droneState.status === 'Standby') {
-          await this.updateStatus(mission, 'landing_pickup', 'landing_pickup');
+          await this.updateStatus(mission, 'landing_dropoff', 'landing_dropoff');
         }
         // setTimeout(async () => {
         //   await this.updateStatus( mission, 'landing_dropoff', 'landing_dropoff' );
