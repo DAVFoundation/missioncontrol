@@ -11,10 +11,9 @@ const DRONE_AVG_VELOCITY = 10.0; // m/s
 const DRONE_PRICE_RATE = 1e-14 / 1000; // DAV/m
 // const DRONE_CRUISE_ALT = 1000;
 
-const DRONE_ID_MAP = {
+const DRONE_ID_MAP = { // make sure thet eth addres is in lower case
   9: {
-    pubkey: '0x1df62f291b2e969fb0849d99d9ce41e2f137006e',
-    privatekey: 'b0057716d5917badaf911b193b12b910811c1497b5bada8d7711f758981c3773'
+    address: '0x316036cea6b9222fe6fcd0a5ca8efdd0d8a05911'
   }
 };
 
@@ -184,7 +183,7 @@ class CoExDrone {
   }
 
   async updateVehicle(drone) {
-    drone.davId = DRONE_ID_MAP[drone.id].pubkey;
+    drone.davId = DRONE_ID_MAP[drone.id].address;
     this.addDrone(drone);
     const state = await this.droneApi.getState(drone.id);
     console.log(`${JSON.stringify(state.location)} ${state.status}`);
