@@ -1,14 +1,14 @@
 // const Rx = require('rxjs/Rx');
 const Web3 = require('web3');
 const TruffleContract = require('truffle-contract');
+const HDWalletProvider = require('truffle-hdwallet-provider');
+const mnemonic = require('../../mnemonic');
 const BasicMissionArtifact = require('../build/contracts/BasicMission.json');
 const { getLatestMission, updateMission } = require('../store/missions');
 
 class DavSDK {
   constructor() {
-    let web3Provider = new Web3
-      .providers
-      .HttpProvider(process.env.ETH_NODE_URL);
+    let web3Provider = new HDWalletProvider(mnemonic, process.env.ETH_NODE_URL);
     this.web3 = new Web3(web3Provider);
     this.BasicMissionContract = TruffleContract(BasicMissionArtifact);
     this.BasicMissionContract.setProvider(this.web3.currentProvider);
@@ -17,20 +17,6 @@ class DavSDK {
   async init() {
     this.BasicMissionContractInstance = await this.BasicMissionContract.deployed();
     this.createMissionEvent = this.BasicMissionContractInstance.Create();
-    // let signedMissionEvent = this.BasicMissionContractInstance.Signed();
-
-    // Wrap Callback
-    // this.createMissionObservable = Rx.Observable.create(observer => {
-    //   createMissionEvent.watch(
-    //     (error, response) => {
-    //       if(error) {
-    //         observer.error(error);
-    //       } else {
-    //         observer.next(response);
-    //       }
-    //     }
-    //   );
-    // });
 
     this.createMissionEvent.watch(
       async (error, response) => {
