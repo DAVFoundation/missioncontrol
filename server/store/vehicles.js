@@ -46,7 +46,7 @@ const getRedisVehicleObject = async id => {
 
 const getVehicle = async id => {
   let vehicle = await getRedisVehicleObject(id);
-  return parseVehicleFromRedis(vehicle);
+  return vehicle ? parseVehicleFromRedis(vehicle) : null;
 };
 
 const setVehicleTTL = vehicleId =>

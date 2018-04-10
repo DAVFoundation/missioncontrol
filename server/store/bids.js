@@ -1,11 +1,15 @@
+const uuid = require('uuid/v4');
 const redis = require('./redis');
 const config = require('../config');
 const { getVehicle } = require('../store/vehicles');
 const { getNeed } = require('./needs');
 
 const saveBid = async ({ vehicle_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at }, needId, userId) => {
-  // get new unique id for bid
-  const bidId = await redis.incrAsync('next_bid_id');
+  
+  // generate new unique 128bit id for bid
+  let binaryId = new Array(16);
+  uuid(null, binaryId, 0);
+  let bidId = Buffer.from(binaryId).toString('hex');
 
   // Save bid id in need_bids
   redis.rpushAsync(`need_bids:${needId}`, bidId);

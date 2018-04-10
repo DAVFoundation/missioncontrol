@@ -1,11 +1,33 @@
 const redis = require('./redis');
+const config = require('../config');
 const { getNeed } = require('./needs');
 const { createMissionUpdate } = require('./mission_updates');
+const Aerospike = require('aerospike');
+const {aerospikeConfig, namespace} = require('../config/aerospike');
+const aerospike = Aerospike.client(aerospikeConfig());
 
 const getMission = async missionId => {
   const mission = await redis.hgetallAsync(`missions:${missionId}`);
   mission.mission_id = missionId;
   return mission;
+};
+
+const getMissionByBidId = async bid_id => {
+  try {
+    let policy = new Aerospike.WritePolicy({
+      exists: Aerospike.policy.exists.CREATE_OR_REPLACE
+    });
+    await aerospike.connect();
+    let key = new Aerospike.Key(namespace, 'missions', bid_id);
+    let res = await aerospike.get(key, policy);
+    return res.bins.missions;
+  }
+  catch (error) {
+    if (error.message.includes('Record does not exist in database')) {
+      return [];
+    }
+    throw error;
+  }
 };
 
 const getLatestMission = async userId => {
@@ -22,6 +44,15 @@ const getLatestMission = async userId => {
 const updateMission = async (id, params) => {
   const key_value_array = [].concat(...Object.entries(params));
   return await redis.hmsetAsync(`missions:${id}`, ...key_value_array);
+};
+
+const saveMissionToAerospike = async (bidId, mission) => {
+  let policy = new Aerospike.WritePolicy({
+    exists: Aerospike.policy.exists.CREATE_OR_REPLACE
+  });
+  await aerospike.connect();
+  let key = new Aerospike.Key(namespace, 'missions', bidId);
+  await aerospike.put(key, mission, {ttl: config('bids_ttl')}, policy);
 };
 
 const createMission = async ({ user_id, bidId }) => {
@@ -63,12 +94,14 @@ const createMission = async ({ user_id, bidId }) => {
     'status', 'awaiting_signatures',
     'user_signed_at', user_signed_at,
   );
-  return {
+  let mission = {
     mission_id: missionId,
+    user_id,
     vehicle_id,
     price,
     time_to_pickup,
     time_to_dropoff,
+    need_id,
     pickup_latitude,
     pickup_longitude,
     pickup_address,
@@ -77,13 +110,36 @@ const createMission = async ({ user_id, bidId }) => {
     pickup_at,
     cargo_type,
     weight,
+    status: 'awaiting_signatures',
     user_signed_at,
   };
+  saveMissionToAerospike(bidId, {
+    mission_id: missionId,
+    bid_id: bidId,
+    user_id,
+    vehicle_id,
+    price,
+    time_to_pickup,
+    time_to_dropoff,
+    need_id,
+    pick_latitude: pickup_latitude,
+    pick_longitude: pickup_longitude,
+    pickup_address,
+    drop_latitude: dropoff_latitude,
+    drop_longitude: dropoff_longitude,
+    pickup_at,
+    cargo_type,
+    weight,
+    status: 'awaiting_signatures',
+    user_signed_at,
+  });
+  return mission;
 };
 
 module.exports = {
   createMission,
   getMission,
+  getMissionByBidId,
   getLatestMission,
   updateMission,
 };

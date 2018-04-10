@@ -7,6 +7,7 @@ services:
     ports:
       - '8888:8443'
       - '9090:9090'
+      - '5858:5858'
       - '9229:9229'
     environment:
       NODE_ENV: development
@@ -16,13 +17,15 @@ services:
       CAPTAIN_PORT: 9090
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      AEROSPIKE_HOST: aerospike
       ELEVATION_API_KEY: AIzaSyBzNsELkqXiZBlMzEB68rX_JwY5Q9CtPys
-      ETH_NODE_URL: 'http://dav-contracts:8545'
+      ETH_NODE_URL: 'https://ropsten.infura.io/wUiZtmeZ1KwjFrcC8zRO'
     volumes:
       - /app/node_modules
       - .:/app
     links:
       - redis:redis
+      - aerospike:aerospike
     external_links:
       - captain_captain-server_1:cap
       - dav-contracts:dav-contracts
@@ -34,6 +37,14 @@ services:
       - '6379:6379'
     networks:
       - dav
+  aerospike:
+    image: aerospike/aerospike-server
+    environment:
+      NAMESPACE: mission_control
+    networks:
+      - dav
+    ports:
+      - '3000:3000'
 
 networks:
   dav:

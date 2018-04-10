@@ -1,7 +1,79 @@
-const { getMission, updateMission } = require('../store/missions');
-const { createMissionUpdate } = require('../store/mission_updates');
-const { getVehicle, updateVehicleStatus } = require('../store/vehicles');
+const { getMission, updateMission, getMissionByBidId } = require('../store/missions');
+const { createMissionUpdate, createMission } = require('../store/mission_updates');
+const { getVehicle, updateVehicleStatus, updateVehiclePosition } = require('../store/vehicles');
+const { getBid } = require('../store/bids');
+const validate = require('../lib/validate');
+const updateConstraints = require('./constraints/mission/update');
+const beginConstraints = require('./constraints/mission/begin');
 
+const begin = async (req, res) => {
+  const { bidId } = req.params;
+  const params = req.body;
+  params.bid_id = bidId;
+  const validationErrors = validate(params, beginConstraints);
+  if (validationErrors) {
+    res.status(422).json(validationErrors);
+  } else {
+    const bid = await getBid(bidId);
+    if (!bid || /* (bid.status !== 'contractSigned') || */ (bid.dav_id !== params.dav_id)) {
+      res.status(401).send('Unauthorized');
+    } else {
+      let mission = await createMission(bidId);
+      // await updateVehiclePosition(mission.vehicle, params.longitude, params.latitude);
+      mission = await getMission(mission.mission_id); //refresh mission
+      if (mission) {
+        res.json({ mission });
+      } else {
+        res.status(500).send('Something broke!');
+      }
+    }
+  }
+};
+
+const fetch = async (req, res) => {
+  const { missionId } = req.params;
+  let mission = await getMission(missionId);
+  if (mission) {
+    res.json({ mission });
+  } else {
+    res.status(400).send('No mission!');
+  }
+};
+
+const update = async (req, res) => {
+  const { missionId } = req.params;
+  const params = req.body;
+  const validationErrors = validate(params, updateConstraints);
+  if (validationErrors) {
+    res.status(422).json(validationErrors);
+  } else {
+    let mission = await getMission(missionId); // redis.hgetallAsync(`missions:${missionId}`); returns null at this point
+    if ((mission.status !== 'started') || (mission.dav_id !== params.dav_id)) {
+      res.status(401).send('Unauthorized');
+    } else {
+      const vehicle = await getVehicle(mission.vehicle_id);
+      const { status, longitude, latitude } = params;
+      const key = `${status}At`;
+      const updateParams = { status: status };
+      updateParams[key] = Date.now();
+      await updateMission(missionId, updateParams);
+      await updateVehiclePosition(vehicle, longitude, latitude);
+      mission = await getMission(missionId); //refresh mission
+      createMissionUpdate(missionId, status);
+      res.status(200).json(mission);
+    }
+  }
+};
+
+const fetchMissionByBidId = async (req, res) => {
+  const { bidId } = req.params;
+  let mission = await getMissionByBidId(bidId);
+  if (mission) {
+    res.json(mission);
+  } else {
+    res.status(400).send('No mission!');
+  }
+};
 
 const command = async (req, res) => {
   const { user_id, mission_id, command} = req.query;
@@ -28,4 +100,4 @@ const command = async (req, res) => {
   res.json({vehicle, mission});
 };
 
-module.exports = { command };
+module.exports = { begin, fetch, fetchMissionByBidId, update, command };
