@@ -1,3 +1,5 @@
+const needTypes = require('../../../config/needTypes');
+
 module.exports = {
   pickup_at: {
     numericality: {
@@ -102,5 +104,11 @@ module.exports = {
     length: {
       is: 3
     }
-  }
+  },
+  need_type: {
+    presence: true,
+    inclusion: {
+      within: needTypes
+    }
+  },
 };

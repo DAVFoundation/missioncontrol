@@ -34,7 +34,7 @@ const fetch = async (req, res) => {
   const { missionId } = req.params;
   let mission = await getMission(missionId);
   if (mission) {
-    res.json({ mission });
+    res.json(mission);
   } else {
     res.status(400).send('No mission!');
   }
@@ -48,18 +48,29 @@ const update = async (req, res) => {
     res.status(422).json(validationErrors);
   } else {
     let mission = await getMission(missionId); // redis.hgetallAsync(`missions:${missionId}`); returns null at this point
-    if ((mission.status !== 'started') || (mission.dav_id !== params.dav_id)) {
+    if(params.vehicle_id && mission.vehicle_id !== params.vehicle_id) {
+      res.status(401).send('Unauthorized');
+    } else if (params.dav_id && mission.user_id !== params.dav_id) {
       res.status(401).send('Unauthorized');
     } else {
       const vehicle = await getVehicle(mission.vehicle_id);
       const { status, longitude, latitude } = params;
-      const key = `${status}At`;
-      const updateParams = { status: status };
-      updateParams[key] = Date.now();
-      await updateMission(missionId, updateParams);
-      await updateVehiclePosition(vehicle, longitude, latitude);
-      mission = await getMission(missionId); //refresh mission
-      createMissionUpdate(missionId, status);
+      if(status) {
+        const key = `${status}At`;
+        const updateParams = { status: status };
+        updateParams[key] = Date.now();
+        await updateMission(missionId, updateParams);
+        createMissionUpdate(missionId, status);
+      }
+      if(longitude && latitude) {
+        await updateVehiclePosition(vehicle, longitude, latitude);
+      }
+      if(params.vehicle_status && params.mission_status) {
+        await updateMission(missionId, { [params.mission_status + '_at']: Date.now() });
+        await updateVehicleStatus(mission.vehicle_id, params.vehicle_status);
+        createMissionUpdate(missionId, params.mission_status);
+      }
+      mission = await getMission(missionId); //refresh mission 
       res.status(200).json(mission);
     }
   }

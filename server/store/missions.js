@@ -20,11 +20,11 @@ const getMissionByBidId = async bid_id => {
     await aerospike.connect();
     let key = new Aerospike.Key(namespace, 'missions', bid_id);
     let res = await aerospike.get(key, policy);
-    return res.bins.missions;
+    return getMission(res.bins.mission_id);
   }
   catch (error) {
     if (error.message.includes('Record does not exist in database')) {
-      return [];
+      return {};
     }
     throw error;
   }
@@ -77,6 +77,7 @@ const createMission = async ({ user_id, bidId }) => {
 
   // create a new mission entry in Redis
   redis.hmsetAsync(`missions:${missionId}`,
+    'bid_id', bidId,
     'user_id', user_id,
     'vehicle_id', vehicle_id,
     'price', price,
@@ -96,6 +97,7 @@ const createMission = async ({ user_id, bidId }) => {
   );
   let mission = {
     mission_id: missionId,
+    bid_id: bidId,
     user_id,
     vehicle_id,
     price,
@@ -118,20 +120,7 @@ const createMission = async ({ user_id, bidId }) => {
     bid_id: bidId,
     user_id,
     vehicle_id,
-    price,
-    time_to_pickup,
-    time_to_dropoff,
-    need_id,
-    pick_latitude: pickup_latitude,
-    pick_longitude: pickup_longitude,
-    pickup_address,
-    drop_latitude: dropoff_latitude,
-    drop_longitude: dropoff_longitude,
-    pickup_at,
-    cargo_type,
-    weight,
-    status: 'awaiting_signatures',
-    user_signed_at,
+    need_id
   });
   return mission;
 };

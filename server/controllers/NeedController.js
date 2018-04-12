@@ -54,7 +54,9 @@ const getForCaptain = async (req, res) => {
   try {
     let { davId } = req.params;
     let needs = await getNeeds(davId);
-    needs = await Promise.all(needs.map(async needId => await getNeed(needId)));
+    needs = await Promise.all(needs.map(async needId => {
+      return { id: needId, ...await getNeed(needId) };
+    }));
     res.send(needs.filter(need=>need!=null));
   }
   catch (error) {
