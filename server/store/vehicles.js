@@ -2,6 +2,9 @@ const redis = require('./redis');
 const config = require('../config');
 const { generateRandomVehicles } = require('../simulation/vehicles');
 // const { createVehicle } = require('../client-thrift');
+const gradd = require('../gradd/gradd');
+
+const STATUS_CONTRACT_RECEIVED = 'contract_received';
 
 const parseVehicleFromRedis = vehicle => ({
   id: vehicle.id,
@@ -55,7 +58,10 @@ const setVehicleTTL = vehicleId =>
 const getVehicles = async vehicleIds =>
   parseVehiclesArray(await Promise.all(vehicleIds.map(vehicleId => getRedisVehicleObject(vehicleId))), );
 
-const updateVehicleStatus = async (id, status) => {
+const updateVehicleStatus = async (id, status, missionId) => {
+  if (status == STATUS_CONTRACT_RECEIVED) {
+    await gradd.emailGraddStatusPayloadRequest(missionId);
+  }
   return await redis.hsetAsync(`vehicles:${id}`, 'status', status);
 };
 

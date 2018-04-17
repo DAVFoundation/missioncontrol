@@ -111,4 +111,18 @@ const command = async (req, res) => {
   res.json({vehicle, mission});
 };
 
-module.exports = { begin, fetch, fetchMissionByBidId, update, command };
+const updateGraddPayload = async (req,res) => {
+  try{
+    //prepare params
+    let mission_id = req.params.mission_id;
+    let gradd_payload = req.params.gradd_payload;
+    await updateMission(mission_id, {'gradd_payload':gradd_payload});
+    //todo: check for errors in updateMission
+    //todo: should we email the user with the payload?
+    res.status(200).send('Payload stored successfully');
+  } catch(err){
+    console.log('updateGraddPayload error: '+err);
+  }
+};
+
+module.exports = { begin, fetch, fetchMissionByBidId, update, command, updateGraddPayload };

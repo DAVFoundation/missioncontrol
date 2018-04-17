@@ -47,7 +47,7 @@ const chooseBid = async (req, res) => {
   if (mission) {
     await addBidToCaptain(mission.vehicle_id, bidId);
     // droneApi.beginMission(mission.vehicle_id, mission.mission_id);
-    await updateVehicleStatus(mission.vehicle_id, 'contract_received');
+    await updateVehicleStatus(mission.vehicle_id, 'contract_received', mission.mission_id);
     res.json({ mission });
   } else {
     res.status(500).send('Something broke!');
