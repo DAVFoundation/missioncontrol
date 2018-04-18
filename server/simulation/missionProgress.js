@@ -1,13 +1,42 @@
 const { updateMission } = require('../store/missions');
 
+let prevCoords = [];
+
+const prevCoordsSame = prevCoords => {
+  const maxDistanceDiff = 0.00000005;
+
+  for(let i = 1; i < prevCoords.length; i++) {
+    let latDiff = Math.abs(prevCoords[i].lat - prevCoords[0].lat);
+    let longDiff = Math.abs(prevCoords[i].long - prevCoords[0].long);
+
+    if(latDiff > maxDistanceDiff || longDiff > maxDistanceDiff) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 module.exports = {
   'travelling_pickup': {
     status: 'travelling_pickup',
     nextVehicleStatus: 'landing_pickup',
     nextMissionUpdate: 'landing_pickup',
-    conditionForNextUpdate: mission => {
+    conditionForNextUpdate: (mission, vehicle) => {
       let elapsedTime = Date.now() - (parseFloat(mission.user_signed_at) + parseFloat(mission.time_to_pickup));
-      return elapsedTime > 0;
+      let isAtTerminal = false;
+
+      if(prevCoords.length < 3) {
+        prevCoords = prevCoords.concat(vehicle.coords);
+      } else {
+        //remove the oldest coord and add the newest 
+        prevCoords = prevCoords.slice(1, prevCoords.length).concat(vehicle.coords);
+        if(prevCoordsSame(prevCoords)) {
+          isAtTerminal = true;
+        }
+      }
+
+      return (elapsedTime > 0 && isAtTerminal);
     },
   },
   'landing_pickup': {

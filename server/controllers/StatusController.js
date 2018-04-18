@@ -42,11 +42,19 @@ const getStatus = async (req, res) => {
     case 'in_progress': {
       const mission = latestMission;
       let vehicle = await getVehicle(latestMission.vehicle_id);
+      let runNextUpdate;
       const status = 'in_mission';
       const currentStatus = missionProgress[vehicle.status];
 
       if (currentStatus.beforeUpdate) await currentStatus.beforeUpdate(latestMission);
-      if (currentStatus.conditionForNextUpdate(latestMission)) {
+
+      if(currentStatus.status === 'travelling_pickup') {
+        runNextUpdate = currentStatus.conditionForNextUpdate(latestMission, vehicle);
+      } else {
+        runNextUpdate = currentStatus.conditionForNextUpdate(latestMission);
+      }
+
+      if (runNextUpdate) {
         const timestampString = currentStatus.nextMissionUpdate + '_at';
         let timestampObject = {};
         timestampObject[timestampString] = Date.now();
