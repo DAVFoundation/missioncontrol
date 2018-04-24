@@ -122,6 +122,7 @@ const updateGraddPayload = async (req,res) => {
     res.status(200).send('Payload stored successfully');
   } catch(err){
     console.log('updateGraddPayload error: '+err);
+    res.status(500).send('Unexpected error');
   }
 };
 
