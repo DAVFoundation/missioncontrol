@@ -58,10 +58,7 @@ const setVehicleTTL = vehicleId =>
 const getVehicles = async vehicleIds =>
   parseVehiclesArray(await Promise.all(vehicleIds.map(vehicleId => getRedisVehicleObject(vehicleId))), );
 
-const updateVehicleStatus = async (id, status, missionId) => {
-  if (status == STATUS_CONTRACT_RECEIVED) {
-    await gradd.emailGraddStatusPayloadRequest(missionId);
-  }
+const updateVehicleStatus = async (id, status) => {
   return await redis.hsetAsync(`vehicles:${id}`, 'status', status);
 };
 

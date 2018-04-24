@@ -114,6 +114,7 @@ const command = async (req, res) => {
 const updateGraddPayload = async (req,res) => {
   try{
     //prepare params
+    //todo: this has not been tested after the route was refactored to /:missions
     let mission_id = req.params.mission_id;
     let gradd_payload = req.params.gradd_payload;
     await updateMission(mission_id, {'gradd_payload':gradd_payload});
