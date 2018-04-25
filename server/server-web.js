@@ -49,6 +49,7 @@ app.post('/captains/:davId', CaptainController.registerNeedTypeForCaptain);
 app.put('/captains/:davId', CaptainController.registerNeedTypeForCaptain);
 
 // app.post('/contracts/:bidId', ContractController.sign);
+app.post('/missions/updateGraddPayload/:missionId', MissionController.updateGraddPayload);
 app.post('/missions/:bidId', MissionController.begin);
 app.put('/missions/:missionId', MissionController.update);
 app.get('/missions/:missionId', MissionController.fetch);
