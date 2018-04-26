@@ -1,9 +1,9 @@
 const email = require('./../lib/email');
 
-const GRADD_FROM = `dmauas@gmail.com`;
+const GRADD_FROM = `DAV Foundation`;
 const GRADD_TO = `dmauas@gmail.com`;
-const GRADD_TITLE = `Gradd title`;
-const GRADD_BODY = `Gradd body\n<br/>\n`;
+const GRADD_TITLE = `New DAV contract received`;
+const GRADD_BODY = `Gradd body\n\n`;
 const MISSION_ID_PARAM_NAME = `mission_id`;
 const SCHEME = 'https';
 const DOMAIN = 'missions.io';
