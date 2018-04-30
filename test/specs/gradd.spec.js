@@ -1,3 +1,14 @@
+jest.doMock('redis', () => {
+  return {
+    RedisClient: Object, 
+    createClient: (options) => { // eslint-disable-line no-unused-vars
+      return {
+        hsetAsync: () => Promise.resolve({  }) // eslint-disable-line no-unused-vars
+      };
+    }
+  };
+});
+
 const vehicles = require('../../server/store/vehicles');
 const dummyVehicleId = 1;
 const dummyMissionId = 1;

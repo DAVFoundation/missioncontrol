@@ -16,17 +16,13 @@ const create = async (req, res) => {
       params.user_id = req.query.user_id;
 
       let needId = await createNeed(params);
-      let terminals = {
-        pickup: {
-          longitude: params.pickup_longitude,
-          latitude: params.pickup_latitude
-        }, dropoff: {
-          longitude: params.dropoff_longitude,
-          latitude: params.dropoff_latitude
-        }
+
+      let needLocation = {
+        longitude: params.need_location_latitude,
+        latitude: params.need_location_latitude
       };
 
-      let captains = await getCaptainsForNeedType(params.need_type, terminals);
+      let captains = await getCaptainsForNeedType(params.need_type, needLocation);
       await Promise.all(captains.map(async captain => await addNeedToCaptain(captain.id, needId, params.ttl)));
       res.json({ needId });
     }
