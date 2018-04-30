@@ -113,13 +113,11 @@ const command = async (req, res) => {
 
 const updateGraddPayload = async (req,res) => {
   try{
-    //prepare params
-    //todo: this has not been tested after the route was refactored to /:missions
-    let mission_id = req.params.mission_id;
-    let gradd_payload = req.params.gradd_payload;
+    //todo: test this via the gradd coordinates form
+    let coordinates_base64 = req.params.mission;
+    let coordinates_string = Buffer.from(coordinates_base64, 'base64').toString();
+    let gradd_payload = JSON.parse(coordinates_string);
     await updateMission(mission_id, {'gradd_payload':gradd_payload});
-    //todo: check for errors in updateMission
-    //todo: should we email the user with the payload?
     res.status(200).send('Payload stored successfully');
   } catch(err){
     console.log('updateGraddPayload error: '+err);
