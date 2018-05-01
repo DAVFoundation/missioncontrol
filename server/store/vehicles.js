@@ -2,9 +2,6 @@ const redis = require('./redis');
 const config = require('../config');
 const { generateRandomVehicles } = require('../simulation/vehicles');
 // const { createVehicle } = require('../client-thrift');
-const gradd = require('../gradd/gradd');
-
-const STATUS_CONTRACT_RECEIVED = 'contract_received';
 
 const parseVehicleFromRedis = vehicle => ({
   id: vehicle.id,
