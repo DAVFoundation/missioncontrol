@@ -7,9 +7,13 @@ const {aerospikeConfig, namespace} = require('../config/aerospike');
 const aerospike = Aerospike.client(aerospikeConfig());
 
 const getMission = async missionId => {
-  const mission = await redis.hgetallAsync(`missions:${missionId}`);
+  let mission = await redis.hgetallAsync(`missions:${missionId}`);
   mission.mission_id = missionId;
-  return mission;
+  let need = getNeed(mission.need_id);
+  return {
+    ...need,
+    ...mission
+  };
 };
 
 const getMissionByBidId = async bid_id => {

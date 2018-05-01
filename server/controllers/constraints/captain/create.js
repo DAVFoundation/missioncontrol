@@ -1,5 +1,5 @@
 module.exports = {
-  dav_id: {
+  id: {
     presence: {
       allowEmpty: false
     },

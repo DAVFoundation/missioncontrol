@@ -6,17 +6,67 @@ const filter = Aerospike.filter;
 const aerospike = Aerospike.client(aerospikeConfig());
 const {getBid} = require('./bids');
 const Rx = require('rxjs/Rx');
+const config = require('../config');
 
 const MAX_LOCAL_RADIUS = 10e5;
 
+const parseCaptainFromRedis = captain => ({
+  id: captain.id,
+  model: captain.model,
+  icon: captain.icon,
+  status: captain.status,
+  coords: { lat: parseFloat(captain.lat), long: parseFloat(captain.long) },
+  missions_completed: parseInt(captain.missions_completed),
+  missions_completed_7_days: parseInt(captain.missions_completed_7_days),
+});
 
-const addNewCaptain = async ({dav_id}) => {
-  await redis.hmsetAsync(`captains:${dav_id}`,
-    'id', dav_id
+const parseCaptainsArray = captains =>
+  captains
+    // filter captains
+    .filter(captain => !!captain)
+    // format response objects
+    .map(parseCaptainFromRedis);
+
+const addNewCaptain = captain => {
+  // Add to captains
+  redis.hmsetAsync(`captains:${captain.id}`,
+    'id', captain.id,
+    'model', captain.model,
+    'icon', captain.icon,
+    'missions_completed', captain.missions_completed,
+    'missions_completed_7_days', captain.missions_completed_7_days,
+    'status', captain.status,
   );
 
-  return dav_id;
+  updateCaptainPosition(captain);
+
+  // Set TTL for vehicles
+  setCaptainTTL(captain.id);
+  // Send new vehicle to Captain
+  // createVehicle(vehicle);
 };
+
+const updateCaptainPosition = async (captain, newLong = captain.coords.long, newLat = captain.coords.lat) => {
+  const positionId = await redis.incrAsync('next_position_id');
+  await Promise.all([
+    redis.geoaddAsync('captain_positions', newLong, newLat, captain.id),
+
+    redis.hmsetAsync(`captains:${captain.id}`,
+      'long', newLong,
+      'lat', newLat,
+    ),
+    redis.hmsetAsync(`captain_position_history:${positionId}`,
+      'long', newLong,
+      'lat', newLat,
+      'status', captain.status
+    ),
+    redis.zaddAsync(`captains:${captain.id}:positions`, Date.now(), positionId)
+  ]);
+
+};
+
+const setCaptainTTL = captainId =>
+  redis.expire(`captains:${captainId}`, config('vehicles_ttl'));
 
 const addNeedTypeForCaptain = async ({dav_id, need_type, region}) => {
   await redis.saddAsync(`needTypes:${need_type}`, dav_id); // adds this captain davId to the needType
@@ -132,15 +182,24 @@ const addNeedTypeIndexes = async (needType) => {
   await createIndex(needType, 'global', Aerospike.indexDataType.NUMERIC);
 };
 
-const getCaptain = async davId => {
-  return await redis.hgetallAsync(`captains:${davId}`);
+const getRedisCaptainObject = async id => {
+  setCaptainTTL(id);
+  return await redis.hgetallAsync(`captains:${id}`);
 };
 
-const getCaptainsForNeedType = (needType, {pickup/* , dropoff */}) => {
+const getCaptain = async davId => {
+  let captain = await getRedisCaptainObject(davId);
+  return captain ? parseCaptainFromRedis(captain) : null;
+};
+
+const getCaptains = async ids =>
+  parseCaptainsArray(await Promise.all(ids.map(id => getRedisCaptainObject(id))), );
+
+const getCaptainsForNeedType = (needType, needLocation) => {
   return new Promise(async (resolve, reject) => {
     try {
       let client = await aerospike.connect();
-      geoQueryStreamForTerminal(pickup, needType, client)
+      geoQueryStreamForTerminal(needLocation, needType, client)
         .distinct(davId => davId)
         .toArray()
         .subscribe(async davIds => {
@@ -188,6 +247,7 @@ const geoQueryStreamForTerminal = (terminal, needType) => {
 module.exports = {
   addNewCaptain,
   getCaptain,
+  getCaptains,
   getCaptainsForNeedType,
   addNeedTypeForCaptain,
   addNeedToCaptain,
