@@ -113,13 +113,16 @@ const command = async (req, res) => {
 
 const updateGraddPayload = async (req,res) => {
   try{
-    //prepare params
-    //todo: this has not been tested after the route was refactored to /:missions
-    let mission_id = req.params.mission_id;
-    let gradd_payload = req.params.gradd_payload;
-    await updateMission(mission_id, {'gradd_payload':gradd_payload});
-    //todo: check for errors in updateMission
-    //todo: should we email the user with the payload?
+    //todo: test this via the gradd coordinates form
+    let mission_base64 = req.params.mission;
+    let mission_string = Buffer.from(mission_base64, 'base64').toString();
+    let gradd_payload = JSON.parse(mission_string);
+    
+    let mission_id = gradd_payload.mission_id
+    if (!mission_id) throw "No mission ID! Malformed URL? Please contact tech support";
+    delete gradd_payload.mission_id;
+
+    await updateMission(mission_id, {'gradd_payload': gradd_payload});
     res.status(200).send('Payload stored successfully');
   } catch(err){
     console.log('updateGraddPayload error: '+err);
