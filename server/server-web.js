@@ -44,6 +44,7 @@ app.get('/mission_command', MissionController.command);
 
 
 // endpoints for captain/dav-js
+app.get('/captains/:captainId', CaptainController.fetch);
 app.post('/captains', CaptainController.create);
 app.post('/captains/:davId', CaptainController.registerNeedTypeForCaptain);
 app.put('/captains/:davId', CaptainController.registerNeedTypeForCaptain);

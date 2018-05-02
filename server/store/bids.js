@@ -4,7 +4,7 @@ const config = require('../config');
 // const { getVehicle } = require('../store/vehicles');
 const { getNeed } = require('./needs');
 
-const saveBid = async ({ vehicle_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at }, needId, userId) => {
+const saveBid = async ({ vehicle_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at }, needId) => {
   
   // generate new unique 128bit id for bid
   let binaryId = new Array(16);
@@ -18,7 +18,6 @@ const saveBid = async ({ vehicle_id, time_to_pickup, time_to_dropoff, price, pri
   redis.hmsetAsync(`bids:${bidId}`,
     'id', bidId,
     'vehicle_id', vehicle_id,
-    'user_id', userId,
     'price', price,
     'price_type', price_type,
     'price_description', price_description,
@@ -87,11 +86,11 @@ const getBidsForNeed = async needId => {
 
 // const coexDrone = require('../coex/drone');
 
-const addNewBid = async (newBid, needId, userId) => {
+const addNewBid = async (newBid, needId) => {
   // const origin = { lat: vehicle.coords.lat, long: vehicle.coords.long };
   // let newBid = coexDrone.getBid(vehicle.id,origin, pickup, dropoff);
   // newBid.vehicle_id = vehicle.id;
-  const newBidId = await saveBid(newBid, needId, userId);
+  const newBidId = await saveBid(newBid, needId);
   newBid.id = newBidId;
   return newBid;
 };

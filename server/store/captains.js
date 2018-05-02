@@ -68,6 +68,10 @@ const updateCaptainPosition = async (captain, newLong = captain.coords.long, new
 const setCaptainTTL = captainId =>
   redis.expire(`captains:${captainId}`, config('vehicles_ttl'));
 
+const updateCaptainStatus = async (id, status) => {
+  return await redis.hsetAsync(`captains:${id}`, 'status', status);
+};
+
 const addNeedTypeForCaptain = async ({dav_id, need_type, region}) => {
   await redis.saddAsync(`needTypes:${need_type}`, dav_id); // adds this captain davId to the needType
   await addNeedTypeIndexes(need_type);
@@ -248,6 +252,7 @@ module.exports = {
   addNewCaptain,
   getCaptain,
   getCaptains,
+  updateCaptainStatus,
   getCaptainsForNeedType,
   addNeedTypeForCaptain,
   addNeedToCaptain,

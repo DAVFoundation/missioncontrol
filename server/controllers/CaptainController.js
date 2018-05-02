@@ -3,6 +3,16 @@ const needTypeConstraints = require('./constraints/captain/needType');
 const validate = require('../lib/validate');
 const { addNewCaptain, addNeedTypeForCaptain, getCaptain } = require('../store/captains');
 
+const fetch = async (req, res) => {
+  const { captainId } = req.params;
+  let captain = await getCaptain(captainId);
+  if (captain) {
+    res.json(captain);
+  } else {
+    res.status(404).send('Vehicle not found!');
+  }
+};
+
 const create = async (req, res) => {
   let params = req.body;
   const validationErrors = validate(params, createConstraints);
@@ -39,4 +49,4 @@ const registerNeedTypeForCaptain = async (req, res) => {
   }
 };
 
-module.exports = { create, registerNeedTypeForCaptain };
+module.exports = { create, fetch, registerNeedTypeForCaptain };

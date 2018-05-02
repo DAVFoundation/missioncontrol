@@ -5,7 +5,12 @@ const { getLatestMission } = require('../store/missions');
 const getStatus = async (req, res) => {
   const { /* lat, long, */ needId, user_id } = req.query;
   const latestMission = await getLatestMission(user_id);
-  const bids = (!needId) ? [] : await getBidsForNeed(needId);
+  let bids = [];
+  if(needId) {
+    bids = await getBidsForNeed(needId);
+  } else if(latestMission) {
+    bids = await getBidsForNeed(latestMission.need_id);
+  }
   let captains = [];
   if (bids.length > 0) {
     captains = await getCaptains(bids.map(bid => bid.vehicle_id));

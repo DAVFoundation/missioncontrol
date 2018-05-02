@@ -7,12 +7,11 @@ const {aerospikeConfig, namespace} = require('../config/aerospike');
 const aerospike = Aerospike.client(aerospikeConfig());
 
 const getMission = async missionId => {
-  let mission = await redis.hgetallAsync(`missions:${missionId}`);
-  mission.mission_id = missionId;
-  let need = getNeed(mission.need_id);
+  let mission = await getMissionByBidId(missionId);
   return {
-    ...need,
-    ...mission
+    ...mission,
+    ...mission.need,
+    ...mission.bid
   };
 };
 
@@ -24,7 +23,7 @@ const getMissionByBidId = async bid_id => {
     await aerospike.connect();
     let key = new Aerospike.Key(namespace, 'missions', bid_id);
     let res = await aerospike.get(key, policy);
-    return getMission(res.bins.mission_id);
+    return res.bins;
   }
   catch (error) {
     if (error.message.includes('Record does not exist in database')) {
@@ -46,8 +45,8 @@ const getLatestMission = async userId => {
 };
 
 const updateMission = async (id, params) => {
-  const key_value_array = [].concat(...Object.entries(params));
-  return await redis.hmsetAsync(`missions:${id}`, ...key_value_array);
+  let mission = await getMissionByBidId(id);
+  return await saveMissionToAerospike(id, {...mission, ...params});
 };
 
 const saveMissionToAerospike = async (bidId, mission) => {
@@ -63,14 +62,12 @@ const createMission = async ({ user_id, bidId }) => {
   const { getBid } = require('./bids');
   // get bid details
   const bid = await getBid(bidId);
-  const { vehicle_id, price, time_to_pickup, time_to_dropoff, need_id } = bid;
 
   // get neeed details
-  const need = await getNeed(need_id);
-  const { pickup_latitude, pickup_longitude, pickup_address, dropoff_latitude, dropoff_longitude, pickup_at, cargo_type, weight } = need;
-
+  const need = await getNeed(bid.need_id);
+  
   // get new unique id for mission
-  const missionId = await redis.incrAsync('next_mission_id');
+  const missionId = bidId;
   const user_signed_at = Date.now();
 
   // Save mission in user missions history
@@ -79,54 +76,23 @@ const createMission = async ({ user_id, bidId }) => {
   createMissionUpdate(missionId, 'contract_created');
   createMissionUpdate(missionId, 'user_signed');
 
-  // create a new mission entry in Redis
-  redis.hmsetAsync(`missions:${missionId}`,
-    'bid_id', bidId,
-    'user_id', user_id,
-    'vehicle_id', vehicle_id,
-    'price', price,
-    'time_to_pickup', time_to_pickup,
-    'time_to_dropoff', time_to_dropoff,
-    'need_id', need_id,
-    'pickup_latitude', pickup_latitude,
-    'pickup_longitude', pickup_longitude,
-    'pickup_address', pickup_address,
-    'dropoff_latitude', dropoff_latitude,
-    'dropoff_longitude', dropoff_longitude,
-    'pickup_at', pickup_at,
-    'cargo_type', cargo_type,
-    'weight', weight,
-    'status', 'awaiting_signatures',
-    'user_signed_at', user_signed_at,
-  );
-  let mission = {
-    mission_id: missionId,
-    bid_id: bidId,
-    user_id,
-    vehicle_id,
-    price,
-    time_to_pickup,
-    time_to_dropoff,
-    need_id,
-    pickup_latitude,
-    pickup_longitude,
-    pickup_address,
-    dropoff_latitude,
-    dropoff_longitude,
-    pickup_at,
-    cargo_type,
-    weight,
-    status: 'awaiting_signatures',
-    user_signed_at,
-  };
   saveMissionToAerospike(bidId, {
-    mission_id: missionId,
+    mission_id: bidId,
     bid_id: bidId,
     user_id,
-    vehicle_id,
-    need_id
+    status: 'awaiting_signatures',
+    need,
+    bid
   });
-  return mission;
+  return {
+    mission_id: bidId,
+    bid_id: bidId,
+    user_id,
+    user_signed_at,
+    status: 'awaiting_signatures',
+    ...need,
+    ...bid
+  };
 };
 
 module.exports = {

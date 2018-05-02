@@ -1,6 +1,7 @@
-const { getMission, updateMission, getMissionByBidId } = require('../store/missions');
+const { getMission, updateMission } = require('../store/missions');
 const { createMissionUpdate, createMission } = require('../store/mission_updates');
-const { getVehicle, updateVehicleStatus, updateVehiclePosition } = require('../store/vehicles');
+const { getVehicle, updateVehiclePosition } = require('../store/vehicles');
+const { updateCaptainStatus } = require('../store/captains');
 const { getBid } = require('../store/bids');
 const validate = require('../lib/validate');
 const updateConstraints = require('./constraints/mission/update');
@@ -67,7 +68,7 @@ const update = async (req, res) => {
       }
       if(params.vehicle_status && params.mission_status) {
         await updateMission(missionId, { [params.mission_status + '_at']: Date.now() });
-        await updateVehicleStatus(mission.vehicle_id, params.vehicle_status);
+        await updateCaptainStatus(mission.vehicle_id, params.vehicle_status);
         createMissionUpdate(missionId, params.mission_status);
       }
       mission = await getMission(missionId); //refresh mission 
@@ -78,7 +79,7 @@ const update = async (req, res) => {
 
 const fetchMissionByBidId = async (req, res) => {
   const { bidId } = req.params;
-  let mission = await getMissionByBidId(bidId);
+  let mission = await getMission(bidId);
   if (mission) {
     res.json(mission);
   } else {
@@ -101,7 +102,7 @@ const command = async (req, res) => {
   if (command === 'takeoff_pickup' && vehicle.status === 'waiting_pickup'){
     await updateMission(mission_id, {'takeoff_pickup_at': Date.now()});
     await createMissionUpdate(mission_id, 'takeoff_pickup');
-    await updateVehicleStatus(mission.vehicle_id, 'takeoff_pickup');
+    await updateCaptainStatus(mission.vehicle_id, 'takeoff_pickup');
   }
 
   // update mission and vehicle
