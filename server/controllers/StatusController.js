@@ -46,7 +46,8 @@ const getStatus = async (req, res) => {
       const currentStatus = missionProgress[vehicle.status];
 
       if (currentStatus.beforeUpdate) await currentStatus.beforeUpdate(latestMission);
-      if (currentStatus.conditionForNextUpdate(latestMission)) {
+
+      if (currentStatus.conditionForNextUpdate(latestMission, vehicle)) {
         const timestampString = currentStatus.nextMissionUpdate + '_at';
         let timestampObject = {};
         timestampObject[timestampString] = Date.now();
