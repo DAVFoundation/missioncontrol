@@ -8,11 +8,12 @@ module.exports = {
     conditionForNextUpdate: (mission, vehicle) => {
       let elapsedTime = Date.now() - (parseFloat(mission.user_signed_at) + parseFloat(mission.time_to_pickup));
       let isAtTerminal = false;
-
-      if(vehicle.coords.lat == mission.pickup_latitude && vehicle.coords.long == mission.pickup_longitude) {
+      let deltaThreshold = .00000001;
+      let latDelta = Math.abs(vehicle.coords.lat - mission.pickup_latitude);
+      let longDelta = Math.abs(vehicle.coords.long - mission.pickup_longitude);
+      
+      if(latDelta < deltaThreshold && longDelta < deltaThreshold) 
         isAtTerminal = true;
-      }
-
       return (elapsedTime > 0 && isAtTerminal);
     },
   },
