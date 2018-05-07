@@ -43,17 +43,15 @@ const fetch = async (req, res) => {
 
 const update = async (req, res) => {
   const { missionId } = req.params;
+  const { user_id } = req.query;
   const params = req.body;
   const validationErrors = validate(params, updateConstraints);
   if (validationErrors) {
     res.status(422).json(validationErrors);
   } else {
     let mission = await getMission(missionId); // redis.hgetallAsync(`missions:${missionId}`); returns null at this point
-    if(params.vehicle_id && mission.vehicle_id !== params.vehicle_id) {
-      res.status(401).send('Unauthorized');
-    } else if (params.dav_id && mission.user_id !== params.dav_id) {
-      res.status(401).send('Unauthorized');
-    } else {
+    if((params.captain_id && mission.vehicle_id === params.captain_id) ||
+     (user_id && mission.user_id === user_id)) {
       const vehicle = await getVehicle(mission.vehicle_id);
       const { status, longitude, latitude } = params;
       if(status) {
@@ -73,6 +71,8 @@ const update = async (req, res) => {
       }
       mission = await getMission(missionId); //refresh mission 
       res.status(200).json(mission);
+    } else {
+      res.status(401).send('Unauthorized');
     }
   }
 };

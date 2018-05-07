@@ -1,8 +1,7 @@
 const { getBidsForNeed, addNewBid } = require('../store/bids');
 const { createMission } = require('../store/missions');
-const { updateVehicleStatus } = require('../store/vehicles');
 const { emailGraddStatusPayloadRequest } = require('../gradd/gradd');
-const { addBidToCaptain, getBids } = require('../store/captains');
+const { addBidToCaptain, getBids, updateCaptainStatus } = require('../store/captains');
 const validate = require('../lib/validate');
 // const droneApi = require('../coex/drone');
 
@@ -47,8 +46,7 @@ const chooseBid = async (req, res) => {
   });
   if (mission) {
     await addBidToCaptain(mission.vehicle_id, bidId);
-    // droneApi.beginMission(mission.vehicle_id, mission.mission_id);
-    await updateVehicleStatus(mission.vehicle_id, 'contract_received');
+    await updateCaptainStatus(mission.vehicle_id, 'contract_received');
     await emailGraddStatusPayloadRequest(mission.mission_id);
     res.json({ mission });
   } else {
