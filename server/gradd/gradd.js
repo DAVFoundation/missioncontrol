@@ -8,7 +8,7 @@ const MISSION_PARAM_NAME = `mission`;
 const SCHEME = 'https';
 const DOMAIN = 'missions.io';
 const DUMMY_MISSION = {
-  mission_id        : "AAAA1111",
+  mission_id        : 'AAAA1111',
   pickup_latitude   : 0,
   pickup_longitude  : 0,
   pickup_altitude   : 0,
@@ -22,7 +22,7 @@ const DUMMY_MISSION = {
 
 const buildMissionParamFromMission = (mission_param) => {
   //todo: build json with initial coords
-  let mission = mission_param || DUMMY_MISSION
+  let mission = mission_param || DUMMY_MISSION;
   let param = {};
   param.mission_id = mission.mission_id;
   param.pickup_latitude = mission.pickup_latitude;
@@ -36,7 +36,8 @@ const buildMissionParamFromMission = (mission_param) => {
   param.coordinates = [];
   let paramBase64 = Buffer.from( JSON.stringify(param) ).toString('base64');
   return paramBase64;
-}
+};
+
 const buildLinkToGraddForm = mission => {
   let missionParamBase64 = encodeURIComponent(buildMissionParamFromMission(mission));
   let routeCreatorURL = `${SCHEME}://${DOMAIN}/route-creator.html&${MISSION_PARAM_NAME}=${missionParamBase64}`;

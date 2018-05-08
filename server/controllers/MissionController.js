@@ -112,24 +112,25 @@ const command = async (req, res) => {
 };
 
 const formatCoordinatesToGeoJSONFeature = (longitude,latitude,altitude,heading,distance) =>{
+  let feature;
   if (!heading && !distance) {
-    let feature = {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [longitude,latitude,altitude]
+    feature = {
+      'type': 'Feature',
+      'geometry': {
+        'type': 'Point',
+        'coordinates': [longitude,latitude,altitude]
       }
     };
   } else {
-    let feature = {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [longitude,latitude,altitude]
+    feature = {
+      'type': 'Feature',
+      'geometry': {
+        'type': 'Point',
+        'coordinates': [longitude,latitude,altitude]
       },
-      "properties": {
-        "heading": heading,
-        "distance": distance
+      'properties': {
+        'heading': heading,
+        'distance': distance
       }
     };
   }
@@ -159,7 +160,7 @@ const convertGraddPayloadToGeoJSON = (gradd_payload) => {
         gradd_payload.coordinates[i+4]
       )
     );
-  };
+  }
   //extract dropoff from gradd_payload to featuresArray
   featuresArray.push(
     formatCoordinatesToGeoJSONFeature(
@@ -169,8 +170,8 @@ const convertGraddPayloadToGeoJSON = (gradd_payload) => {
     )
   );
   let geoJsonTemplate = {
-    "type": "FeatureCollection",
-    "features": featuresArray
+    'type': 'FeatureCollection',
+    'features': featuresArray
   };
   return geoJsonTemplate;
 };
@@ -182,8 +183,8 @@ const updateGraddPayload = async (req,res) => {
     let mission_string = Buffer.from(mission_base64, 'base64').toString();
     let gradd_payload = JSON.parse(mission_string);
     
-    let mission_id = gradd_payload.mission_id
-    if (!mission_id) throw "No mission ID! Malformed URL? Please contact tech support";
+    let mission_id = gradd_payload.mission_id;
+    if (!mission_id) throw 'No mission ID! Malformed URL? Please contact tech support';
     delete gradd_payload.mission_id;
     gradd_payload = convertGraddPayloadToGeoJSON(gradd_payload);
     await updateMission(mission_id, {'gradd_payload': gradd_payload});

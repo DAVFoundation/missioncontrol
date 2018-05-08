@@ -18,7 +18,7 @@ const mail = async (from,to,title,body) => {
     };
     mailgun.messages().sendMime(dataToSend, function (sendError, body) {
       if (sendError) {
-        console.log(sendError);
+        console.log(sendError+'\r\n'+body);
         return;
       }
     });
