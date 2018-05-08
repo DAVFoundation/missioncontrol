@@ -39,7 +39,10 @@ const buildMissionParamFromMission = (mission_param) => {
 }
 const buildLinkToGraddForm = mission => {
   let missionParamBase64 = encodeURIComponent(buildMissionParamFromMission(mission));
-  let link = `<a href="${SCHEME}://${DOMAIN}/graddPayloadForm.html&${MISSION_PARAM_NAME}=${missionParamBase64}">Press Here to input route JSON</a>`;
+  let routeCreatorURL = `${SCHEME}://${DOMAIN}/route-creator.html&${MISSION_PARAM_NAME}=${missionParamBase64}`;
+  let link = `<a href="${routeCreatorURL}">Press Here to input route</a><br/>\n
+    If the above link does not work, copy and paste the following into your browser:<br/>\n
+    ${routeCreatorURL}`;
   return link;
 };
 const emailGraddStatusPayloadRequest = async (mission) => {
