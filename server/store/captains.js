@@ -253,6 +253,7 @@ module.exports = {
   getCaptain,
   getCaptains,
   updateCaptainStatus,
+  updateCaptainPosition,
   getCaptainsForNeedType,
   addNeedTypeForCaptain,
   addNeedToCaptain,

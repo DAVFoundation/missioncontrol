@@ -45,9 +45,10 @@ app.get('/mission_command', MissionController.command);
 
 // endpoints for captain/dav-js
 app.get('/captains/:captainId', CaptainController.fetch);
+app.put('/captains/:captainId', CaptainController.update);
 app.post('/captains', CaptainController.create);
 app.post('/captains/:davId', CaptainController.registerNeedTypeForCaptain);
-app.put('/captains/:davId', CaptainController.registerNeedTypeForCaptain);
+app.put('/captains/:davId/needs', CaptainController.registerNeedTypeForCaptain);
 
 // app.post('/contracts/:bidId', ContractController.sign);
 app.post('/missions/updateGraddPayload/:missionId', MissionController.updateGraddPayload);

@@ -8,11 +8,22 @@ const aerospike = Aerospike.client(aerospikeConfig());
 
 const getMission = async missionId => {
   let mission = await getMissionByBidId(missionId);
+  let updates = await getMissionUpdates(missionId);
   return {
     ...mission,
     ...mission.need,
-    ...mission.bid
+    ...mission.bid,
+    ...updates
   };
+};
+
+const getMissionUpdates = async missionId => {
+  let updatesArray = await redis.zrevrangeAsync(`mission_updates:${missionId}`, 0, -1, 'withscores');
+  let updates = {};
+  for(let i = 0; i < updatesArray.length; i += 2) {
+    updates[updatesArray[i] + '_at'] = updatesArray[i + 1];
+  }
+  return updates;
 };
 
 const getMissionByBidId = async bid_id => {

@@ -1,7 +1,6 @@
 const { getMission, updateMission } = require('../store/missions');
 const { createMissionUpdate, createMission } = require('../store/mission_updates');
-const { getVehicle, updateVehiclePosition } = require('../store/vehicles');
-const { updateCaptainStatus } = require('../store/captains');
+const { updateCaptainStatus, getCaptain, updateCaptainPosition } = require('../store/captains');
 const { getBid } = require('../store/bids');
 const validate = require('../lib/validate');
 const updateConstraints = require('./constraints/mission/update');
@@ -52,7 +51,7 @@ const update = async (req, res) => {
     let mission = await getMission(missionId); // redis.hgetallAsync(`missions:${missionId}`); returns null at this point
     if((params.captain_id && mission.vehicle_id === params.captain_id) ||
      (user_id && mission.user_id === user_id)) {
-      const vehicle = await getVehicle(mission.vehicle_id);
+      const vehicle = await getCaptain(mission.vehicle_id);
       const { status, longitude, latitude } = params;
       if(status) {
         const key = `${status}At`;
@@ -62,10 +61,10 @@ const update = async (req, res) => {
         createMissionUpdate(missionId, status);
       }
       if(longitude && latitude) {
-        await updateVehiclePosition(vehicle, longitude, latitude);
+        await updateCaptainPosition(vehicle, longitude, latitude);
       }
       if(params.vehicle_status && params.mission_status) {
-        await updateMission(missionId, { [params.mission_status + '_at']: Date.now() });
+        // await updateMission(missionId, { update: { [params.mission_status + '_at']: Date.now() } });
         await updateCaptainStatus(mission.vehicle_id, params.vehicle_status);
         createMissionUpdate(missionId, params.mission_status);
       }
@@ -95,19 +94,19 @@ const command = async (req, res) => {
     return;
   }
   let mission = await getMission(mission_id);
-  let vehicle = await getVehicle(mission.vehicle_id);
+  let vehicle = await getCaptain(mission.vehicle_id);
 
   if (user_id !== mission.user_id) return res.sendStatus(401);
 
   if (command === 'takeoff_pickup' && vehicle.status === 'waiting_pickup'){
-    await updateMission(mission_id, {'takeoff_pickup_at': Date.now()});
+    // await updateMission(mission_id, {'takeoff_pickup_at': Date.now()});y
     await createMissionUpdate(mission_id, 'takeoff_pickup');
     await updateCaptainStatus(mission.vehicle_id, 'takeoff_pickup');
   }
 
   // update mission and vehicle
   mission = await getMission(mission_id);
-  vehicle = await getVehicle(mission.vehicle_id);
+  vehicle = await getCaptain(mission.vehicle_id);
 
   res.json({vehicle, mission});
 };
