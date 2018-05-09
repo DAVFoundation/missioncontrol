@@ -14,21 +14,23 @@ const mail = async (from,to,title,body) => {
         html: body
       });
       mail.build(function(mailBuildError, message) {
-        var dataToSend = {
-          to: to,
-          message: message.toString('ascii')
-        };
-        mailgun.messages().sendMime(dataToSend, function (sendError, body) {
-          if (sendError) {
-            reject(sendError+'\r\n'+body);
-          } else {
-            resolve(true);
-          }
-        });
+        try {
+          var dataToSend = {
+            to: to,
+            message: message.toString('ascii')
+          };
+          mailgun.messages().sendMime(dataToSend, function (sendError, body) {
+            try {
+              if (sendError) {
+                reject(sendError+'\r\n'+body);
+              } else {
+                resolve(true);
+              }  
+            } catch (err) { reject(err); }
+          });  
+        } catch (err) { reject(err); }
       });
-    } catch(err) {
-      reject(err);
-    }
+    } catch(err) { reject(err); }
   });
 };
 
