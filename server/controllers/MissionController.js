@@ -111,15 +111,83 @@ const command = async (req, res) => {
   res.json({vehicle, mission});
 };
 
+const formatCoordinatesToGeoJSONFeature = (longitude,latitude,altitude,heading,distance) =>{
+  let feature;
+  if (!heading && !distance) {
+    feature = {
+      'type': 'Feature',
+      'geometry': {
+        'type': 'Point',
+        'coordinates': [longitude,latitude,altitude]
+      }
+    };
+  } else {
+    feature = {
+      'type': 'Feature',
+      'geometry': {
+        'type': 'Point',
+        'coordinates': [longitude,latitude,altitude]
+      },
+      'properties': {
+        'heading': heading,
+        'distance': distance
+      }
+    };
+  }
+  return feature;
+};
+
+const convertGraddPayloadToGeoJSON = (gradd_payload) => {
+  let featuresArray = [];
+  //extract pickup from gradd_payload to featuresArray
+  featuresArray.push(
+    formatCoordinatesToGeoJSONFeature(
+      gradd_payload.pickup_longitude,
+      gradd_payload.pickup_latitude,
+      gradd_payload.pickup_altitude,
+      gradd_payload.pickup_heading,
+      gradd_payload.pickup_distance
+    )
+  );
+  //extract coordinates from gradd_payload to featuresArray
+  for (var i=0; i<gradd_payload.coordinates; i+=5) {
+    featuresArray.push(
+      formatCoordinatesToGeoJSONFeature(
+        gradd_payload.coordinates[i],
+        gradd_payload.coordinates[i+1],
+        gradd_payload.coordinates[i+2],
+        gradd_payload.coordinates[i+3],
+        gradd_payload.coordinates[i+4]
+      )
+    );
+  }
+  //extract dropoff from gradd_payload to featuresArray
+  featuresArray.push(
+    formatCoordinatesToGeoJSONFeature(
+      gradd_payload.dropoff_longitude,
+      gradd_payload.dropoff_latitude,
+      gradd_payload.dropoff_altitude
+    )
+  );
+  let geoJsonTemplate = {
+    'type': 'FeatureCollection',
+    'features': featuresArray
+  };
+  return geoJsonTemplate;
+};
+
 const updateGraddPayload = async (req,res) => {
   try{
-    //prepare params
-    //todo: this has not been tested after the route was refactored to /:missions
-    let mission_id = req.params.mission_id;
-    let gradd_payload = req.params.gradd_payload;
-    await updateMission(mission_id, {'gradd_payload':gradd_payload});
-    //todo: check for errors in updateMission
-    //todo: should we email the user with the payload?
+    //todo: test this via the gradd coordinates form
+    let mission_base64 = req.params.mission;
+    let mission_string = Buffer.from(mission_base64, 'base64').toString();
+    let gradd_payload = JSON.parse(mission_string);
+    
+    let mission_id = gradd_payload.mission_id;
+    if (!mission_id) throw 'No mission ID! Malformed URL? Please contact tech support';
+    delete gradd_payload.mission_id;
+    gradd_payload = convertGraddPayloadToGeoJSON(gradd_payload);
+    await updateMission(mission_id, {'gradd_payload': gradd_payload});
     res.status(200).send('Payload stored successfully');
   } catch(err){
     console.log('updateGraddPayload error: '+err);
