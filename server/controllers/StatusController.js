@@ -13,7 +13,7 @@ const getStatus = async (req, res) => {
   }
   let captains = [];
   if (bids.length > 0) {
-    captains = await getCaptains(bids.map(bid => bid.vehicle_id));
+    captains = await getCaptains(bids.map(bid => bid.captain_id));
   }
 
   if (latestMission) {

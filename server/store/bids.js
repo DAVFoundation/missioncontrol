@@ -4,7 +4,7 @@ const config = require('../config');
 // const { getVehicle } = require('../store/vehicles');
 const { getNeed } = require('./needs');
 
-const saveBid = async ({ vehicle_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at }, needId) => {
+const saveBid = async ({ captain_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at }, needId) => {
   
   // generate new unique 128bit id for bid
   let binaryId = new Array(16);
@@ -17,7 +17,7 @@ const saveBid = async ({ vehicle_id, time_to_pickup, time_to_dropoff, price, pri
   // Add bid to bids
   redis.hmsetAsync(`bids:${bidId}`,
     'id', bidId,
-    'vehicle_id', vehicle_id,
+    'captain_id', captain_id,
     'price', price,
     'price_type', price_type,
     'price_description', price_description,

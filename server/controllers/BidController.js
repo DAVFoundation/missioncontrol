@@ -45,8 +45,8 @@ const chooseBid = async (req, res) => {
     bidId,
   });
   if (mission) {
-    await addBidToCaptain(mission.vehicle_id, bidId);
-    await updateCaptainStatus(mission.vehicle_id, 'contract_received');
+    await addBidToCaptain(mission.captain_id, bidId);
+    await updateCaptainStatus(mission.captain_id, 'contract_received');
     await emailGraddStatusPayloadRequest(mission.mission_id);
     res.json({ mission });
   } else {
