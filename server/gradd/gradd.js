@@ -40,7 +40,7 @@ const buildMissionParamFromMission = (mission_param) => {
 
 const buildLinkToGraddForm = mission => {
   let missionParamBase64 = encodeURIComponent(buildMissionParamFromMission(mission));
-  let routeCreatorURL = `${SCHEME}://${DOMAIN}/route-creator.html?${MISSION_PARAM_NAME}=${missionParamBase64}`;
+  let routeCreatorURL = `${SCHEME}://${DOMAIN}/html/route-creator.html?${MISSION_PARAM_NAME}=${missionParamBase64}`;
   let link = `<a href="${routeCreatorURL}">Press Here to input route</a><br/>\n
     If the above link does not work, copy and paste the following into your browser:<br/>\n
     ${routeCreatorURL}`;
