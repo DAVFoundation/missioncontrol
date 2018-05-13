@@ -1,6 +1,5 @@
 const { getBidsForNeed, addNewBid } = require('../store/bids');
 const { createMission } = require('../store/missions');
-const { emailGraddStatusPayloadRequest } = require('../gradd/gradd');
 const { addBidToCaptain, getBids, updateCaptainStatus } = require('../store/captains');
 const validate = require('../lib/validate');
 // const droneApi = require('../coex/drone');
