@@ -5,9 +5,16 @@ module.exports = {
     status: 'travelling_pickup',
     nextVehicleStatus: 'landing_pickup',
     nextMissionUpdate: 'landing_pickup',
-    conditionForNextUpdate: mission => {
+    conditionForNextUpdate: (mission, vehicle) => {
       let elapsedTime = Date.now() - (parseFloat(mission.user_signed_at) + parseFloat(mission.time_to_pickup));
-      return elapsedTime > 0;
+      let isAtTerminal = false;
+      let deltaThreshold = .00000001;
+      let latDelta = Math.abs(vehicle.coords.lat - mission.pickup_latitude);
+      let longDelta = Math.abs(vehicle.coords.long - mission.pickup_longitude);
+      
+      if(latDelta < deltaThreshold && longDelta < deltaThreshold) 
+        isAtTerminal = true;
+      return (elapsedTime > 0 && isAtTerminal);
     },
   },
   'landing_pickup': {
