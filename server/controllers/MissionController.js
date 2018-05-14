@@ -138,6 +138,7 @@ const formatCoordinatesToGeoJSONFeature = (longitude,latitude,altitude,heading,d
 };
 
 const convertGraddPayloadToGeoJSON = (gradd_payload) => {
+  const getCordinate = (coordinate) => Object.values(coordinate)[0];
   let featuresArray = [];
   //extract pickup from gradd_payload to featuresArray
   featuresArray.push(
@@ -150,14 +151,15 @@ const convertGraddPayloadToGeoJSON = (gradd_payload) => {
     )
   );
   //extract coordinates from gradd_payload to featuresArray
-  for (var i=0; i<gradd_payload.coordinates; i+=5) {
+
+  for (var i=0; i<gradd_payload.coordinates.length; i+=5) {
     featuresArray.push(
       formatCoordinatesToGeoJSONFeature(
-        gradd_payload.coordinates[i],
-        gradd_payload.coordinates[i+1],
-        gradd_payload.coordinates[i+2],
-        gradd_payload.coordinates[i+3],
-        gradd_payload.coordinates[i+4]
+        getCordinate(gradd_payload.coordinates[i+1]),
+        getCordinate(gradd_payload.coordinates[i]),
+        getCordinate(gradd_payload.coordinates[i+2]),
+        getCordinate(gradd_payload.coordinates[i+3]),
+        getCordinate(gradd_payload.coordinates[i+4]),
       )
     );
   }
