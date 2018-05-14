@@ -1,7 +1,7 @@
 const email = require('./../lib/email');
 
 const GRADD_FROM = `DAV Foundation`;
-const GRADD_TO = `dmauas@gmail.com`;
+const GRADD_TO = `hai@dav.network`;
 const GRADD_TITLE = `New DAV contract received`;
 const GRADD_BODY = `Gradd body\n\n`;
 const MISSION_PARAM_NAME = `mission`;
@@ -25,13 +25,14 @@ const buildMissionParamFromMission = (mission_param) => {
   let mission = mission_param || DUMMY_MISSION;
   let param = {};
   param.mission_id = mission.mission_id;
-  param.pickup_latitude = mission.pickup_latitude;
-  param.pickup_longitude = mission.pickup_longitude;
+  param.captain_id = mission.captain_id;
+  param.pickup_latitude = mission.start_latitude;
+  param.pickup_longitude = mission.start_longitude;
   param.pickup_altitude = 0;
   param.pickup_heading = 0;
   param.pickup_distance = 0;
-  param.dropoff_latitude = mission.dropoff_latitude;
-  param.dropoff_longitude = mission.dropoff_longitude;
+  param.dropoff_latitude = mission.end_latitude;
+  param.dropoff_longitude = mission.end_longitude;
   param.dropoff_altitude = 0;
   param.coordinates = [];
   let paramBase64 = Buffer.from( JSON.stringify(param) ).toString('base64');

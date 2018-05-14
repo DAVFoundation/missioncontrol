@@ -22,6 +22,7 @@ const port = process.env.WEB_SERVER_PORT || 8888;
 
 app.use(cors);
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(getOrCreateUser);
 
 app.get('/healthy', (req, res) => {

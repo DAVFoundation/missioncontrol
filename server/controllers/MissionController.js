@@ -179,15 +179,18 @@ const convertGraddPayloadToGeoJSON = (gradd_payload) => {
 const updateGraddPayload = async (req,res) => {
   try{
     //todo: test this via the gradd coordinates form
-    let mission_base64 = req.params.mission;
-    let mission_string = Buffer.from(mission_base64, 'base64').toString();
+    let mission_base64 = decodeURIComponent(req.body.mission);
+    let mission_string = new Buffer.from(mission_base64, 'base64').toString();
     let gradd_payload = JSON.parse(mission_string);
     
-    let mission_id = gradd_payload.mission_id;
+    let { mission_id, captain_id } = gradd_payload;
     if (!mission_id) throw 'No mission ID! Malformed URL? Please contact tech support';
     delete gradd_payload.mission_id;
+    delete gradd_payload.captain_id;
     gradd_payload = convertGraddPayloadToGeoJSON(gradd_payload);
-    await updateMission(mission_id, {'gradd_payload': gradd_payload});
+    updateMission(mission_id, {'gradd_payload': gradd_payload});
+    createMissionUpdate(mission_id, 'ready');
+    updateCaptainStatus(captain_id, 'ready');
     res.status(200).send('Payload stored successfully');
   } catch(err){
     console.log('updateGraddPayload error: '+err);
