@@ -4,7 +4,7 @@ const config = require('../config');
 // const { getVehicle } = require('../store/vehicles');
 const { getNeed } = require('./needs');
 
-const saveBid = async ({ captain_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at }, needId) => {
+const saveBid = async ({ captain_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at, distance }, needId) => {
   
   // generate new unique 128bit id for bid
   let binaryId = new Array(16);
@@ -22,6 +22,7 @@ const saveBid = async ({ captain_id, time_to_pickup, time_to_dropoff, price, pri
     'price_type', price_type,
     'price_description', price_description,
     'expires_at', expires_at,
+    'distance', distance,
     'time_to_pickup', time_to_pickup,
     'time_to_dropoff', time_to_dropoff,
     'need_id', needId,
