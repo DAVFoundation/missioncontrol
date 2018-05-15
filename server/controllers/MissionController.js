@@ -150,8 +150,8 @@ const convertGraddPayloadToGeoJSON = (gradd_payload) => {
       gradd_payload.pickup_distance
     )
   );
+  
   //extract coordinates from gradd_payload to featuresArray
-
   for (var i=0; i<gradd_payload.coordinates.length; i+=5) {
     featuresArray.push(
       formatCoordinatesToGeoJSONFeature(
