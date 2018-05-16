@@ -9,8 +9,11 @@ dispose:
 
 rebuild: dispose build
 
-up: copy-contracts test-run build 
+up: copy-contracts test-run build
 	docker-compose up
+
+up-bg: copy-contracts test-run build
+	docker-compose up -d
 
 down:
 	docker-compose down
@@ -20,7 +23,7 @@ flush:
 
 aql:
 	@docker exec -it missioncontrol_aerospike_1 aql
-	
+
 log:
 	docker logs missioncontrol_missioncontrol_1 -f
 
