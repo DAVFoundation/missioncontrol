@@ -109,25 +109,25 @@ const addNeedTypeForCaptain = async ({
 };
 
 const addNeedToCaptain = async (davId, needId, ttl) => {
-  let needs = await redis.get(`captain_needs_${davId}`);
+  let needs = await redis.getAsync(`captain_needs_${davId}`)||[];
   needs.push(needId);
-  await redis.set(`captain_needs_${davId}`, needs, 'EX', ttl);
+  await redis.setAsync(`captain_needs_${davId}`, needs, 'EX', ttl);
   return davId;
 };
 
 const addBidToCaptain = async (davId, bidId, ttl) => {
-  let bids = await redis.get(`captain_bids_${davId}`);
+  let bids = await redis.getAsync(`captain_bids_${davId}`)||[];
   bids.push(bidId);
-  await redis.set(`captain_bids_${davId}`, bids, 'EX', ttl);
+  await redis.setAsync(`captain_bids_${davId}`, bids, 'EX', ttl);
   return davId;
 };
 
 const getNeeds = async (davId) => {
-  return await redis.get(`captain_needs_${davId}`);
+  return await redis.getAsync(`captain_needs_${davId}`)||[];
 };
 
 const getBids = async (davId) => {
-  const bids = await redis.get(`captain_bids_${davId}`);
+  const bids = await redis.getAsync(`captain_bids_${davId}`)||[];
   return await Promise.all(bids.map(async bidId => await getBid(bidId)));
 };
 

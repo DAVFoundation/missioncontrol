@@ -24,7 +24,7 @@ const getMissionUpdates = async missionId => {
 };
 
 const getMissionByBidId = async bid_id => {
-  return await redis.get(`missions_${bid_id}`);
+  return await redis.getAsync(`missions_${bid_id}`)||[];
 };
 
 const getLatestMission = async userId => {
@@ -44,7 +44,7 @@ const updateMission = async (id, params) => {
 };
 
 const saveMission = async (bidId, mission) => {
-  await redis.set(`missions_${bidId}`,mission,'EX',config('bids_ttl'));
+  await redis.setAsync(`missions_${bidId}`,mission,'EX',config('bids_ttl'));
 };
 
 const createMission = async ({ user_id, bidId }) => {
