@@ -79,14 +79,18 @@ const addNeedTypeForCaptain = async ({dav_id, need_type, region}) => {
   await addNeedTypeIndexes(need_type);
   await aerospike.connect();
   let key = new Aerospike.Key(namespace, need_type, dav_id);
-  let bins = {
-    dav_id: dav_id,
-    global: region.radius > MAX_LOCAL_RADIUS ? 1 : 0,
-    region: new GeoJSON({
-      type: 'AeroCircle',
-      coordinates: [[region.longitude, region.latitude], Math.min(region.radius, MAX_LOCAL_RADIUS)]
-    })
-  };
+  let bins = region.global===true ?
+    {
+      dav_id: dav_id,
+      global: region.radius > MAX_LOCAL_RADIUS ? 1 : 0,
+    } :
+    {
+      dav_id: dav_id,
+      region: new GeoJSON({
+        type: 'AeroCircle',
+        coordinates: [[region.longitude, region.latitude], Math.min(region.radius, MAX_LOCAL_RADIUS)]
+      })
+    };
   let policy = new Aerospike.WritePolicy({
     exists: Aerospike.policy.exists.CREATE_OR_REPLACE
   });
