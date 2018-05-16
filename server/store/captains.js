@@ -209,6 +209,7 @@ const query = (set, filters) => {
   stream.on('error', (error) => {
     subject.error(error);
   });
+
   stream.on('end', () => {
     subject.complete();
   });

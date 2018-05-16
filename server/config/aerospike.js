@@ -1,3 +1,9 @@
+const defaultPolicy={
+  totalTimeout: 10000,
+  socketTimeout:10000,
+  maxRetries:10
+};
+
 module.exports = {
   aerospikeConfig: () => {
     const address = process.env.AEROSPIKE_HOST || 'aerospike';
@@ -8,27 +14,16 @@ module.exports = {
       }],
       connTimeoutMs: 10000,
       loginTimeoutMs: 10000,
+      tenderInterval: 10000,
       policies: {
-        read: {
-          maxRetries: 100,
-          socketTimeout: 10000,
-          totalTimeout: 10000,
-        },
-        write: {
-          maxRetries: 100,
-          socketTimeout: 10000,
-          totalTimeout: 10000,
-        },
-        scan: {
-          maxRetries: 100,
-          socketTimeout: 10000,
-          totalTimeout: 10000,
-        },
-        query: {
-          maxRetries: 100,
-          socketTimeout: 10000,
-          totalTimeout: 10000,
-        },
+        batch:defaultPolicy,
+        info:defaultPolicy,
+        operate:defaultPolicy,
+        query:defaultPolicy,
+        read:defaultPolicy,
+        remove:defaultPolicy,
+        scan:defaultPolicy,
+        write:defaultPolicy
       }
     };
   },
