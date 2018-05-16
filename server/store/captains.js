@@ -1,10 +1,15 @@
 const redis = require('./redis');
-const {aerospikeConfig, namespace} = require('../config/aerospike');
+const {
+  aerospikeConfig,
+  namespace
+} = require('../config/aerospike');
 const Aerospike = require('aerospike');
 const GeoJSON = Aerospike.GeoJSON;
 const filter = Aerospike.filter;
 const aerospike = Aerospike.client(aerospikeConfig());
-const {getBid} = require('./bids');
+const {
+  getBid
+} = require('./bids');
 const Rx = require('rxjs/Rx');
 const config = require('../config');
 
@@ -16,17 +21,16 @@ const parseCaptainFromRedis = captain => ({
   icon: captain.icon,
   status: captain.status,
   max_charging_velocity: captain.max_charging_velocity,
-  coords: { lat: parseFloat(captain.lat), long: parseFloat(captain.long) },
+  coords: {
+    lat: parseFloat(captain.lat),
+    long: parseFloat(captain.long)
+  },
   missions_completed: parseInt(captain.missions_completed),
   missions_completed_7_days: parseInt(captain.missions_completed_7_days),
 });
 
 const parseCaptainsArray = captains =>
-  captains
-    // filter captains
-    .filter(captain => !!captain)
-    // format response objects
-    .map(parseCaptainFromRedis);
+  captains.filter(captain => !!captain).map(parseCaptainFromRedis);
 
 const addNewCaptain = captain => {
   // Add to captains
@@ -74,96 +78,57 @@ const updateCaptainStatus = async (id, status) => {
   return await redis.hsetAsync(`captains:${id}`, 'status', status);
 };
 
-const addNeedTypeForCaptain = async ({dav_id, need_type, region}) => {
+const addNeedTypeForCaptain = async ({
+  dav_id,
+  need_type,
+  region
+}) => {
   await redis.saddAsync(`needTypes:${need_type}`, dav_id); // adds this captain davId to the needType
   await addNeedTypeIndexes(need_type);
   await aerospike.connect();
   let key = new Aerospike.Key(namespace, need_type, dav_id);
-  let bins = region.global===true ?
-    {
-      dav_id: dav_id,
-      global: region.radius > MAX_LOCAL_RADIUS ? 1 : 0,
-    } :
-    {
-      dav_id: dav_id,
-      region: new GeoJSON({
-        type: 'AeroCircle',
-        coordinates: [[region.longitude, region.latitude], Math.min(region.radius, MAX_LOCAL_RADIUS)]
-      })
-    };
+  let bins = region.global === true ? {
+    dav_id: dav_id,
+    global: region.radius > MAX_LOCAL_RADIUS ? 1 : 0,
+  } : {
+    dav_id: dav_id,
+    region: new GeoJSON({
+      type: 'AeroCircle',
+      coordinates: [
+        [region.longitude, region.latitude], Math.min(region.radius, MAX_LOCAL_RADIUS)
+      ]
+    })
+  };
   let policy = new Aerospike.WritePolicy({
     exists: Aerospike.policy.exists.CREATE_OR_REPLACE
   });
-  await aerospike.put(key, bins, {ttl: region.ttl}, policy);
+  await aerospike.put(key, bins, {
+    ttl: region.ttl
+  }, policy);
   return dav_id;
 };
 
 const addNeedToCaptain = async (davId, needId, ttl) => {
-  let captainNeeds = {
-    dav_id: davId,
-    needs: await getNeeds(davId)
-  };
-  captainNeeds.needs.push(needId);
-  let policy = new Aerospike.WritePolicy({
-    exists: Aerospike.policy.exists.CREATE_OR_REPLACE
-  });
-  await aerospike.connect();
-  let key = new Aerospike.Key(namespace, 'needs', davId);
-  await aerospike.put(key, captainNeeds, {ttl: ttl}, policy);
+  let needs = await redis.get(`captain_needs_${davId}`);
+  needs.push(needId);
+  await redis.set(`captain_needs_${davId}`, needs, 'EX', ttl);
   return davId;
 };
 
 const addBidToCaptain = async (davId, bidId, ttl) => {
-  let captainBids = {
-    dav_id: davId,
-    bids: await getBids(davId)
-  };
-  captainBids.bids.push(bidId);
-  let policy = new Aerospike.WritePolicy({
-    exists: Aerospike.policy.exists.CREATE_OR_REPLACE
-  });
-  await aerospike.connect();
-  let key = new Aerospike.Key(namespace, 'bids', davId);
-  await aerospike.put(key, captainBids, {ttl: ttl}, policy);
+  let bids = await redis.get(`captain_bids_${davId}`);
+  bids.push(bidId);
+  await redis.set(`captain_bids_${davId}`, bids, 'EX', ttl);
   return davId;
 };
 
 const getNeeds = async (davId) => {
-  try {
-    let policy = new Aerospike.WritePolicy({
-      exists: Aerospike.policy.exists.CREATE_OR_REPLACE
-    });
-    await aerospike.connect();
-    let key = new Aerospike.Key(namespace, 'needs', davId);
-    let res = await aerospike.get(key, policy);
-    return res.bins.needs;
-  }
-  catch (error) {
-    if (error.message.includes('Record does not exist in database')) {
-      return [];
-    }
-    throw error;
-  }
+  return await redis.get(`captain_needs_${davId}`);
 };
 
 const getBids = async (davId) => {
-  try {
-    let policy = new Aerospike.WritePolicy({
-      exists: Aerospike.policy.exists.CREATE_OR_REPLACE
-    });
-    await aerospike.connect();
-    let key = new Aerospike.Key(namespace, 'bids', davId);
-    let res = await aerospike.get(key, policy);
-    const bidIds = res.bins.bids;
-    const bids =   await Promise.all(bidIds.map(async bidId => await getBid(bidId)));
-    return bids;
-  }
-  catch (error) {
-    if (error.message.includes('Record does not exist in database')) {
-      return [];
-    }
-    throw error;
-  }
+  const bids = await redis.get(`captain_bids_${davId}`);
+  return await Promise.all(bids.map(async bidId => await getBid(bidId)));
 };
 
 const createIndex = async (set, bin, type) => {
@@ -179,8 +144,7 @@ const createIndex = async (set, bin, type) => {
   } catch (error) {
     if (error.message.includes('Index with the same name already exists')) {
       return;
-    }
-    else {
+    } else {
       console.log(error);
       throw error;
     }
@@ -230,7 +194,9 @@ const getCaptainsForNeedType = (needType, needLocation) => {
 
 const query = (set, filters) => {
   let subject = new Rx.Subject();
-  let query = aerospike.query(namespace, set, {filters: filters});
+  let query = aerospike.query(namespace, set, {
+    filters: filters
+  });
   let stream = query.foreach();
 
   stream.on('data', (record) => {

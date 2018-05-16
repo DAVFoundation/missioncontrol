@@ -2,9 +2,6 @@ const redis = require('./redis');
 const config = require('../config');
 const { getNeed } = require('./needs');
 const { createMissionUpdate } = require('./mission_updates');
-const Aerospike = require('aerospike');
-const {aerospikeConfig, namespace} = require('../config/aerospike');
-const aerospike = Aerospike.client(aerospikeConfig());
 
 const getMission = async missionId => {
   let mission = await getMissionByBidId(missionId);
@@ -27,21 +24,7 @@ const getMissionUpdates = async missionId => {
 };
 
 const getMissionByBidId = async bid_id => {
-  try {
-    let policy = new Aerospike.WritePolicy({
-      exists: Aerospike.policy.exists.CREATE_OR_REPLACE
-    });
-    await aerospike.connect();
-    let key = new Aerospike.Key(namespace, 'missions', bid_id);
-    let res = await aerospike.get(key, policy);
-    return res.bins;
-  }
-  catch (error) {
-    if (error.message.includes('Record does not exist in database')) {
-      return {};
-    }
-    throw error;
-  }
+  return await redis.get(`missions_${bid_id}`);
 };
 
 const getLatestMission = async userId => {
@@ -57,16 +40,11 @@ const getLatestMission = async userId => {
 
 const updateMission = async (id, params) => {
   let mission = await getMissionByBidId(id);
-  return await saveMissionToAerospike(id, {...mission, ...params});
+  return await saveMission(id, {...mission, ...params});
 };
 
-const saveMissionToAerospike = async (bidId, mission) => {
-  let policy = new Aerospike.WritePolicy({
-    exists: Aerospike.policy.exists.CREATE_OR_REPLACE
-  });
-  await aerospike.connect();
-  let key = new Aerospike.Key(namespace, 'missions', bidId);
-  await aerospike.put(key, mission, {ttl: config('bids_ttl')}, policy);
+const saveMission = async (bidId, mission) => {
+  await redis.set(`missions_${bidId}`,mission,'EX',config('bids_ttl'));
 };
 
 const createMission = async ({ user_id, bidId }) => {
@@ -76,7 +54,7 @@ const createMission = async ({ user_id, bidId }) => {
 
   // get neeed details
   const need = await getNeed(bid.need_id);
-  
+
   // get new unique id for mission
   const missionId = bidId;
   const user_signed_at = Date.now();
@@ -87,7 +65,7 @@ const createMission = async ({ user_id, bidId }) => {
   createMissionUpdate(missionId, 'contract_created');
   createMissionUpdate(missionId, 'user_signed');
 
-  saveMissionToAerospike(bidId, {
+  saveMission(bidId, {
     mission_id: bidId,
     bid_id: bidId,
     user_id,
