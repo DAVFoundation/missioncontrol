@@ -18,7 +18,7 @@ const create = async (req, res) => {
       let needId = await createNeed(params);
 
       let needLocation = {
-        longitude: params.need_location_longitude,
+        longitude: params.need_location_latitude,
         latitude: params.need_location_latitude
       };
 

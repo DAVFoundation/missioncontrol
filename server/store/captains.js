@@ -89,7 +89,7 @@ const addNeedTypeForCaptain = async ({
   let key = new Aerospike.Key(namespace, need_type, dav_id);
   let bins = region.global === true ? {
     dav_id: dav_id,
-    global: region.radius > MAX_LOCAL_RADIUS ? 1 : 0,
+    global: 1,
   } : {
     dav_id: dav_id,
     region: new GeoJSON({
@@ -108,27 +108,30 @@ const addNeedTypeForCaptain = async ({
   return dav_id;
 };
 
-const addNeedToCaptain = async (davId, needId, ttl) => {
-  let needs = await redis.getAsync(`captain_needs_${davId}`)||[];
+const addNeedToCaptain = async (davId, needId, ttl=120) => {
+  let needs = await getNeeds(davId);
   needs.push(needId);
-  await redis.setAsync(`captain_needs_${davId}`, needs, 'EX', ttl);
+  await redis.setAsync(`captain_needs_${davId}`, redis.encode(needs), 'EX', ttl);
   return davId;
 };
 
-const addBidToCaptain = async (davId, bidId, ttl) => {
-  let bids = await redis.getAsync(`captain_bids_${davId}`)||[];
+const addBidToCaptain = async (davId, bidId, ttl=120) => {
+  let bids = await getBidIds(davId);
   bids.push(bidId);
-  await redis.setAsync(`captain_bids_${davId}`, bids, 'EX', ttl);
+  await redis.setAsync(`captain_bids_${davId}`, redis.encode(bids), 'EX', ttl);
   return davId;
 };
 
 const getNeeds = async (davId) => {
-  return await redis.getAsync(`captain_needs_${davId}`)||[];
+  return redis.decode(await redis.getAsync(`captain_needs_${davId}`))||[];
+};
+
+const getBidIds = async (davId) => {
+  return redis.decode(await redis.getAsync(`captain_bids_${davId}`))||[];
 };
 
 const getBids = async (davId) => {
-  const bids = await redis.getAsync(`captain_bids_${davId}`)||[];
-  return await Promise.all(bids.map(async bidId => await getBid(bidId)));
+  return await Promise.all((await getBidIds(davId)).map(async bidId => await getBid(bidId)));
 };
 
 const createIndex = async (set, bin, type) => {
