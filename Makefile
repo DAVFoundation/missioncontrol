@@ -23,8 +23,9 @@ flush:
 
 redis:
 	docker exec -it missioncontrol_redis_1 redis-cli
+
 redis-gui:
-	redis-commander
+	docker run -d --rm -p 8081:8081 --network host rediscommander/redis-commander
 
 aql:
 	@docker exec -it missioncontrol_aerospike_1 aql
