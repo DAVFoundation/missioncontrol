@@ -21,6 +21,11 @@ down:
 flush:
 	docker exec -it missioncontrol_redis_1 redis-cli FLUSHALL
 
+redis:
+	docker exec -it missioncontrol_redis_1 redis-cli
+redis-gui:
+	redis-commander
+
 aql:
 	@docker exec -it missioncontrol_aerospike_1 aql
 
