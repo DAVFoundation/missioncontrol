@@ -4,7 +4,16 @@ const { getLatestMission } = require('../store/missions');
 
 const getStatus = async (req, res) => {
   const { /* lat, long, */ needId, user_id } = req.query;
-  const latestMission = await getLatestMission(user_id);
+  let latestMission=null;
+  try
+  {
+    latestMission = await getLatestMission(user_id);
+  }
+  catch(err)
+  {
+    console.log(err);
+  }
+
   let bids = [];
   if(needId) {
     bids = await getBidsForNeed(needId);

@@ -7,9 +7,6 @@ const Aerospike = require('aerospike');
 const GeoJSON = Aerospike.GeoJSON;
 const filter = Aerospike.filter;
 const aerospike = Aerospike.client(aerospikeConfig());
-const {
-  getBid
-} = require('./bids');
 const Rx = require('rxjs/Rx');
 const config = require('../config');
 
@@ -115,17 +112,20 @@ const addNeedToCaptain = async (davId, needId, ttl=120) => {
   return davId;
 };
 
-const addBidToCaptain = async (davId, bidId, ttl=120) => {
+/*
+  const addBidToCaptain = async (davId, bidId, ttl=120) => {
   let bids = await getBidIds(davId);
   bids.push(bidId);
   await redis.setAsync(`captain_bids_${davId}`, redis.encode(bids), 'EX', ttl);
   return davId;
 };
+ */
 
 const getNeeds = async (davId) => {
   return redis.decode(await redis.getAsync(`captain_needs_${davId}`))||[];
 };
 
+/*
 const getBidIds = async (davId) => {
   return redis.decode(await redis.getAsync(`captain_bids_${davId}`))||[];
 };
@@ -133,7 +133,7 @@ const getBidIds = async (davId) => {
 const getBids = async (davId) => {
   return await Promise.all((await getBidIds(davId)).map(async bidId => await getBid(bidId)));
 };
-
+ */
 const createIndex = async (set, bin, type) => {
   try {
     await aerospike.connect();
@@ -233,7 +233,7 @@ module.exports = {
   getCaptainsForNeedType,
   addNeedTypeForCaptain,
   addNeedToCaptain,
-  addBidToCaptain,
+  // addBidToCaptain,
   getNeeds,
-  getBids
+  // getBids
 };

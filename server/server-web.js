@@ -38,7 +38,7 @@ app.get('/needs/:davId', NeedController.getForCaptain);
 app.post('/bids/:needId', BidController.create);
 app.get('/bids/:needId', BidController.fetch);
 app.put('/bids/:bidId/choose', BidController.chooseBid);
-app.get('/bids/:davId/chosen', BidController.fetchChosen);
+app.get('/bids/:needId/chosen', BidController.fetchChosen);
 app.get('/bids/:bidId/mission', MissionController.fetchMissionByBidId);
 
 app.get('/mission_command', MissionController.command);

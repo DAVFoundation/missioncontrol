@@ -23,7 +23,7 @@ const create = async (req, res) => {
       };
 
       let captains = await getCaptainsForNeedType(params.need_type, needLocation);
-      await Promise.all(captains.map(async captain => await addNeedToCaptain(captain.id, needId, params.ttl)));
+      await Promise.all(captains.filter(captain=>captain).map(async captain => await addNeedToCaptain(captain.id, needId, params.ttl)));
       res.json({ needId });
     }
     catch (error) {

@@ -68,7 +68,7 @@ const update = async (req, res) => {
         await updateCaptainStatus(mission.captain_id, params.vehicle_status);
         createMissionUpdate(missionId, params.mission_status);
       }
-      mission = await getMission(missionId); //refresh mission 
+      mission = await getMission(missionId); //refresh mission
       res.status(200).json(mission);
     } else {
       res.status(401).send('Unauthorized');
@@ -150,7 +150,7 @@ const convertGraddPayloadToGeoJSON = (gradd_payload) => {
       gradd_payload.pickup_distance
     )
   );
-  
+
   //extract coordinates from gradd_payload to featuresArray
   for (var i=0; i<gradd_payload.coordinates.length; i+=5) {
     featuresArray.push(
@@ -184,7 +184,7 @@ const updateGraddPayload = async (req,res) => {
     let mission_base64 = decodeURIComponent(req.body.mission);
     let mission_string = new Buffer.from(mission_base64, 'base64').toString();
     let gradd_payload = JSON.parse(mission_string);
-    
+
     let { mission_id, captain_id } = gradd_payload;
     if (!mission_id) throw 'No mission ID! Malformed URL? Please contact tech support';
     delete gradd_payload.mission_id;

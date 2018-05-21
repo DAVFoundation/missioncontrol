@@ -3,7 +3,7 @@ const config = require('../config');
 // const { getVehicle } = require('../store/vehicles');
 const { getNeed } = require('./needs');
 
-const saveBid = async ({ id,captain_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at, distance }, needId) => {
+const saveBid = async ({ id,captain_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at, distance,chosen=false}, needId) => {
   // Save bid id in need_bids
   redis.rpushAsync(`need_bids:${needId}`, id);
 
@@ -19,6 +19,7 @@ const saveBid = async ({ id,captain_id, time_to_pickup, time_to_dropoff, price, 
     'time_to_pickup', time_to_pickup,
     'time_to_dropoff', time_to_dropoff,
     'need_id', needId,
+    'chosen', chosen,
   );
 
   // Set TTL for bid
@@ -100,6 +101,7 @@ const deleteBidsForNeed = async needId => {
 module.exports = {
   getBidsForNeed,
   getBid,
+  saveBid,
   addNewBid,
   deleteBidsForNeed,
 };

@@ -1,6 +1,7 @@
 const { getBidsForNeed, addNewBid } = require('../store/bids');
 const { createMission } = require('../store/missions');
-const { addBidToCaptain, getBids, updateCaptainStatus } = require('../store/captains');
+const { updateCaptainStatus } = require('../store/captains');
+const { getBid,saveBid } = require('../store/bids');
 const validate = require('../lib/validate');
 // const droneApi = require('../coex/drone');
 
@@ -44,7 +45,9 @@ const chooseBid = async (req, res) => {
     bidId,
   });
   if (mission) {
-    await addBidToCaptain(mission.captain_id, bidId);
+    let bid=await getBid(bidId);
+    bid.chosen=true;
+    await saveBid(bid);
     await updateCaptainStatus(mission.captain_id, 'contract_received');
     res.json({ mission });
   } else {
@@ -53,8 +56,8 @@ const chooseBid = async (req, res) => {
 };
 
 const fetchChosen = async (req, res) => {
-  const { davId } = req.params;
-  const bids = await getBids(davId);
+  const { needId } = req.params;
+  const bids = (await getBidsForNeed(needId)).filter(bid=>bid.chosen==='true');
   res.status(200).send(bids);
 };
 
