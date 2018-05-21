@@ -28,7 +28,7 @@ redis-gui:
 	docker run -d --rm -p 8081:8081 --network host rediscommander/redis-commander
 
 aql:
-	@docker exec -it missioncontrol_aerospike_1 aql
+	@docker exec -it --env COLUMNS='200' missioncontrol_aerospike_1 aql
 
 log:
 	docker logs missioncontrol_missioncontrol_1 -f
