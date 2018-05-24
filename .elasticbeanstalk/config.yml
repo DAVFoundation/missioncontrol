@@ -1,11 +1,14 @@
 branch-defaults:
+  INT-SKY-GRADD:
+    environment: missioncontrol-stg
+    group_suffix: null
   master:
     environment: missioncontrol-prod
     group_suffix: null
 global:
-  application_name: missioncontrol-prod
+  application_name: missioncontrol
   branch: null
-  default_ec2_keyname: missioncontrol-prod-key
+  default_ec2_keyname: missioncontrol-key
   default_platform: Docker 17.09.1-ce
   default_region: us-east-1
   include_git_submodules: true
