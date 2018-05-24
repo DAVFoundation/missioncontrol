@@ -65,14 +65,14 @@ create-aws-stg-env:
 	@eb create missioncontrol-stg --cname missioncontrol-stg -k missioncontrol-key
 
 deploy-aws-stg-env:
-	@eb deploy --profile eb-cli-dav --staged
-	
+	@eb deploy --staged
+
 create-aws-prod-env:
-	@eb init missioncontrol-prod --profile eb-cli-dav --cname missioncontrol-prod -k missioncontrol-prod-key
-	@eb create missioncontrol-prod --profile eb-cli-dav
+	@eb init missioncontrol-prod --cname missioncontrol-prod -k missioncontrol-prod-key
+	@eb create missioncontrol-prod
 
 deploy-aws-prod-env:
-	@eb deploy --profile eb-cli-dav --staged
+	@eb deploy --staged
 
 copy-contracts:
 	-rm -rf ./server/build

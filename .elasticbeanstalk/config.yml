@@ -5,6 +5,10 @@ branch-defaults:
   master:
     environment: missioncontrol-prod
     group_suffix: null
+environment-defaults:
+  missioncontrol-stg:
+    branch: null
+    repository: null
 global:
   application_name: missioncontrol
   branch: null
@@ -15,7 +19,7 @@ global:
   instance_profile: null
   platform_name: null
   platform_version: null
-  profile: eb-cli-dav
+  profile: null
   repository: null
   sc: git
   workspace_type: Application
