@@ -41,7 +41,7 @@ const update = async (req, res) => {
     const vehicle = await getVehicle(vehicleId);
     if (vehicle) {
       const { /* status, */ coords } = params;
-      await updateVehiclePosition(vehicle, coords.long, coords.long.lat);
+      await updateVehiclePosition(vehicle, coords.long, coords.lat);
       res.status(200).json(vehicle);
     } else {
       res.status(404).send('Vehicle not found!');
