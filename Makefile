@@ -1,39 +1,41 @@
-test-run:
+FORCE:
+
+test-run: FORCE
 	npm test
 
-build:
+build: FORCE
 	docker-compose build
 
-dispose:
+dispose: FORCE
 	-docker rm missioncontrol_missioncontrol_1
 
 rebuild: dispose build
 
-up: copy-contracts test-run build
+up: FORCE copy-contracts test-run build
 	docker-compose up
 
-up-bg: copy-contracts test-run build
+up-bg: FORCE copy-contracts test-run build
 	docker-compose up -d
 
-down:
+down: FORCE
 	docker-compose down
 
-flush:
+flush: FORCE
 	docker exec -it missioncontrol_redis_1 redis-cli FLUSHALL
 
-redis:
+redis: FORCE
 	docker exec -it missioncontrol_redis_1 redis-cli
 
-redis-gui:
+redis-gui: FORCE
 	docker run -d --rm -p 8081:8081 --network host rediscommander/redis-commander
 
-aql:
+aql: FORCE
 	@docker exec -it --env COLUMNS='200' missioncontrol_aerospike_1 aql
 
-log:
+log: FORCE
 	docker logs missioncontrol_missioncontrol_1 -f
 
-create-aws-stg-env:
+create-aws-stg-env: FORCE
 	## create aerospike instance
 	aws ec2 run-instances \
 		--image-id ami-a6ef04db \
@@ -64,16 +66,16 @@ create-aws-stg-env:
 
 	@eb create missioncontrol-stg --cname missioncontrol-stg -k missioncontrol-key
 
-deploy-aws-stg-env:
+deploy-aws-stg-env: FORCE
 	@eb deploy --staged
 
-create-aws-prod-env:
+create-aws-prod-env: FORCE
 	@eb init missioncontrol-prod --cname missioncontrol-prod -k missioncontrol-prod-key
 	@eb create missioncontrol-prod
 
-deploy-aws-prod-env:
+deploy-aws-prod-env: FORCE
 	@eb deploy --staged
 
-copy-contracts:
+copy-contracts: FORCE
 	-rm -rf ./server/build
 	-cp -r ../contracts/build ./server
