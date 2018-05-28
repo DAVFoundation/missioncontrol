@@ -22,7 +22,8 @@ A lot of **missioncontrol** functionality came from pull requests sent by the de
 - [x] In the console run `docker network create dav`. This simply creates a link between different docker projects, allowing them to communicate (similar to a symlink).
 - [x] In the missioncontrol directory, run `docker-compose build && docker-compose up`. If at any time you stop this process, you can start it again by running `docker-compose build && docker-compose up` again.
 - [x] At this point you might consider also setting up the [Missions](https://github.com/DAVFoundation/missions/blob/master/CONTRIBUTING.md) project. This is the client side app that interacts with Mission Control.
-- [x] Code, code, code. 
+- [x] If you would like to see some simulated drones appear on the map, you will also need to set up the [Captain-Sim](https://github.com/DAVFoundation/captain-sim/blob/master/CONTRIBUTING.md) project.
+- [x] Code, code, code.
 - [x] Before committing your code, stop docker and run `npm test` to make sure all the automated tests still pass
 - [x] Once you've made sure all your changes work correctly and have been committed, push your local changes back to github with `$ git push -u origin master`
 - [x] Visit your fork on GitHub.com ([https://github.com/YOUR-USER-NAME/missioncontrol](https://github.com/YOUR-USER-NAME/missioncontrol)) and create a pull request for your changes.
