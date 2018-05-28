@@ -4,7 +4,7 @@ test-run: FORCE
 	npm test
 
 build: FORCE
-	docker-compose build
+	docker-compose build --no-cache
 
 dispose: FORCE
 	-docker rm missioncontrol_missioncontrol_1
