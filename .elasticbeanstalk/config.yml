@@ -1,6 +1,6 @@
 branch-defaults:
   INT-SKY-GRADD:
-    environment: missioncontrol-stg
+    environment: missioncontrol-stg1
     group_suffix: null
   master:
     environment: missioncontrol-prod
