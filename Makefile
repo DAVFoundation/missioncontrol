@@ -3,13 +3,11 @@ FORCE:
 test-run: FORCE
 	npm test
 
-build: FORCE
+rebuild: FORCE
 	docker-compose build --no-cache
 
-dispose: FORCE
-	-docker rm missioncontrol_missioncontrol_1
-
-rebuild: dispose build
+build: FORCE
+	docker-compose build
 
 up: FORCE copy-contracts test-run build
 	docker-compose up
@@ -66,14 +64,14 @@ create-aws-stg-env: FORCE
 
 	@eb create missioncontrol-stg --cname missioncontrol-stg -k missioncontrol-key
 
-deploy-aws-stg-env: FORCE
+deploy-aws-stg-env: rebuild
 	@eb deploy --staged
 
 create-aws-prod-env: FORCE
 	@eb init missioncontrol-prod --cname missioncontrol-prod -k missioncontrol-prod-key
 	@eb create missioncontrol-prod
 
-deploy-aws-prod-env: FORCE
+deploy-aws-prod-env: rebuild
 	@eb deploy --staged
 
 copy-contracts: FORCE
