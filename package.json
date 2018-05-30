@@ -27,7 +27,7 @@
     "express": "^4.16.3",
     "geolib": "^2.0.24",
     "mailcomposer": "^4.0.2",
-    "mailgun-js": "^0.16.0",
+    "mailgun-js": "^0.17.0",
     "querystring": "^0.2.0",
     "randomstring": "^1.1.5",
     "redis": "^2.8.0",
