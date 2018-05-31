@@ -3,7 +3,7 @@ branch-defaults:
     environment: missioncontrol-stg1
     group_suffix: null
   master:
-    environment: missioncontrol-prod
+    environment: missioncontrol-stg1
     group_suffix: null
 environment-defaults:
   missioncontrol-stg:
