@@ -44,7 +44,7 @@ const updateMission = async (id, params) => {
 };
 
 const saveMission = async (bidId, mission) => {
-  await redis.setAsync(`missions_${bidId}`,redis.encode(mission),'EX',mission.ttl||config('bids_ttl'));
+  await redis.setAsync(`missions_${bidId}`,redis.encode(mission),'EX',config('bids_ttl'));
 };
 
 const createMission = async ({ user_id, bidId }) => {
