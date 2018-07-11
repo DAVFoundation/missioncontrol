@@ -3,7 +3,7 @@ const config = require('../config');
 // const { getVehicle } = require('../store/vehicles');
 const { getNeed } = require('./needs');
 
-const saveBid = async ({ id, captain_id, time_to_pickup, time_to_dropoff, ttl, price, price_type, price_description, expires_at, distance, ETA, chosen=false}, needId) => {
+const saveBid = async ({ id,captain_id, time_to_pickup, time_to_dropoff, price, price_type, price_description, expires_at, distance, ETA, chosen=false}, needId) => {
   // Save bid id in need_bids
   redis.rpushAsync(`need_bids:${needId}`, id);
 
@@ -11,6 +11,7 @@ const saveBid = async ({ id, captain_id, time_to_pickup, time_to_dropoff, ttl, p
   redis.hmsetAsync(`bids:${id}`,
     'id', id,
     'captain_id', captain_id,
+    'token_amount', '15000000000000000000',
     'price', price,
     'price_type', price_type,
     'price_description', price_description,
@@ -20,8 +21,7 @@ const saveBid = async ({ id, captain_id, time_to_pickup, time_to_dropoff, ttl, p
     'time_to_dropoff', time_to_dropoff,
     'need_id', needId,
     'chosen', chosen,
-    'ETA', ETA,
-    'ttl', ttl
+    'ETA', ETA
   );
 
   // Set TTL for bid
