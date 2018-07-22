@@ -6,5 +6,5 @@ test: FORCE
 compile: FORCE
 	npm run compile
 
-start: FORCE
-	npm run dev
+up: FORCE
+	docker-compose up
