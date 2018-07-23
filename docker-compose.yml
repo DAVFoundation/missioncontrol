@@ -2,7 +2,9 @@ version: '3.2'
 
 services:
   nginx:
-    image: nginx
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
     depends_on:
       - app
     volumes:
@@ -14,11 +16,11 @@ services:
       - NGINX_PORT=80
       - WEB_REVERSE_PROXY_PORT=3005
     command: /bin/bash -c "envsubst < /etc/nginx/conf.d/app.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
-    networks:
-      - dav
     restart: always
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.app
     command: nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts
     restart: always
     depends_on:
@@ -28,22 +30,19 @@ services:
     volumes:
       - /app/node_modules
       - .:/app
-    networks:
-      - dav
   zookeeper:
-    image: wurstmeister/zookeeper
+    build:
+      context: .
+      dockerfile: Dockerfile.zookeeper
     ports:
       - "2181:2181"
-    networks:
-      - dav
   cassandra:
-    # is this usefull ?
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile-cassandra
+    build:
+      context: .
+      dockerfile: Dockerfile.cassandra
+    ## to change container version or tag using args uncomment following lines
     #   args:
     #     ver: 1
-    image: cassandra
     ports:
       - '7000:7000'
       - '7001:7001'
@@ -53,10 +52,10 @@ services:
     restart: always
     volumes:
       - ./data/cassandra:/var/lib/cassandra
-    networks:
-      - dav
   kafka:
-    image: wurstmeister/kafka
+    build:
+      context: .
+      dockerfile: Dockerfile.kafka
     links:
       - cassandra:cassandra
       - zookeeper:zookeeper
@@ -66,14 +65,10 @@ services:
       HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
       KAFKA_LOG_DIRS: /kafka
       KAFKA_BROKER_ID: 1
-      KAFKA_CREATE_TOPICS: test-topic-1:1:2,test-topic-2:1:2,test-topic-3:1:2
+      # KAFKA_CREATE_TOPICS: test-topic-1:1:2,test-topic-2:1:2,test-topic-3:1:2
+      # KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
       KAFKA_ADVERTISED_HOST_NAME: _{HOSTNAME_COMMAND}
       KAFKA_ADVERTISED_PORT: 9092
       KAFKA_LOG_RETENTION_HOURS: "168"
       KAFKA_LOG_RETENTION_BYTES: "100000000"
       KAFKA_ZOOKEEPER_CONNECT:  zookeeper:2181
-    networks:
-      - dav
-networks:
-  dav:
-    external: true
