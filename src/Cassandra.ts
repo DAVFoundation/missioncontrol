@@ -1,16 +1,8 @@
 import { Client, types, metadata } from 'cassandra-driver';
-import { Provider } from './Provider';
+import { Provider } from './types';
 
 class Cassandra {
   private tableName = 'provider';
-  private insertQuery = `INSERT INTO services.${this.tableName} (
-    provider_id, 
-    serviceType, 
-    area_from_lat,
-    area_from_long,
-    area_to_lat,
-    area_to_long
-  ) VALUES (?, ?, ?, ?, ?, ?) USING TTL 86400;`;
 
   private options = {
     contactPoints: ['cassandra'],
@@ -38,6 +30,16 @@ class Cassandra {
     });
   }
 
+  public async connect(): Promise<boolean> {
+    try {
+      await this.client.connect()
+      return true;
+    } catch (err) {
+      console.error('Cassandra connection error: ', err);
+      return false;
+    }
+  }
+
   public getStatus(): any {
     let status: any = {
       connected: this.isConnected
@@ -58,22 +60,26 @@ class Cassandra {
     return status;
   }
 
-  public async saveProvider(provider: Provider): Promise<boolean> {
-    //create cassandra record
+  public async save(query: string, params: Array<any>) {
+    //save record in cassandra
     try {
-      let result = await this.client.execute(this.insertQuery, [
-        provider.id.toString(),
-        provider.serviceType,
-        provider.area.from.latitude,
-        provider.area.from.longitude,
-        provider.area.to.latitude,
-        provider.area.to.longitude,
-      ], { prepare: true });
-      console.log('info', `saved provider with id ${provider.id}`, { message: result });
+      let result = await this.client.execute(query, params, { prepare: true });
+      console.log('info', `query saved`);
       return true;
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       return false;
+    }
+  }
+
+  public async query(query: string, params: Array<any>) : Promise<types.ResultSet> {
+    //save record in cassandra
+    try {
+      let result = await this.client.execute(query, params, { prepare: true });
+      return result;
+    } catch (err) {
+      console.log(err);
+      return null;
     }
   }
 
