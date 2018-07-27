@@ -3,24 +3,27 @@ const jest = require('jest-cli');
 var ts = require('gulp-typescript');
 var tslint = require('gulp-tslint');
 
-gulp.task('jest', () => {
-    return jest.runCLI({}, '.');
+gulp.task('jest', (done) => {
+    return jest.runCLI({}, '.')
+        .on('error', function (err) { done(err); });
 });
 
-gulp.task('tslint', () =>
+gulp.task('tslint', (done) => {
     gulp.src('src/**/*.ts')
+        .on('error', function (err) { done(err); })
         .pipe(tslint({
             formatter: 'prose'
-        })).pipe(tslint.report({
-            emitError: false
         }))
-);
+        .pipe(tslint.report());
+});
 
-gulp.task('tsc', function () {
+gulp.task('tsc', function (done) {
     var tsProject = ts.createProject('tsconfig.json');
     return tsProject.src()
         .pipe(tsProject())
-        .js.pipe(gulp.dest('build'));
+        .on('error', function (err) { done(err); })
+        .js
+        .pipe(gulp.dest('build'));
 });
 
 gulp.task('compile', ['tslint', 'tsc']);

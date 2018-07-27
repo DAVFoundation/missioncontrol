@@ -1,0 +1,31 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "no-namespace": false,
+    "max-line-length": {
+      "options": [150]
+    },
+    "quotemark": [true, "single"],
+    "new-parens": true,
+    "no-arg": true,
+    "no-bitwise": true,
+    "no-conditional-assignment": true,
+    "no-consecutive-blank-lines": false,
+    "no-console": {
+      "severity": "warning",
+      "options": [
+        "debug",
+        "info",
+        "log",
+        "time",
+        "timeEnd",
+        "trace"
+      ]
+    },
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "variable-name": {
+      "options": ["allow-leading-underscore"]
+    }
+  }
+}
