@@ -12,6 +12,6 @@ describe('Provider Factory', () => {
     // expect.assertions(1);
     // expect(() => {throw new Error()}).toThrow();
     // let providerFactory = new ProviderFactory();
-    // expect(providerFactory.getProviderInstance({ protocol: 'drone_charging'})).toThrowError('Protocol is not implemented');
+    expect(providerFactory.getProviderInstance({ protocol: 'drone_charging'})).toThrowError('Protocol is not implemented');
   });
 });
