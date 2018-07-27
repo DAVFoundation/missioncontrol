@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./src/index.ts",
-    "compile": "gulp compile",
-    "test": "gulp test"
+    "tslint": "gulp tslint",
+    "tsc": "gulp tsc",
+    "jest": "gulp jest"
   },
   "repository": {
     "type": "git",

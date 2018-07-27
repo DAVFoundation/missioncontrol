@@ -1,10 +1,12 @@
 FORCE:
 
 test: FORCE
-	npm test
+	npm run tslint
+	npm run jest
 
 compile: FORCE
-	npm run compile
+	npm run tslint
+	npm run tsc
 
 up: FORCE
 	docker-compose up

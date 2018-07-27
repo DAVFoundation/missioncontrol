@@ -1,0 +1,31 @@
+language: node_js
+node_js:
+- '9'
+branches:
+  only:
+  - master
+  - staging
+  - production
+  - FEAT-SDK-V-1-0
+install:
+- npm install
+before_script:
+- npm run tslint
+- npm run jest
+script:
+- npm run tsc
+after_success:
+after_failure:
+deploy:
+after_deploy:
+notifications:
+  email:
+    recipients:
+      - shahar@dav.network
+    on_success: change # default: change
+    on_failure: always # default: always
+  slack:
+    rooms:
+      secure: TNm3cZzMDDHWTPCejaLpq6YZo4bhbKItSJ6Yr1iIaMZJBXxJI57UEaQj4Lfl3Dvthek2ReQLoS5DT9p5/5bg8KNMWp3OmTgJiP7GcUsWRVSZdLS3VWC2d8mTu41tt6h4r+LKnl6QliCYf2nXFGIZgIKIUQIoP+pcb28kJ16CTDdVYOAAAPT/XVfKjQ8jIfW3UeLZfLYWglUZHjcEMJ5G4Ahm0dhaklqCxbwdlp5jEcJedoj3oZCBcZZ3h/L5SuW2QD/+/8wWs0+A/kYthb6+6u5lYzw+ff7zg08QoGLZlr/slY0yGkDPAwKQZEiA/jK+AxUgmlhMYawAiTO3xKJYVediOnFAkD9CTX7vyalTfDmQpiBvTZ2G1Cp0qg+BSJCOfBurjVsrrrgE3TlNcQLTJvikW/3UgofT6lK5Pvn5ABi6pg0e5LUt3g3IVO8mstY+y1eHhmBUbQnS3dVtfJrX9XWWWvbU41Ao4Pc8uMB3o2uZncuVGsUHoraAVSI9q8Qiv0Wi+jratTZ1tITHuM39tz+2baMj0UPLQvLCUhLXyhXlEslR/w2a03TmTfE0ou9Ag8PaCPEm7LE/lW31ktpUkC3YzhnY62cCJg5zbXMtWdDb8aORxc6YGg1dbSVz9L5bcpeIxPdG2f7eCBoJOFn2ZBdMjBWMlbggT/bWOm9u4Fc=
+    on_success: change # default: always
+    on_failure: always # default: always
