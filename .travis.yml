@@ -20,8 +20,6 @@ deploy:
 after_deploy:
 notifications:
   email:
-    recipients:
-      - shahar@dav.network
     on_success: change # default: change
     on_failure: always # default: always
   slack:
