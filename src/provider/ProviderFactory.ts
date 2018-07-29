@@ -11,11 +11,9 @@ class ProviderFactory {
   public getProviderInstance(protocolOptions:ProtocolOptions): BaseProvider | DroneDeliveryProvider {
     if (protocolOptions.protocol === 'drone_delivery') {
       let provider = new DroneDeliveryProvider();
-      console.log('************ return');
       return provider;
     } else {
       throw new Error('Protocol is not implemented');
-      console.log('************ throw');
     }
   }
 }
