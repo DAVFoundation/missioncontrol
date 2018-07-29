@@ -5,13 +5,13 @@ import { Request, Response} from 'express';
  */
 class NeedController {
   /**
-   * Publish need 
+   * Publish need
    * @param req express Request
    * @param res express Response
    */
   public publishNeed(req: Request, res: Response) {
     res.status(200).send({
-      message: 'DAV Network Node'
+      message: 'DAV Network Node',
     });
   }
 }

@@ -1,20 +1,21 @@
-import { BaseProvider } from "./BaseProvider";
-import { DeliveryProvider } from "../types";
-import cassandra from '../Cassandra';
-import { types } from "cassandra-driver";
+import { BaseProvider } from './BaseProvider';
+import { IDeliveryProvider } from '../types';
+import { Cassandra } from '../Cassandra';
+import { types } from 'cassandra-driver';
 
 export class DroneDeliveryProvider extends BaseProvider {
 
   protected tableName = 'providers_drone_delivery';
-  private protocol = 'drone_delivery';
-  protected protocolSpecificFields: Array<string> = [
+  protected protocolSpecificFields: string[]   = [
     'max_length',
     'max_width',
     'max_height',
 
   ];
-  public async save(provider: DeliveryProvider): Promise<boolean> {
-    //save cassandra record
+  private protocol = 'drone_delivery';
+  public async save(provider: IDeliveryProvider): Promise<boolean> {
+    // save cassandra record
+    const cassandra: Cassandra = await Cassandra.getInstance();
     return cassandra.save(this.getUpsertQuery(), [
       provider.davId,
       provider.topicId,
@@ -24,44 +25,46 @@ export class DroneDeliveryProvider extends BaseProvider {
       provider.area.max.longitude,
       provider.dimensions.length,
       provider.dimensions.width,
-      provider.dimensions.height
-    ])
+      provider.dimensions.height,
+    ]);
   }
-  
-  public async query(need: any): Promise<DeliveryProvider> {
+
+  public async query(need: any): Promise<IDeliveryProvider> {
+    const cassandra: Cassandra = await Cassandra.getInstance();
     try {
-      let result = await cassandra.query(this.getReadQuery(), [
+      const result = await cassandra.query(this.getReadQuery(), [
         need.location.latitude,
         need.location.longitude,
         need.location.latitude,
         need.location.longitude,
-        need.serviceType,
+        need.protocol,
       ]);
-      let providerRow: types.Row = result.first();
-      if(providerRow) {
-        let provider: DeliveryProvider = {
-          davId: providerRow['dav_id'],
-          topicId: providerRow['topic_id'],
+      const providerRow: types.Row = result.first();
+      if (providerRow) {
+        const provider: IDeliveryProvider = {
+          davId: providerRow.dav_id,
+          topicId: providerRow.topic_id,
           protocol: this.protocol,
           area: {
             min: {
-              longitude: providerRow['min_lat'],
-              latitude: providerRow['min_long']
+              longitude: providerRow.min_lat,
+              latitude: providerRow.min_long,
             },
             max: {
-              longitude: providerRow['max_lat'],
-              latitude: providerRow['max_long']
-            }
+              longitude: providerRow.max_lat,
+              latitude: providerRow.max_long,
+            },
           },
-          dimensions: { 
-            length: providerRow['max_length'],
-            width: providerRow['max_width'],
-            height: providerRow['max_height']
-          }
-        }
+          dimensions: {
+            length: providerRow.max_length,
+            width: providerRow.max_width,
+            height: providerRow.max_height,
+          },
+        };
         return provider;
       }
-    } catch(err) {
+    } catch (err) {
+      // tslint:disable-next-line:no-console
       console.log(err);
       throw err;
     }

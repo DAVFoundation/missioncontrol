@@ -4,33 +4,33 @@ export type ID = string;
 export type DavID = string;
 export type BigInteger = string;
 
-export interface ProtocolOptions {
-  protocol: 'drone_delivery' | 'drone_charging'
+export interface IProtocolOptions {
+  protocol: 'drone_delivery' | 'drone_charging';
 }
 
-export interface Location {
-  latitude: number
-  longitude: number
+export interface ILocation {
+  latitude: number;
+  longitude: number;
 }
 
-export interface Area {
-  min: Location
-  max: Location
+export interface IArea {
+  min: ILocation;
+  max: ILocation;
 }
 
-export interface Dimensions {
-  length: number
-  width: number
-  height: number
+export interface IDimensions {
+  length: number;
+  width: number;
+  height: number;
 }
 
-export interface Provider {
-  davId: DavID
-  topicId: string
-  area: Area
-  protocol: string
+export interface IProvider {
+  davId: DavID;
+  topicId: string;
+  area: IArea;
+  protocol: string;
 }
 
-export interface DeliveryProvider extends Provider {
-  dimensions: Dimensions
+export interface IDeliveryProvider extends IProvider {
+  dimensions: IDimensions;
 }

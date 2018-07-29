@@ -1,28 +1,29 @@
 import { Request, Response} from 'express';
 import kafka from '../Kafka';
-import cassandra from '../Cassandra';
+import { Cassandra } from '../Cassandra';
 
 class StatsController {
 
   public getInfo(req: Request, res: Response) {
     res.status(200).send({
-      message: 'DAV Network Node'
+      message: 'DAV Network Node',
     });
   }
 
   public async getHealthStats(req: Request, res: Response) {
-    let cassandraStatus:any = cassandra.getStatus();
-    let kafkaStatus:any = kafka.getStatus();
-    
-    let stats = {
+    const cassandra: Cassandra = await Cassandra.getInstance();
+    const cassandraStatus: any = cassandra.getStatus();
+    const kafkaStatus: any = kafka.getStatus();
+
+    const stats = {
       app: {
-        connected: false
+        connected: false,
       },
       kafka: kafkaStatus,
-      cassandra: cassandraStatus
-    }
+      cassandra: cassandraStatus,
+    };
     res.status(200).send({
-      message: stats
+      message: stats,
     });
   }
 }

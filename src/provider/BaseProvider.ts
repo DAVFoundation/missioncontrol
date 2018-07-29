@@ -1,23 +1,26 @@
-import { Provider } from "../types";
+import { IProvider } from '../types';
 
 export abstract class BaseProvider {
 
-  protected basicFields: Array<string> = [
+  protected basicFields: string[] = [
     'dav_id',
     'topic_id',
     'min_lat',
     'min_long',
     'max_lat',
-    'max_long'
+    'max_long',
   ];
 
-  protected protocolSpecificFields: Array<string> = [];
+  protected protocolSpecificFields: string[] = [];
 
   protected tableName: string;
 
+  public abstract save(provider: IProvider): Promise<boolean>;
+  public abstract query(need: any): any;
+
   protected getUpsertQuery(): string {
-    let fields: Array<string> = this.basicFields.concat(this.protocolSpecificFields);
-    let markers: Array<string> = new Array<string>(fields.length).fill('?');
+    const fields: string[] = this.basicFields.concat(this.protocolSpecificFields);
+    const markers: string[] = new Array<string>(fields.length).fill('?');
     return `INSERT INTO services.${this.tableName} (
       ${fields.join(', ')}
     ) VALUES (
@@ -26,15 +29,13 @@ export abstract class BaseProvider {
   }
 
   protected getReadQuery(): string {
-    let fields: Array<string> = this.basicFields.concat(this.protocolSpecificFields);
-    return `SELECT ${fields.join(', ')} FROM services.${this.tableName} 
-                    WHERE area_from_lat > ? 
-                    AND area_to_lat < ? 
+    const fields: string[] = this.basicFields.concat(this.protocolSpecificFields);
+    return `SELECT ${fields.join(', ')} FROM services.${this.tableName}
+                    WHERE area_from_lat > ?
+                    AND area_to_lat < ?
                     AND area_from_long > ?
                     AND area_to_long < ?
                     ALLOW FILTERING`;
   }
 
-  abstract save(provider: Provider): Promise<boolean>;
-  abstract query(need: any): any;
 }

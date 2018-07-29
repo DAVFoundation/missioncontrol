@@ -1,38 +1,43 @@
 import { Client, types, metadata } from 'cassandra-driver';
-import { Provider } from './types';
+import { IProvider } from './types';
 
-class Cassandra {
-  private tableName = 'provider';
+export class Cassandra {
 
-  private options = {
+  public static isConnected() {
+    return Cassandra._isConnected;
+  }
+
+  public static async getInstance(): Promise<Cassandra> {
+    if (Cassandra._isConnected  === false) {
+      Cassandra._isConnected = await Cassandra._instance.connect();
+    }
+    return Cassandra._instance;
+  }
+
+  private static _instance: Cassandra = new Cassandra();
+
+  private static options = {
     contactPoints: ['cassandra'],
     keyspace: 'services',
     pooling: {
       coreConnectionsPerHost: {
         [types.distance.local]: 2,
-        [types.distance.remote]: 1
-      }
-    }
+        [types.distance.remote]: 1,
+      },
+    },
   };
 
+  private static _isConnected: boolean = false;
+
   private client: Client;
-  private isConnected: boolean;
 
   constructor() {
-    this.client = new Client(this.options);
-    this.client.connect((err: Error) => {
-      if (err) {
-        this.isConnected = false;
-        console.error('Cassandra connection error: ', err);
-      } else {
-        this.isConnected = true;
-      }
-    });
+    this.client = new Client(Cassandra.options);
   }
 
   public async connect(): Promise<boolean> {
     try {
-      await this.client.connect()
+      await this.client.connect();
       return true;
     } catch (err) {
       console.error('Cassandra connection error: ', err);
@@ -41,48 +46,46 @@ class Cassandra {
   }
 
   public getStatus(): any {
-    let status: any = {
-      connected: this.isConnected
+    const status: any = {
+      connected: Cassandra._isConnected,
     };
-    if (this.isConnected) {
-      let hosts = [];
-      let state: metadata.ClientState = this.client.getState();
-      for (let host of state.getConnectedHosts()) {
+    if (Cassandra._isConnected) {
+      const hosts = [];
+      const state: metadata.ClientState = this.client.getState();
+      for (const host of state.getConnectedHosts()) {
         hosts.push({
           address: host.address,
           connections: state.getOpenConnections(host),
-          queries: state.getInFlightQueries(host)
+          queries: state.getInFlightQueries(host),
         });
       }
-      status['hosts'] = hosts;
+      status.hosts = hosts;
     }
-    console.log(status);
     return status;
   }
 
-  public async save(query: string, params: Array<any>) {
-    //save record in cassandra
+  public async save(query: string, params: any[]) {
+    // save record in cassandra
     try {
-      let result = await this.client.execute(query, params, { prepare: true });
-      console.log('info', `query saved`);
+      const result = await this.client.execute(query, params, { prepare: true });
       return true;
     } catch (err) {
+      // tslint:disable-next-line:no-console
       console.log(err);
       return false;
     }
   }
 
-  public async query(query: string, params: Array<any>) : Promise<types.ResultSet> {
-    //save record in cassandra
+  public async query(query: string, params: any[]): Promise<types.ResultSet> {
+    // save record in cassandra
     try {
-      let result = await this.client.execute(query, params, { prepare: true });
+      const result = await this.client.execute(query, params, { prepare: true });
       return result;
     } catch (err) {
+      // tslint:disable-next-line:no-console
       console.log(err);
       return null;
     }
   }
 
 }
-
-export default new Cassandra();
