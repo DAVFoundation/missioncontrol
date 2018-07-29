@@ -1,0 +1,16 @@
+#!/bin/sh
+
+npm run tslint
+if [ "$?" != "0" ]; then
+    exit 1
+fi
+
+npm run jest
+if [ "$?" != "0" ]; then
+    exit 1
+fi
+
+npm run tsc
+if [ "$?" != "0" ]; then
+    exit 1
+fi

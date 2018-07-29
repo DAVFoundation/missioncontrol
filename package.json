@@ -4,6 +4,7 @@
   "description": "API Server",
   "main": "index.js",
   "scripts": {
+    "preinstall": "cp ./.githooks/* .git/hooks",
     "start": "ts-node ./src/index.ts",
     "tslint": "gulp tslint",
     "tsc": "gulp tsc",
