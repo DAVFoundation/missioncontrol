@@ -66,6 +66,7 @@ export class DroneDeliveryProvider extends BaseProvider {
       }
       return providers;
     } catch (err) {
+      // TODO: instead of logging - throw the exception out - let someone who can handle this do it.
       // tslint:disable-next-line:no-console
       console.log(err);
       throw err;

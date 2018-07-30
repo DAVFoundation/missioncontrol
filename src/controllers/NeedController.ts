@@ -26,6 +26,7 @@ class NeedController {
         location,
         protocol,
       };
+      // TODO: let -> const ; move 2nd if inside 1st if ; eliminate external variable
       let results: IDeliveryProvider[] = [];
       if (provider instanceof DroneDeliveryProvider) {
         results = await provider.query(need);
@@ -39,6 +40,7 @@ class NeedController {
           message: 'DAV Network Node',
         });
       } else {
+        // TODO: Don't throw and catch straight. return the error from here.
         throw new Error('No provider were found matching the request');
       }
     } catch (err) {
@@ -51,4 +53,5 @@ class NeedController {
   }
 }
 
+// TODO: export the class not the instance
 export default new NeedController();

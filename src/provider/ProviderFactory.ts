@@ -9,6 +9,7 @@ class ProviderFactory {
   // getProviderInstance(protocolOptions: { protocol:'drone_delivery' }): DroneDeliveryProvider;
 
   public getProviderInstance(protocolOptions: IProtocolOptions): BaseProvider | DroneDeliveryProvider {
+    // TODO: Use Map to map string -> class
     if (protocolOptions.protocol === 'drone_delivery') {
       const provider = new DroneDeliveryProvider();
       return provider;
@@ -18,4 +19,5 @@ class ProviderFactory {
   }
 }
 
+// TODO: export the class not the instance
 export default new ProviderFactory();

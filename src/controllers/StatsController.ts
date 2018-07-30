@@ -13,6 +13,7 @@ class StatsController {
   public async getHealthStats(req: Request, res: Response) {
     const cassandra: Cassandra = await Cassandra.getInstance();
     const cassandraStatus: any = cassandra.getStatus();
+    // TODO: Should use await
     const kafkaStatus: any = kafka.getStatus();
 
     const stats = {
@@ -28,4 +29,5 @@ class StatsController {
   }
 }
 
+// TODO: export the class not the instance
 export default new StatsController();
