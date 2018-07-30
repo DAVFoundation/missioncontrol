@@ -15,6 +15,7 @@ export class FailingToConnectClient extends Client {
 }
 
 export class ResultSet {
+  private index = 0;
   private values = [
     {
       dav_id: '123',
@@ -28,7 +29,18 @@ export class ResultSet {
       max_height: 1,
     },
   ];
-  public [Symbol.iterator]() { return this.values.values(); }
+  public [Symbol.iterator]() {
+    return {
+      next: () => {
+        if (this.index < this.values.length) {
+          return {value: this.values[this.index++], done: false};
+        } else {
+          this.index = 0; // If we would like to iterate over this again without forcing manual update of the index
+          return {done: true};
+        }
+      },
+    };
+   }
 
   public first() {
     return this.values[0];

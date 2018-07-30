@@ -1,11 +1,24 @@
-import { KafkaClient, Producer, ProduceRequest } from 'kafka-node';
+import { KafkaClient, Producer } from 'kafka-node';
 import { INeed } from './types';
 
 class Kafka {
   private client: KafkaClient;
   private producer: Producer;
+
   constructor() {
     this.client = new KafkaClient({ kafkaHost: 'kafka:9092' });
+  }
+
+  private async getProducer(): Promise<Producer> {
+    if (this.producer) {
+      return this.producer;
+    } else {
+      this.producer = new Producer(this.client);
+      return new Promise<Producer>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
+        this.producer.on('ready', () => resolve(this.producer));
+        this.producer.on('error', (err) => reject(err));
+      });
+    }
   }
 
   public async getStatus(): Promise<boolean> {
@@ -41,18 +54,6 @@ class Kafka {
         }
       });
     });
-  }
-
-  private async getProducer(): Promise<Producer> {
-    if (this.producer) {
-      return this.producer;
-    } else {
-      this.producer = new Producer(this.client);
-      return new Promise<Producer>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
-        this.producer.on('ready', () => resolve(this.producer));
-        this.producer.on('error', (err) => reject(err));
-      });
-    }
   }
 }
 

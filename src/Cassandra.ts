@@ -3,6 +3,21 @@ import { IProvider } from './types';
 
 export class Cassandra {
 
+
+  private static _isConnected: boolean = false;
+  private static _instance: Cassandra;
+  private static options = {
+    contactPoints: ['cassandra'],
+    keyspace: 'services',
+    pooling: {
+      coreConnectionsPerHost: {
+        [types.distance.local]: 2,
+        [types.distance.remote]: 1,
+      },
+    },
+  };
+  private client: Client;
+
   public static isConnected() {
     return Cassandra._isConnected;
   }
@@ -15,23 +30,6 @@ export class Cassandra {
     }
     return Cassandra._instance;
   }
-
-  private static _instance: Cassandra;
-
-  private static options = {
-    contactPoints: ['cassandra'],
-    keyspace: 'services',
-    pooling: {
-      coreConnectionsPerHost: {
-        [types.distance.local]: 2,
-        [types.distance.remote]: 1,
-      },
-    },
-  };
-
-  private static _isConnected: boolean = false;
-
-  private client: Client;
 
   private constructor() {
     this.client = new Client(Cassandra.options);

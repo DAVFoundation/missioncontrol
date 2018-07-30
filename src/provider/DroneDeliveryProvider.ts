@@ -5,6 +5,7 @@ import { types } from 'cassandra-driver';
 
 export class DroneDeliveryProvider extends BaseProvider {
 
+  private protocol = 'drone_delivery';
   protected tableName = 'providers_drone_delivery';
   protected protocolSpecificFields: string[]   = [
     'max_length',
@@ -12,7 +13,7 @@ export class DroneDeliveryProvider extends BaseProvider {
     'max_height',
 
   ];
-  private protocol = 'drone_delivery';
+
   public async save(provider: IDeliveryProvider): Promise<boolean> {
     // save cassandra record
     const cassandra: Cassandra = await Cassandra.getInstance();

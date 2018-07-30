@@ -35,13 +35,13 @@ describe('Drone Delivery Provider', () => {
     protocol: 'drone_delivery',
   };
 
-  it('should save provider', () => {
+  it('should save provider', async () => {
     const droneDeliveryProvider = new DroneDeliveryProvider();
-    expect(droneDeliveryProvider.save(provider)).resolves.toBe(true);
+    expect(await droneDeliveryProvider.save(provider)).toBe(true);
   });
 
   it('should load provider', async () => {
     const droneDeliveryProvider = new DroneDeliveryProvider();
-    expect(droneDeliveryProvider.query(need)).resolves.toEqual(provider);
+    expect(await droneDeliveryProvider.query(need)).toEqual([provider]);
   });
 });

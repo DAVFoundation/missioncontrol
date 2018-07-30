@@ -15,9 +15,6 @@ export abstract class BaseProvider {
 
   protected tableName: string;
 
-  public abstract save(provider: IProvider): Promise<boolean>;
-  public abstract query(need: any): any;
-
   protected getUpsertQuery(): string {
     const fields: string[] = this.basicFields.concat(this.protocolSpecificFields);
     const markers: string[] = new Array<string>(fields.length).fill('?');
@@ -37,5 +34,8 @@ export abstract class BaseProvider {
                     AND max_long < ?
                     ALLOW FILTERING`;
   }
+
+  public abstract save(provider: IProvider): Promise<boolean>;
+  public abstract query(need: any): any;
 
 }
