@@ -1,4 +1,3 @@
-CREATE TABLE IF NOT EXISTS services.endpoints (dav_id text PRIMARY KEY, topic_id text);
 CREATE TABLE IF NOT EXISTS services.providers_drone_delivery (
     dav_id text PRIMARY KEY, 
     topic_id text, 
@@ -12,3 +11,9 @@ CREATE TABLE IF NOT EXISTS services.providers_drone_delivery (
 );
 CREATE INDEX idx_min_lat
    ON services.providers_drone_delivery (min_lat);
+CREATE INDEX idx_min_lat
+   ON services.providers_drone_delivery (min_long);
+CREATE INDEX idx_min_lat
+   ON services.providers_drone_delivery (max_lat);
+CREATE INDEX idx_min_lat
+   ON services.providers_drone_delivery (max_long);

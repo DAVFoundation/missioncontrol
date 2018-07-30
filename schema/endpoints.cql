@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS services.endpoints (dav_id text PRIMARY KEY, topic_id text);
