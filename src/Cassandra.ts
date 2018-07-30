@@ -4,8 +4,12 @@ import { IProvider } from './types';
 export class Cassandra {
 
 
+  // TODO: should be an instance field
   private static _isConnected: boolean = false;
+  // TODO: should be an instance field
   private static _instance: Cassandra;
+
+  // TODO: should be an instance field
   private static options = {
     contactPoints: ['cassandra'],
     keyspace: 'services',
@@ -45,6 +49,7 @@ export class Cassandra {
     }
   }
 
+  // TODO: Define an interface CassandraStatus to use as return type
   public getStatus(): any {
     const status: any = {
       connected: Cassandra._isConnected,
@@ -67,9 +72,11 @@ export class Cassandra {
   public async save(query: string, params: any[]) {
     // save record in cassandra
     try {
+      // TODO: remove result - it is not used
       const result = await this.client.execute(query, params, { prepare: true });
       return true;
     } catch (err) {
+      // TODO: instead of logging - throw the exception out - let someone who can handle this do it.
       // tslint:disable-next-line:no-console
       console.log(err);
       return false;
@@ -82,6 +89,7 @@ export class Cassandra {
       const result = await this.client.execute(query, params, { prepare: true });
       return result;
     } catch (err) {
+      // TODO: instead of logging - throw the exception out - let someone who can handle this do it.
       // tslint:disable-next-line:no-console
       console.log(err);
       return null;
