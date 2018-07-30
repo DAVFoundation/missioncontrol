@@ -22,6 +22,7 @@ export class Cassandra {
   };
   private client: Client;
 
+  // TODO: should be an instance method
   public static isConnected() {
     return Cassandra._isConnected;
   }
@@ -44,6 +45,7 @@ export class Cassandra {
       await this.client.connect();
       return true;
     } catch (err) {
+      // TODO: instead of logging - throw the exception out - let someone who can handle this do it.
       console.error('Cassandra connection error: ', err);
       return false;
     }
@@ -57,6 +59,7 @@ export class Cassandra {
     if (Cassandra._isConnected) {
       const hosts = [];
       const state: metadata.ClientState = this.client.getState();
+      // TODO: use Array.map
       for (const host of state.getConnectedHosts()) {
         hosts.push({
           address: host.address,
