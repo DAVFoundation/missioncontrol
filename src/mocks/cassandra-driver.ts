@@ -15,8 +15,8 @@ export class FailingToConnectClient extends Client {
 }
 
 export class ResultSet {
-  public first() {
-    return {
+  private values = [
+    {
       dav_id: '123',
       topic_id: '321',
       min_lat: 1,
@@ -26,7 +26,12 @@ export class ResultSet {
       max_length: 1,
       max_width: 1,
       max_height: 1,
-    };
+    },
+  ];
+  public [Symbol.iterator]() { return this.values.values(); }
+
+  public first() {
+    return this.values[0];
   }
 }
 

@@ -34,3 +34,10 @@ export interface IProvider {
 export interface IDeliveryProvider extends IProvider {
   dimensions: IDimensions;
 }
+
+export interface INeed {
+  davId: DavID;
+  topicId: string;
+  location: ILocation;
+  protocol: string;
+}

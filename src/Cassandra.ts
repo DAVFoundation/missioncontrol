@@ -8,13 +8,15 @@ export class Cassandra {
   }
 
   public static async getInstance(): Promise<Cassandra> {
+
     if (Cassandra._isConnected  === false) {
+      this._instance = new Cassandra();
       Cassandra._isConnected = await Cassandra._instance.connect();
     }
     return Cassandra._instance;
   }
 
-  private static _instance: Cassandra = new Cassandra();
+  private static _instance: Cassandra;
 
   private static options = {
     contactPoints: ['cassandra'],
@@ -31,7 +33,7 @@ export class Cassandra {
 
   private client: Client;
 
-  constructor() {
+  private constructor() {
     this.client = new Client(Cassandra.options);
   }
 

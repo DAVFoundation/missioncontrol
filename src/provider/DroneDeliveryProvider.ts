@@ -1,5 +1,5 @@
 import { BaseProvider } from './BaseProvider';
-import { IDeliveryProvider } from '../types';
+import { IDeliveryProvider, INeed } from '../types';
 import { Cassandra } from '../Cassandra';
 import { types } from 'cassandra-driver';
 
@@ -29,18 +29,18 @@ export class DroneDeliveryProvider extends BaseProvider {
     ]);
   }
 
-  public async query(need: any): Promise<IDeliveryProvider> {
+  public async query(need: INeed): Promise<IDeliveryProvider[]> {
     const cassandra: Cassandra = await Cassandra.getInstance();
     try {
-      const result = await cassandra.query(this.getReadQuery(), [
+      const result: types.ResultSet = await cassandra.query(this.getReadQuery(), [
         need.location.latitude,
         need.location.longitude,
         need.location.latitude,
         need.location.longitude,
-        need.protocol,
       ]);
-      const providerRow: types.Row = result.first();
-      if (providerRow) {
+
+      const providers: IDeliveryProvider[] = [];
+      for (const providerRow of result) {
         const provider: IDeliveryProvider = {
           davId: providerRow.dav_id,
           topicId: providerRow.topic_id,
@@ -61,8 +61,9 @@ export class DroneDeliveryProvider extends BaseProvider {
             height: providerRow.max_height,
           },
         };
-        return provider;
+        providers.push(provider);
       }
+      return providers;
     } catch (err) {
       // tslint:disable-next-line:no-console
       console.log(err);

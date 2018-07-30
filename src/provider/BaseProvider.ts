@@ -31,10 +31,10 @@ export abstract class BaseProvider {
   protected getReadQuery(): string {
     const fields: string[] = this.basicFields.concat(this.protocolSpecificFields);
     return `SELECT ${fields.join(', ')} FROM services.${this.tableName}
-                    WHERE area_from_lat > ?
-                    AND area_to_lat < ?
-                    AND area_from_long > ?
-                    AND area_to_long < ?
+                    WHERE min_lat > ?
+                    AND max_lat < ?
+                    AND min_long > ?
+                    AND max_long < ?
                     ALLOW FILTERING`;
   }
 
