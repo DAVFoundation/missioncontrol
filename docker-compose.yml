@@ -4,11 +4,11 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: Dockerfile.nginx
+      dockerfile: ./dockers/Dockerfile.nginx
     depends_on:
       - app
     volumes:
-      - ./app.template:/etc/nginx/conf.d/app.template
+      - ./nginx/app.template:/etc/nginx/conf.d/app.template
     ports:
       - "80:80"
     environment:
@@ -20,7 +20,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.app
+      dockerfile: ./dockers/Dockerfile.app
     command: nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts
     restart: always
     depends_on:
@@ -33,13 +33,13 @@ services:
   zookeeper:
     build:
       context: .
-      dockerfile: Dockerfile.zookeeper
+      dockerfile: ./dockers/Dockerfile.zookeeper
     ports:
       - "2181:2181"
   cassandra:
     build:
       context: .
-      dockerfile: Dockerfile.cassandra
+      dockerfile: ./dockers/Dockerfile.cassandra
     ## to change container version or tag using args uncomment following lines
     #   args:
     #     ver: 1
