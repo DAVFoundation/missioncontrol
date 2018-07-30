@@ -10,6 +10,18 @@ class Kafka {
   }
 
   private async getProducer(): Promise<Producer> {
+    /* TODO: replace with cleaner solution:
+
+        if (!this.producer) {
+          this.producer = new Producer(this.client);
+          await new Promise<Producer>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
+            this.producer.on('ready', () => resolve(this.producer));
+            this.producer.on('error', (err) => reject(err));
+          });
+        }
+        return this.producer;
+    */
+
     if (this.producer) {
       return this.producer;
     } else {
@@ -24,6 +36,11 @@ class Kafka {
   public async getStatus(): Promise<boolean> {
     return new Promise<boolean>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
       this.client.loadMetadataForTopics(['generic'], (err: any, res: any) => {
+
+/* TODO: replace with cleaner code:
+
+          resolve({ connected: !err });
+ */
         if (err) {
           resolve({
             connected: false,
@@ -42,9 +59,11 @@ class Kafka {
     const payloads = topics.map((topic) => {
       return {
         topic,
+        // TODO: (not for now) - create a SerDe mechanism for protocol
         messages: JSON.stringify(need),
       };
     });
+    // TODO: remove await here
     return await new Promise((resolve, reject) => {
       producer.send(payloads, (err, data) => {
         if (err) {
@@ -57,4 +76,5 @@ class Kafka {
   }
 }
 
+// TODO: move `export default` to class Kafka
 export default new Kafka();
