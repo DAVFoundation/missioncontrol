@@ -1,9 +1,9 @@
 import { Request, Response} from 'express';
 import kafka from '../Kafka';
 import cassandra from '../Cassandra';
-import { ICassandraStatus } from '../types';
+import { ICassandraStatus, IServiceStatus } from '../types';
 
-class StatsController {
+export default class StatsController {
 
   public getInfo(req: Request, res: Response) {
     res.status(200).send({
@@ -13,8 +13,7 @@ class StatsController {
 
   public async getHealthStats(req: Request, res: Response) {
     const cassandraStatus: ICassandraStatus = (await cassandra.getInstance()).getStatus();
-    // TODO: Should use await
-    const kafkaStatus: any = kafka.getStatus();
+    const kafkaStatus: IServiceStatus = await kafka.getInstance().getStatus();
 
     const stats = {
       app: {
@@ -29,5 +28,3 @@ class StatsController {
   }
 }
 
-// TODO: export the class not the instance
-export default new StatsController();

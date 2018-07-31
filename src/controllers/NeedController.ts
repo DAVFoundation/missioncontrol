@@ -1,14 +1,14 @@
 import { Request, Response} from 'express';
-import providerFactory from '../provider/ProviderFactory';
+import ProviderFactory from '../provider/ProviderFactory';
 import { BaseProvider } from '../provider/BaseProvider';
 import { DroneDeliveryProvider } from '../provider/DroneDeliveryProvider';
 import { IDeliveryProvider, INeed } from '../types';
-import kafka from '../Kafka';
+import Kafka from '../Kafka';
 
 /**
  * NeedController class
  */
-class NeedController {
+export default class NeedController {
   /**
    * Publish need
    * @param req express Request
@@ -17,6 +17,7 @@ class NeedController {
   public async publishNeed(req: Request, res: Response) {
     const topicId = req.params.topicId;
     const { davId, location, protocol } = req.body;
+    const providerFactory = new ProviderFactory();
     const provider: BaseProvider = providerFactory.getProviderInstance({ protocol });
     // save record in cassandra
     try {
@@ -26,32 +27,31 @@ class NeedController {
         location,
         protocol,
       };
-      // TODO: let -> const ; move 2nd if inside 1st if ; eliminate external variable
-      let results: IDeliveryProvider[] = [];
+
       if (provider instanceof DroneDeliveryProvider) {
-        results = await provider.query(need);
-      }
-      if (results.length > 0) {
-        const topics: string[] = results.map((result) => {
-          return result.topicId;
-        });
-        kafka.sendMessages(topics, need);
-        res.status(200).send({
-          message: 'DAV Network Node',
-        });
-      } else {
-        // TODO: Don't throw and catch straight. return the error from here.
-        throw new Error('No provider were found matching the request');
+        const results: IDeliveryProvider[] = await provider.query(need);
+        if (results.length > 0) {
+          const topics: string[] = results.map((result) => {
+            return result.topicId;
+          });
+          Kafka.getInstance().sendMessages(topics, need);
+          res.status(200).send({
+            message: 'DAV Network Node',
+          });
+        } else {
+          // tslint:disable-next-line:no-console
+          console.log('No provider were found matching the request');
+          res.status(404).send({
+            message: JSON.stringify(new Error('No provider were found matching the request')),
+          });
+        }
       }
     } catch (err) {
       // tslint:disable-next-line:no-console
       console.log(err);
-      res.status(404).send({
+      res.status(500).send({
         message: JSON.stringify(err),
       });
     }
   }
 }
-
-// TODO: export the class not the instance
-export default new NeedController();

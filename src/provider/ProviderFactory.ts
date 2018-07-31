@@ -3,7 +3,7 @@ import { DroneDeliveryProvider } from './DroneDeliveryProvider';
 import { IProtocolOptions } from '../types';
 import { BaseProvider } from './BaseProvider';
 
-class ProviderFactory {
+export default class ProviderFactory {
 
   // getProviderInstance(protocolOptions: ProtocolOptions): BaseProvider;
   // getProviderInstance(protocolOptions: { protocol:'drone_delivery' }): DroneDeliveryProvider;
@@ -19,5 +19,3 @@ class ProviderFactory {
   }
 }
 
-// TODO: export the class not the instance
-export default new ProviderFactory();

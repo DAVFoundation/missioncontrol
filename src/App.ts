@@ -1,8 +1,8 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import statsController from './controllers/StatsController';
-import needController from './controllers/NeedController';
-import providerController from './controllers/ProviderController';
+import NeedController from './controllers/NeedController';
+import StatsController from './controllers/StatsController';
+import ProviderController from './controllers/ProviderController';
 
 class App {
 
@@ -15,6 +15,10 @@ class App {
   private config(): void {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
+
+    const needController = new NeedController();
+    const statsController = new StatsController();
+    const providerController = new ProviderController();
 
     this.app.route('/').get(statsController.getInfo);
     this.app.route('/health').get(statsController.getHealthStats);

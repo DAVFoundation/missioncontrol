@@ -1,7 +1,7 @@
 import { BaseProvider } from './BaseProvider';
 import { IDeliveryProvider, INeed } from '../types';
-import { Cassandra } from '../Cassandra';
 import { types } from 'cassandra-driver';
+import Cassandra from '../Cassandra';
 
 export class DroneDeliveryProvider extends BaseProvider {
 
@@ -32,44 +32,37 @@ export class DroneDeliveryProvider extends BaseProvider {
 
   public async query(need: INeed): Promise<IDeliveryProvider[]> {
     const cassandra: Cassandra = await Cassandra.getInstance();
-    try {
-      const result: types.ResultSet = await cassandra.query(this.getReadQuery(), [
-        need.location.latitude,
-        need.location.longitude,
-        need.location.latitude,
-        need.location.longitude,
-      ]);
+    const result: types.ResultSet = await cassandra.query(this.getReadQuery(), [
+      need.location.latitude,
+      need.location.longitude,
+      need.location.latitude,
+      need.location.longitude,
+    ]);
 
-      const providers: IDeliveryProvider[] = [];
-      for (const providerRow of result) {
-        const provider: IDeliveryProvider = {
-          davId: providerRow.dav_id,
-          topicId: providerRow.topic_id,
-          protocol: this.protocol,
-          area: {
-            min: {
-              longitude: providerRow.min_lat,
-              latitude: providerRow.min_long,
-            },
-            max: {
-              longitude: providerRow.max_lat,
-              latitude: providerRow.max_long,
-            },
+    const providers: IDeliveryProvider[] = [];
+    for (const providerRow of result) {
+      const provider: IDeliveryProvider = {
+        davId: providerRow.dav_id,
+        topicId: providerRow.topic_id,
+        protocol: this.protocol,
+        area: {
+          min: {
+            longitude: providerRow.min_lat,
+            latitude: providerRow.min_long,
           },
-          dimensions: {
-            length: providerRow.max_length,
-            width: providerRow.max_width,
-            height: providerRow.max_height,
+          max: {
+            longitude: providerRow.max_lat,
+            latitude: providerRow.max_long,
           },
-        };
-        providers.push(provider);
-      }
-      return providers;
-    } catch (err) {
-      // TODO: instead of logging - throw the exception out - let someone who can handle this do it.
-      // tslint:disable-next-line:no-console
-      console.log(err);
-      throw err;
+        },
+        dimensions: {
+          length: providerRow.max_length,
+          width: providerRow.max_width,
+          height: providerRow.max_height,
+        },
+      };
+      providers.push(provider);
     }
+    return providers;
   }
 }

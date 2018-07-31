@@ -21,7 +21,7 @@ describe('kafka', () => {
     expect.assertions(1);
     jest.doMock('kafka-node', kafkaNode);
     const kafka = (await import('./Kafka')).default;
-    expect(await kafka.getStatus()).toEqual({
+    expect(await kafka.getInstance().getStatus()).toEqual({
       connected: true,
     });
   });
@@ -30,7 +30,7 @@ describe('kafka', () => {
     expect.assertions(1);
     jest.doMock('kafka-node', failingToConnectKafkaNode);
     const kafka = (await import('./Kafka')).default;
-    expect(await kafka.getStatus()).toEqual({
+    expect(await kafka.getInstance().getStatus()).toEqual({
       connected: false,
     });
   });
@@ -39,14 +39,14 @@ describe('kafka', () => {
     expect.assertions(1);
     jest.doMock('kafka-node', kafkaNode);
     const kafka = (await import('./Kafka')).default;
-    expect(await kafka.sendMessages([''], need)).toEqual(true);
+    expect(await kafka.getInstance().sendMessages([''], need)).toEqual(true);
   });
 
   it('should fail to send messages', async () => {
     // expect.assertions(1);
     jest.doMock('kafka-node', failingToSendKafkaNode);
     const kafka = (await import('./Kafka')).default;
-    await expect(kafka.sendMessages([], need)).rejects.toEqual(Error('Failed to send'));
+    await expect(kafka.getInstance().sendMessages([], need)).rejects.toEqual(Error('Failed to send'));
   });
 
 });

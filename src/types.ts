@@ -47,7 +47,11 @@ export interface ICassandraHost {
   connections: number;
   queries: number;
 }
-export interface ICassandraStatus {
+
+export interface IServiceStatus {
   connected: boolean;
+}
+
+export interface ICassandraStatus extends IServiceStatus {
   hosts?: ICassandraHost[];
 }
