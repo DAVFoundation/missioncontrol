@@ -29,4 +29,12 @@ describe('cassandra', () => {
     expect(await cassandraInstance.save('INSERT INTO table (key, value) VALUES (?, ?)', ['key', 'value'])).toEqual(true);
   });
 
+  it('should save record', async () => {
+    // expect.assertions(1);
+    jest.doMock('cassandra-driver', cassandraDriver);
+    const cassandra = (await import('./Cassandra')).default;
+    const cassandraInstance = await cassandra.getInstance();
+    expect(await cassandraInstance.getStatus()).toEqual({ connected: true, hosts: [{address: 'localhost', connections: 0, queries: 1}] });
+  });
+
 });

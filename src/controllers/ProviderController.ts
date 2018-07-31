@@ -33,7 +33,7 @@ export default class ProviderController {
           });
         } else {
           res.status(500).send({
-            message: JSON.stringify(new Error('Error saving provider')),
+            error: 'Error saving provider',
           });
         }
       }
@@ -41,7 +41,7 @@ export default class ProviderController {
       // tslint:disable-next-line:no-console
       console.log(err);
       res.status(500).send({
-        message: JSON.stringify(err),
+        error: `An error ocurred ${JSON.stringify(err)}`,
       });
     }
   }

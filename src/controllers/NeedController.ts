@@ -36,21 +36,17 @@ export default class NeedController {
           });
           Kafka.getInstance().sendMessages(topics, need);
           res.status(200).send({
-            message: 'DAV Network Node',
+            message: 'Need was published',
           });
         } else {
-          // tslint:disable-next-line:no-console
-          console.log('No provider were found matching the request');
           res.status(404).send({
-            message: JSON.stringify(new Error('No provider were found matching the request')),
+            error: 'No provider were found matching the request',
           });
         }
       }
     } catch (err) {
-      // tslint:disable-next-line:no-console
-      console.log(err);
       res.status(500).send({
-        message: JSON.stringify(err),
+        error: `An error ocurred ${JSON.stringify(err)}`,
       });
     }
   }

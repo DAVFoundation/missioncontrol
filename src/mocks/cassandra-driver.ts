@@ -6,6 +6,27 @@ export class Client {
   public execute(query: string, params: any[], options: any) {
     return Promise.resolve(new ResultSet());
   }
+  public getState() {
+    return new ClientState();
+  }
+}
+
+export interface IHost {
+  address: string;
+}
+
+export class ClientState {
+  public getConnectedHosts(): IHost[] {
+    return [{
+      address: 'localhost',
+    }];
+  }
+  public getInFlightQueries(host: IHost): number {
+    return 1;
+  }
+  public getOpenConnections(host: IHost): number {
+    return 0;
+  }
 }
 
 export class FailingToConnectClient extends Client {

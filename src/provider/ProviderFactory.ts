@@ -7,11 +7,14 @@ export default class ProviderFactory {
 
   // getProviderInstance(protocolOptions: ProtocolOptions): BaseProvider;
   // getProviderInstance(protocolOptions: { protocol:'drone_delivery' }): DroneDeliveryProvider;
+  private classMap = new Map([
+    ['drone_delivery', DroneDeliveryProvider],
+  ]);
 
   public getProviderInstance(protocolOptions: IProtocolOptions): BaseProvider | DroneDeliveryProvider {
-    // TODO: Use Map to map string -> class
-    if (protocolOptions.protocol === 'drone_delivery') {
-      const provider = new DroneDeliveryProvider();
+    if (this.classMap.has(protocolOptions.protocol)) {
+      const providerClass = this.classMap.get(protocolOptions.protocol);
+      const provider = new providerClass();
       return provider;
     } else {
       throw new Error('Protocol is not implemented');
