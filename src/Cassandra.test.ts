@@ -11,15 +11,14 @@ describe('cassandra', () => {
     jest.doMock('cassandra-driver', cassandraDriver);
     const { Cassandra } = (await import('./Cassandra'));
     const cassandra = await Cassandra.getInstance();
-    expect(Cassandra.isConnected()).toEqual(true);
+    expect(cassandra.isConnected()).toEqual(true);
   });
 
   it('should not connect', async () => {
     expect.assertions(1);
     jest.doMock('cassandra-driver', cassandraFailingToConnectDriver);
     const { Cassandra } = (await import('./Cassandra'));
-    const cassandra = await Cassandra.getInstance();
-    expect(Cassandra.isConnected()).toEqual(false);
+    await expect(Cassandra.getInstance()).rejects.toEqual(Error('Cassandra connection error: false'));
   });
 
   it('should save record', async () => {

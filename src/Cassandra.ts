@@ -1,16 +1,13 @@
 import { Client, types, metadata } from 'cassandra-driver';
-import { IProvider } from './types';
+import { IProvider, ICassandraStatus } from './types';
 
 export class Cassandra {
 
+  private static _instance: Cassandra = null;
 
-  // TODO: should be an instance field
-  private static _isConnected: boolean = false;
-  // TODO: should be an instance field
-  private static _instance: Cassandra;
+  private connected: boolean = false;
 
-  // TODO: should be an instance field
-  private static options = {
+  private options = {
     contactPoints: ['cassandra'],
     keyspace: 'services',
     pooling: {
@@ -22,52 +19,46 @@ export class Cassandra {
   };
   private client: Client;
 
-  // TODO: should be an instance method
-  public static isConnected() {
-    return Cassandra._isConnected;
-  }
-
   public static async getInstance(): Promise<Cassandra> {
 
-    if (Cassandra._isConnected  === false) {
-      this._instance = new Cassandra();
-      Cassandra._isConnected = await Cassandra._instance.connect();
+    if (Cassandra._instance === null) {
+      Cassandra._instance = new Cassandra();
+      await Cassandra._instance.connect();
     }
     return Cassandra._instance;
   }
 
   private constructor() {
-    this.client = new Client(Cassandra.options);
+    this.client = new Client(this.options);
+  }
+
+  public isConnected() {
+    return this.connected;
   }
 
   public async connect(): Promise<boolean> {
     try {
       await this.client.connect();
-      return true;
+      this.connected = true;
     } catch (err) {
-      // TODO: instead of logging - throw the exception out - let someone who can handle this do it.
-      console.error('Cassandra connection error: ', err);
-      return false;
+      throw Error('Cassandra connection error: ' + JSON.stringify(err));
     }
+    return this.connected;
   }
 
-  // TODO: Define an interface CassandraStatus to use as return type
-  public getStatus(): any {
-    const status: any = {
-      connected: Cassandra._isConnected,
+  public getStatus(): ICassandraStatus {
+    const status: ICassandraStatus = {
+      connected: this.connected,
     };
-    if (Cassandra._isConnected) {
-      const hosts = [];
+    if (this.connected) {
       const state: metadata.ClientState = this.client.getState();
-      // TODO: use Array.map
-      for (const host of state.getConnectedHosts()) {
-        hosts.push({
+      status.hosts = state.getConnectedHosts().map((host) => {
+        return {
           address: host.address,
           connections: state.getOpenConnections(host),
           queries: state.getInFlightQueries(host),
-        });
-      }
-      status.hosts = hosts;
+        };
+      });
     }
     return status;
   }
@@ -75,14 +66,10 @@ export class Cassandra {
   public async save(query: string, params: any[]) {
     // save record in cassandra
     try {
-      // TODO: remove result - it is not used
-      const result = await this.client.execute(query, params, { prepare: true });
+      await this.client.execute(query, params, { prepare: true });
       return true;
     } catch (err) {
-      // TODO: instead of logging - throw the exception out - let someone who can handle this do it.
-      // tslint:disable-next-line:no-console
-      console.log(err);
-      return false;
+      throw Error('Cassandra failed to save record: ' + JSON.stringify(err));
     }
   }
 
@@ -92,10 +79,7 @@ export class Cassandra {
       const result = await this.client.execute(query, params, { prepare: true });
       return result;
     } catch (err) {
-      // TODO: instead of logging - throw the exception out - let someone who can handle this do it.
-      // tslint:disable-next-line:no-console
-      console.log(err);
-      return null;
+      throw Error('Cassandra query failed: ' + JSON.stringify(err));
     }
   }
 

@@ -41,3 +41,13 @@ export interface INeed {
   location: ILocation;
   protocol: string;
 }
+
+export interface ICassandraHost {
+  address: string;
+  connections: number;
+  queries: number;
+}
+export interface ICassandraStatus {
+  connected: boolean;
+  hosts?: ICassandraHost[];
+}
