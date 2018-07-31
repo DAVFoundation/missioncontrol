@@ -1,7 +1,7 @@
 import { Client, types, metadata } from 'cassandra-driver';
-import { IProvider, ICassandraStatus } from './types';
+import { ICassandraStatus } from './types';
 
-export class Cassandra {
+export default class Cassandra {
 
   private static _instance: Cassandra = null;
 

@@ -1,6 +1,7 @@
 import { Request, Response} from 'express';
 import kafka from '../Kafka';
-import { Cassandra } from '../Cassandra';
+import cassandra from '../Cassandra';
+import { ICassandraStatus } from '../types';
 
 class StatsController {
 
@@ -11,8 +12,7 @@ class StatsController {
   }
 
   public async getHealthStats(req: Request, res: Response) {
-    const cassandra: Cassandra = await Cassandra.getInstance();
-    const cassandraStatus: any = cassandra.getStatus();
+    const cassandraStatus: ICassandraStatus = (await cassandra.getInstance()).getStatus();
     // TODO: Should use await
     const kafkaStatus: any = kafka.getStatus();
 
