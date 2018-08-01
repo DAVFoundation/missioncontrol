@@ -36,6 +36,8 @@ services:
       dockerfile: ./dockers/Dockerfile.zookeeper
     ports:
       - "2181:2181"
+    # environment:
+    #   SERVERS: 52.71.196.240
   cassandra:
     build:
       context: .
@@ -52,6 +54,8 @@ services:
     restart: always
     volumes:
       - ./data/cassandra:/var/lib/cassandra
+    # environment:
+    #   CASSANDRA_SEEDS: 52.71.196.240
   kafka:
     build:
       context: .
@@ -63,6 +67,8 @@ services:
       - "9092:9092"
     environment:
       HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
+      # for AWS use:
+      # HOSTNAME_COMMAND: "curl http://169.254.169.254/latest/meta-data/public-ipv4"
       KAFKA_LOG_DIRS: /kafka
       KAFKA_BROKER_ID: 1
       # KAFKA_CREATE_TOPICS: test-topic-1:1:2,test-topic-2:1:2,test-topic-3:1:2
