@@ -34,7 +34,7 @@ describe('baseRoute', () => {
 describe('status', () => {
 
   const expectedResult = {
-    app: { connected: false },
+    app: { connected: true },
     kafka: { connected: true },
     cassandra: {
       connected: true,

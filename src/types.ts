@@ -50,6 +50,7 @@ export interface ICassandraHost {
 
 export interface IServiceStatus {
   connected: boolean;
+  error?: Error | string;
 }
 
 export interface ICassandraStatus extends IServiceStatus {

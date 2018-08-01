@@ -1,4 +1,4 @@
-import { Request, Response} from 'express';
+import { Request, Response } from 'express';
 import kafka from '../Kafka';
 import cassandra from '../Cassandra';
 import { ICassandraStatus, IServiceStatus } from '../types';
@@ -12,12 +12,25 @@ export default class StatsController {
   }
 
   public async getHealthStats(req: Request, res: Response) {
-    const cassandraStatus: ICassandraStatus = (await cassandra.getInstance()).getStatus();
-    const kafkaStatus: IServiceStatus = await kafka.getInstance().getStatus();
+    let cassandraStatus: ICassandraStatus = {
+      connected: false,
+    };
+    try {
+      cassandraStatus = (await cassandra.getInstance()).getStatus();
+    } catch (error) {
+      cassandraStatus.error = error.message;
+    }
+
+    let kafkaStatus: IServiceStatus;
+    try {
+      kafkaStatus = await kafka.getInstance().getStatus();
+    } catch (error) {
+      kafkaStatus.error = error.message;
+    }
 
     const stats = {
       app: {
-        connected: false,
+        connected: true,
       },
       kafka: kafkaStatus,
       cassandra: cassandraStatus,
