@@ -55,7 +55,7 @@ services:
   kafka:
     build:
       context: .
-      dockerfile: Dockerfile.kafka
+      dockerfile: ./dockers/Dockerfile.kafka
     links:
       - cassandra:cassandra
       - zookeeper:zookeeper
