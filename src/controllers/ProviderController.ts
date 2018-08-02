@@ -41,7 +41,7 @@ export default class ProviderController {
       // tslint:disable-next-line:no-console
       console.log(err);
       res.status(500).send({
-        error: `An error ocurred ${JSON.stringify(err)}`,
+        error: `An error ocurred ${ err.message || JSON.stringify(err) }`,
       });
     }
   }

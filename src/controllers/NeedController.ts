@@ -46,7 +46,7 @@ export default class NeedController {
       }
     } catch (err) {
       res.status(500).send({
-        error: `An error ocurred ${JSON.stringify(err)}`,
+        error: `An error ocurred ${ err.message || JSON.stringify(err) }`,
       });
     }
   }
