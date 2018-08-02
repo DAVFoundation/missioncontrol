@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS services.providers_drone_delivery (
 );
 CREATE INDEX idx_min_lat
    ON services.providers_drone_delivery (min_lat);
-CREATE INDEX idx_min_lat
+CREATE INDEX idx_min_long
    ON services.providers_drone_delivery (min_long);
-CREATE INDEX idx_min_lat
+CREATE INDEX idx_max_lat
    ON services.providers_drone_delivery (max_lat);
-CREATE INDEX idx_min_lat
+CREATE INDEX idx_max_long
    ON services.providers_drone_delivery (max_long);
