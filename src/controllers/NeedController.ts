@@ -40,11 +40,12 @@ export default class NeedController {
           });
         } else {
           res.status(404).send({
-            error: 'No provider were found matching the request',
+            error: 'No providers were found matching the request',
           });
         }
       }
     } catch (err) {
+      // TODO: Why not log like in ProviderController?
       res.status(500).send({
         error: `An error ocurred ${JSON.stringify(err)}`,
       });
