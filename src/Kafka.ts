@@ -30,6 +30,7 @@ export default class Kafka {
   public async getStatus(): Promise<IServiceStatus> {
     return new Promise<IServiceStatus>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
       this.client.loadMetadataForTopics(['generic'], (err: any, res: any) => {
+        // TODO: add hosts console.log(res[0]['1']);
         resolve({ connected: !err });
       });
     });

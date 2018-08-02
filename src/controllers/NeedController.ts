@@ -47,7 +47,7 @@ export default class NeedController {
     } catch (err) {
       // TODO: Why not log like in ProviderController?
       res.status(500).send({
-        error: `An error ocurred ${JSON.stringify(err)}`,
+        error: `An error ocurred ${ err.message || JSON.stringify(err) }`,
       });
     }
   }

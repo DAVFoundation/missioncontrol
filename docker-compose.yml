@@ -36,8 +36,12 @@ services:
       dockerfile: ./dockers/Dockerfile.zookeeper
     ports:
       - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
     # environment:
-    #   SERVERS: 52.71.196.240
+    #   ZOO_MY_ID: 1
+    #   ZOO_SERVERS: server.1=0.0.0.0:2888:3888  server.2=zookeeper2:2888:3888
+    #   SERVERS: 52.71.196.240:2181
   cassandra:
     build:
       context: .
@@ -54,8 +58,10 @@ services:
     restart: always
     volumes:
       - ./data/cassandra:/var/lib/cassandra
-    # environment:
-    #   CASSANDRA_SEEDS: 52.71.196.240
+    environment:
+      CASSANDRA_CLUSTER_NAME: dcluster
+      CASSANDRA_BROADCAST_ADDRESS: ${BROADCAST_ADDRESS}
+      # CASSANDRA_SEEDS: ${CASSANDRA_SEEDS}
   kafka:
     build:
       context: .
@@ -66,15 +72,15 @@ services:
     ports:
       - "9092:9092"
     environment:
-      HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
+      # HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
       # for AWS use:
       # HOSTNAME_COMMAND: "curl http://169.254.169.254/latest/meta-data/public-ipv4"
       KAFKA_LOG_DIRS: /kafka
       KAFKA_BROKER_ID: 1
       # KAFKA_CREATE_TOPICS: test-topic-1:1:2,test-topic-2:1:2,test-topic-3:1:2
       # KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
-      KAFKA_ADVERTISED_HOST_NAME: _{HOSTNAME_COMMAND}
+      KAFKA_ADVERTISED_HOST_NAME: ${BROADCAST_ADDRESS}
       KAFKA_ADVERTISED_PORT: 9092
       KAFKA_LOG_RETENTION_HOURS: "168"
       KAFKA_LOG_RETENTION_BYTES: "100000000"
-      KAFKA_ZOOKEEPER_CONNECT:  zookeeper:2181
+      KAFKA_ZOOKEEPER_CONNECT:  ${ZOOKEEPER_ADDRESS}:2181
