@@ -36,8 +36,8 @@ export default class StatsController {
       cassandra: cassandraStatus,
     };
 
-    // TODO: This EP should return 5xx when the status is not healthy (LB needs that)
-    res.status(200).send({
+    const status = cassandraStatus.connected && kafkaStatus.connected ? 200 : 503;
+    res.status(status).send({
       message: stats,
     });
   }

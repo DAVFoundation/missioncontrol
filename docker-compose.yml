@@ -76,7 +76,7 @@ services:
       # for AWS use:
       # HOSTNAME_COMMAND: "curl http://169.254.169.254/latest/meta-data/public-ipv4"
       KAFKA_LOG_DIRS: /kafka
-      KAFKA_BROKER_ID: 1
+      # KAFKA_BROKER_ID: 1
       # KAFKA_CREATE_TOPICS: test-topic-1:1:2,test-topic-2:1:2,test-topic-3:1:2
       # KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
       KAFKA_ADVERTISED_HOST_NAME: ${BROADCAST_ADDRESS}
