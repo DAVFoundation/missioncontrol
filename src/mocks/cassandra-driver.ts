@@ -1,3 +1,5 @@
+// TODO: Creating a complex mock is error-prone and reduces test readability and maintenance
+
 // tslint:disable:max-classes-per-file
 export class Client {
   public connect() {

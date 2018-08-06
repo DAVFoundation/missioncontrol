@@ -18,6 +18,7 @@ describe('kafka', () => {
   });
 
   it('should connect', async () => {
+    // TODO: `expect.assertions` is irrelevant in the case of async/await usage
     expect.assertions(1);
     jest.doMock('kafka-node', kafkaNode);
     const kafka = (await import('./Kafka')).default;
@@ -28,6 +29,7 @@ describe('kafka', () => {
 
   it('should not connect', async () => {
     expect.assertions(1);
+    // TODO: Create mock implementation in the test
     jest.doMock('kafka-node', failingToConnectKafkaNode);
     const kafka = (await import('./Kafka')).default;
     expect(await kafka.getInstance().getStatus()).toEqual({

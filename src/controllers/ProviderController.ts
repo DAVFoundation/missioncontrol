@@ -3,6 +3,8 @@ import ProviderFactory from '../provider/ProviderFactory';
 import { BaseProvider } from '../provider/BaseProvider';
 import { DroneDeliveryProvider } from '../provider/DroneDeliveryProvider';
 
+// TODO: Need to add tests for this module
+
 /**
  * ProviderController class
  */

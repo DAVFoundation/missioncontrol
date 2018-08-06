@@ -3,6 +3,8 @@ import kafka from '../Kafka';
 import cassandra from '../Cassandra';
 import { ICassandraStatus, IServiceStatus } from '../types';
 
+// TODO: Need to add tests for this module
+
 export default class StatsController {
 
   public getInfo(req: Request, res: Response) {

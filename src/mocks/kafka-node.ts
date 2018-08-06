@@ -1,3 +1,5 @@
+// TODO: Creating a complex mock is error-prone and reduces test readability and maintenance
+
 import { EventEmitter } from 'events';
 
 // tslint:disable:max-classes-per-file

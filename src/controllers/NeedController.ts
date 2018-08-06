@@ -5,6 +5,8 @@ import { DroneDeliveryProvider } from '../provider/DroneDeliveryProvider';
 import { IDeliveryProvider, INeed } from '../types';
 import Kafka from '../Kafka';
 
+// TODO: Need to add tests for this module
+
 /**
  * NeedController class
  */

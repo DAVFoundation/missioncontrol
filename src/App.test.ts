@@ -11,12 +11,14 @@ const expect = chai.expect;
 
 describe('baseRoute', () => {
 
+  // TODO: You could create a container suite. Include all suites in it and use a single 'beforeEach' when it is duplicated.
   beforeEach(() => {
     jest.resetAllMocks();
     jest.resetModules();
   });
 
   it('should be json', () => {
+    // TODO: Prefer using async/await syntax over return Promise
     return chai.request(app).get('/')
       .then((res) => {
         expect(res.type).to.eql('application/json');
@@ -33,6 +35,7 @@ describe('baseRoute', () => {
 
 describe('status', () => {
 
+  // TODO: Expected values are usually per test - not suite.
   const expectedResult = {
     app: { connected: true },
     kafka: { connected: true },
@@ -56,6 +59,7 @@ describe('status', () => {
 
 describe('provider', () => {
 
+  // TODO: Should this maybe be in a test - not suite.
   const requestData = {
     davId: 'david1',
     area: {

@@ -7,7 +7,9 @@ describe('cassandra', () => {
   });
 
   it('should connect', async () => {
+    // TODO: `expect.assertions` is irrelevant in the case of async/await usage
     expect.assertions(1);
+    // TODO: Create mock implementation in the test
     jest.doMock('cassandra-driver', cassandraDriver);
     const cassandra = (await import('./Cassandra')).default;
     const cassandraInstance = await cassandra.getInstance();
@@ -16,6 +18,7 @@ describe('cassandra', () => {
 
   it('should not connect', async () => {
     expect.assertions(1);
+    // TODO: Create mock implementation in the test
     jest.doMock('cassandra-driver', cassandraFailingToConnectDriver);
     const cassandraInstance = (await import('./Cassandra')).default;
     await expect(cassandraInstance.getInstance()).rejects.toEqual(Error('Cassandra connection error: false'));
