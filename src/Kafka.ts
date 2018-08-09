@@ -1,4 +1,4 @@
-import { KafkaClient, Producer } from 'kafka-node';
+import { KafkaClient, Producer, Consumer } from 'kafka-node';
 import { INeed, IServiceStatus } from './types';
 
 export default class Kafka {
@@ -27,6 +27,24 @@ export default class Kafka {
     return this.producer;
   }
 
+  private async getConsumer(topic: string, timeoutInMilliseconds: number): Promise<Consumer> {
+    const consumer = new Consumer(
+      this.client,
+      [
+          { topic },
+      ],
+      {
+          groupId: topic,
+          fetchMaxWaitMs: timeoutInMilliseconds,
+      },
+    );
+    await new Promise<KafkaClient>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
+      this.client.on('ready', () => resolve());
+      this.client.on('error', (err) => reject(err));
+    });
+    return consumer;
+  }
+
   public async getStatus(): Promise<IServiceStatus> {
     return new Promise<IServiceStatus>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
       this.client.loadMetadataForTopics(['generic'], (err: any, res: any) => {
@@ -36,7 +54,7 @@ export default class Kafka {
     });
   }
 
-  public async sendMessages(topics: string[], need: INeed) {
+  public async sendNeed(topics: string[], need: INeed) {
     const producer = await this.getProducer();
     const payloads = topics.map((topic) => {
       return {
@@ -54,5 +72,49 @@ export default class Kafka {
         }
       });
     });
+  }
+
+  public async sendMessage(topic: string, messages: string) {
+    const producer = await this.getProducer();
+    const payloads = [
+      {topic, messages},
+    ];
+    return new Promise((resolve, reject) => {
+      producer.send(payloads, (err: any, data: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
+  public async createTopic(topic: string): Promise<void> {
+    const producer = await this.getProducer();
+    return new Promise<void>((resolve, reject) => {
+      producer.createTopics([topic], true, (err: any, data: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  public async getMessages(topic: string, timeoutInMilliseconds: number): Promise<string[]> {
+    const consumer = await this.getConsumer(topic, timeoutInMilliseconds);
+    const messages: string[] = [];
+    const messagesPromise =  new Promise<string[]>((resolve, reject) => {
+      consumer.on('message', (message) => {
+        messages.push(message.value.toString());
+        if (message.offset === (message.highWaterOffset - 1)) {
+          resolve(messages);
+        }
+      });
+    });
+    const timeoutPromise = new Promise<string[]>((resolve) => setTimeout(() =>  resolve(messages), timeoutInMilliseconds));
+    return Promise.race([messagesPromise, timeoutPromise]);
   }
 }

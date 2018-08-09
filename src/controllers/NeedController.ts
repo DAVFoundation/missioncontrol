@@ -36,7 +36,7 @@ export default class NeedController {
           const topics: string[] = results.map((result) => {
             return result.topicId;
           });
-          Kafka.getInstance().sendMessages(topics, need);
+          Kafka.getInstance().sendNeed(topics, need);
           res.status(200).send({
             message: 'Need was published',
           });
