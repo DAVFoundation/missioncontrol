@@ -12,7 +12,7 @@ export default class KafkaRequestsController {
             // tslint:disable-next-line:no-console
             console.log(err);
             res.status(500).send({
-                error: `An error ocurred ${ err.message || JSON.stringify(err) }`,
+                error: `An error occurred ${ err.message || JSON.stringify(err) }`,
             });
         }
     }
@@ -27,7 +27,7 @@ export default class KafkaRequestsController {
             // tslint:disable-next-line:no-console
             console.log(err);
             res.status(500).send({
-                error: `An error ocurred ${ err.message || JSON.stringify(err) }`,
+                error: `An error occurred ${ err.message || JSON.stringify(err) }`,
             });
         }
     }
@@ -40,7 +40,7 @@ export default class KafkaRequestsController {
             // tslint:disable-next-line:no-console
             console.log(err);
             res.status(500).send({
-                error: `An error ocurred ${ err.message || JSON.stringify(err) }`,
+                error: `An error occurred ${ err.message || JSON.stringify(err) }`,
             });
         }
     }
