@@ -185,7 +185,6 @@ describe('kafka', () => {
       const kafka = (await import('./Kafka')).default;
 
       await expect(kafka.getInstance().getMessages('topic', 500)).resolves.toEqual([messageContentObject]);
-      expect(clientMock.on).toHaveBeenCalledWith('ready', expect.anything());
       expect(consumerMock.on).toHaveBeenCalledWith('message', expect.any(Function));
     });
 
@@ -216,7 +215,6 @@ describe('kafka', () => {
       const kafka = (await import('./Kafka')).default;
 
       await expect(kafka.getInstance().getMessages('topic', 500)).resolves.toEqual([messageContentObject, secondMessageContentObject]);
-      expect(clientMock.on).toHaveBeenCalledWith('ready', expect.anything());
       expect(consumerMock.on).toHaveBeenCalledWith('message', expect.any(Function));
     });
 
@@ -241,7 +239,6 @@ describe('kafka', () => {
       const kafka = (await import('./Kafka')).default;
 
       await expect(kafka.getInstance().getMessages('topic', 500)).resolves.toEqual([]);
-      expect(clientMock.on).toHaveBeenCalledWith('ready', expect.anything());
       expect(consumerMock.on).toHaveBeenCalledWith('message', expect.any(Function));
     });
   });

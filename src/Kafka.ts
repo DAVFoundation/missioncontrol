@@ -27,7 +27,7 @@ export default class Kafka {
     return this.producer;
   }
 
-  private async getConsumer(topic: string, timeoutInMilliseconds: number): Promise<Consumer> {
+  private getConsumer(topic: string, timeoutInMilliseconds: number): Consumer {
     const consumer = new Consumer(
       this.client,
       [
@@ -38,10 +38,6 @@ export default class Kafka {
           fetchMaxWaitMs: timeoutInMilliseconds,
       },
     );
-    await new Promise<KafkaClient>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
-      this.client.on('ready', () => resolve());
-      this.client.on('error', (err) => reject(err));
-    });
     return consumer;
   }
 
@@ -103,8 +99,8 @@ export default class Kafka {
     });
   }
 
-  public async getMessages(topic: string, timeoutInMilliseconds: number): Promise<string[]> {
-    const consumer = await this.getConsumer(topic, timeoutInMilliseconds);
+  public getMessages(topic: string, timeoutInMilliseconds: number): Promise<string[]> {
+    const consumer = this.getConsumer(topic, timeoutInMilliseconds);
     const messages: string[] = [];
     const messagesPromise =  new Promise<string[]>((resolve, reject) => {
       consumer.on('message', (message) => {
