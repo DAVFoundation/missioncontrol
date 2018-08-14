@@ -6,6 +6,8 @@ export default class Kafka {
   private client: KafkaClient;
   private producer: Producer;
 
+  // TODO: close consumers
+
   public static getInstance(): Kafka {
     if (Kafka._instance === null) {
       Kafka._instance = new Kafka();
@@ -36,6 +38,7 @@ export default class Kafka {
       {
           groupId: topic,
           fetchMaxWaitMs: timeoutInMilliseconds,
+          autoCommit: true,
       },
     );
     return consumer;
@@ -106,11 +109,15 @@ export default class Kafka {
       consumer.on('message', (message) => {
         messages.push(message.value.toString());
         if (message.offset === (message.highWaterOffset - 1)) {
+          // tslint:disable-next-line:no-console
+          consumer.close(true, () => console.log('consumer was closed'));
           resolve(messages);
         }
       });
     });
-    const timeoutPromise = new Promise<string[]>((resolve) => setTimeout(() =>  resolve(messages), timeoutInMilliseconds));
+    const timeoutPromise = new Promise<string[]>((resolve) => setTimeout(() =>  {
+      resolve(messages);
+    }, timeoutInMilliseconds));
     return Promise.race([messagesPromise, timeoutPromise]);
   }
 }

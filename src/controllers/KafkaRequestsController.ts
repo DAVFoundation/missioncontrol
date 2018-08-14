@@ -19,7 +19,7 @@ export default class KafkaRequestsController {
 
     public async sendMessage(req: Request, res: Response) {
         try {
-            await Kafka.getInstance().sendMessage(req.params.topicId, req.body);
+            await Kafka.getInstance().sendMessage(req.params.topicId, JSON.stringify(req.body));
             res.status(200).send({
                 message: 'Message was sent',
             });
@@ -35,7 +35,7 @@ export default class KafkaRequestsController {
     public async getMessages(req: Request, res: Response) {
         try {
             const messages = await Kafka.getInstance().getMessages(req.params.topicId, req.query.timeout);
-            res.status(200).send(messages);
+            res.status(200).send(JSON.stringify(messages));
         } catch (err) {
             // tslint:disable-next-line:no-console
             console.log(err);

@@ -280,6 +280,7 @@ describe('kafka', () => {
         on: jest.fn((state: string, cb: any) => {
           cb({topic: 'topicTest', value: messageContentObject, offset: 0, highWaterOffset: 1});
         }),
+        close: jest.fn(),
       };
 
       jest.doMock('kafka-node', () => ({
@@ -294,7 +295,7 @@ describe('kafka', () => {
       const res = await chai.request(app).get('/topic/consume/testTopic').query({timeout: 1000});
 
       expect(res.status).to.eql(200);
-      expect(res.body).to.eql([messageContentObject]);
+      expect(res.text).to.eql(JSON.stringify([messageContentObject]));
     });
 
     it('should get two message without errors', async () => {
@@ -311,6 +312,7 @@ describe('kafka', () => {
           cb(firstMessage);
           cb(secondMessage);
         }),
+        close: jest.fn(),
       };
 
       jest.doMock('kafka-node', () => ({
@@ -325,7 +327,7 @@ describe('kafka', () => {
       const res = await chai.request(app).get('/topic/consume/testTopic').query({timeout: 1000});
 
       expect(res.status).to.eql(200);
-      expect(res.body).to.eql([messageContentObject, secondMessageContentObject]);
+      expect(res.text).to.eql(JSON.stringify([messageContentObject, secondMessageContentObject]));
     });
 
     it('should get timeout due to empty topic', async () => {
@@ -337,6 +339,7 @@ describe('kafka', () => {
         on: jest.fn((state: string, cb: any) => {
           return;
         }),
+        close: jest.fn(),
       };
 
       jest.doMock('kafka-node', () => ({
@@ -351,7 +354,7 @@ describe('kafka', () => {
       const res = await chai.request(app).get('/topic/consume/testTopic').query({timeout: 1000});
 
       expect(res.status).to.eql(200);
-      expect(res.body).to.eql([]);
+      expect(res.text).to.eql(JSON.stringify([]));
     });
   });
 });

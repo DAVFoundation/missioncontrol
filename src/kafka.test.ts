@@ -172,6 +172,7 @@ describe('kafka', () => {
       const message = {topic: 'topic', value: messageContentObject, offset: 0, highWaterOffset: 1};
       const consumerMock = {
         on: jest.fn((state: string, cb: any) => cb(message)),
+        close: jest.fn(),
       };
 
       jest.doMock('kafka-node', () => ({
@@ -202,6 +203,7 @@ describe('kafka', () => {
           cb(firstMessage);
           cb(secondMessage);
         }),
+        close: jest.fn(),
       };
 
       jest.doMock('kafka-node', () => ({
