@@ -1,51 +1,86 @@
-version: '3'
+version: '3.2'
 
 services:
-  missioncontrol:
-    build: .
-    command: 'nodemon --inspect=0.0.0.0:9229 server/start-servers.js'
+  nginx:
+    build:
+      context: .
+      dockerfile: ./dockers/Dockerfile.nginx
+    depends_on:
+      - app
+    volumes:
+      - ./nginx/app.template:/etc/nginx/conf.d/app.template
     ports:
-      - '8888:8443'
-      - '9090:9090'
-      - '5858:5858'
-      - '9229:9229'
+      - "80:80"
     environment:
-      NODE_ENV: development
-      DAV_ENV: simulated
-      WEB_SERVER_PORT: 8443
-      CAPTAIN_HOST: localhost
-      CAPTAIN_PORT: 9090
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      AEROSPIKE_HOST: aerospike
-      ELEVATION_API_KEY: AIzaSyBzNsELkqXiZBlMzEB68rX_JwY5Q9CtPys
-      ETH_NODE_URL: 'https://ropsten.infura.io/wUiZtmeZ1KwjFrcC8zRO'
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+      - WEB_REVERSE_PROXY_PORT=3005
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/app.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
+    restart: always
+  app:
+    build:
+      context: .
+      dockerfile: ./dockers/Dockerfile.app
+    command: nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts
+    restart: always
+    depends_on:
+      - zookeeper
+      - kafka
+      - cassandra
     volumes:
       - /app/node_modules
       - .:/app
-    links:
-      - redis:redis
-      - aerospike:aerospike
-    external_links:
-      - captain_captain-server_1:cap
-      - dav-contracts:dav-contracts
-    networks:
-      - dav
-  redis:
-    image: redis
+  zookeeper:
+    build:
+      context: .
+      dockerfile: ./dockers/Dockerfile.zookeeper
     ports:
-      - '6379:6379'
-    networks:
-      - dav
-  aerospike:
-    image: aerospike/aerospike-server
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+    # environment:
+    #   ZOO_MY_ID: 1
+    #   ZOO_SERVERS: server.1=0.0.0.0:2888:3888  server.2=zookeeper2:2888:3888
+    #   SERVERS: 52.71.196.240:2181
+  cassandra:
+    build:
+      context: .
+      dockerfile: ./dockers/Dockerfile.cassandra
+    ## to change container version or tag using args uncomment following lines
+    #   args:
+    #     ver: 1
+    ports:
+      - '7000:7000'
+      - '7001:7001'
+      - '7199:7199'
+      - '9042:9042'
+      - '9160:9160'
+    restart: always
+    volumes:
+      - ./data/cassandra:/var/lib/cassandra
     environment:
-      NAMESPACE: mission_control
-    networks:
-      - dav
+      CASSANDRA_CLUSTER_NAME: dcluster
+      CASSANDRA_BROADCAST_ADDRESS: ${BROADCAST_ADDRESS}
+      # CASSANDRA_SEEDS: ${CASSANDRA_SEEDS}
+  kafka:
+    build:
+      context: .
+      dockerfile: ./dockers/Dockerfile.kafka
+    links:
+      - cassandra:cassandra
+      - zookeeper:zookeeper
     ports:
-      - '3000:3000'
-
-networks:
-  dav:
-    external: true
+      - "9092:9092"
+    environment:
+      # HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
+      # for AWS use:
+      # HOSTNAME_COMMAND: "curl http://169.254.169.254/latest/meta-data/public-ipv4"
+      KAFKA_LOG_DIRS: /kafka
+      # KAFKA_BROKER_ID: 1
+      # KAFKA_CREATE_TOPICS: test-topic-1:1:2,test-topic-2:1:2,test-topic-3:1:2
+      # KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_ADVERTISED_HOST_NAME: ${BROADCAST_ADDRESS}
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_LOG_RETENTION_HOURS: "168"
+      KAFKA_LOG_RETENTION_BYTES: "100000000"
+      KAFKA_ZOOKEEPER_CONNECT:  ${ZOOKEEPER_ADDRESS}:2181

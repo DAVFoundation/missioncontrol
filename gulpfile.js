@@ -1,77 +1,31 @@
 const gulp = require('gulp');
-const eslint = require('gulp-eslint');
-const shell = require('gulp-shell');
-const nodemon = require('gulp-nodemon');
-const path = require('path');
-const jest = require('jest-cli');
-
-const jestConfig = {
-  verbose: false,
-  rootDir: '.'
-};
-
-gulp.task('lint', () => {
-  return gulp.src(['**/*.js', '!node_modules/**', '!server/thrift/**'])
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
-});
+const jest = require('gulp-jest').default;
+var ts = require('gulp-typescript');
+var tslint = require('gulp-tslint');
 
 gulp.task('jest', (done) => {
-  jest.runCLI({
-    config: Object.assign(jestConfig, { testMatch: ['**/test/specs/*.js'] })
-  }, '.', () => done());
+    return gulp.src('')
+        .on('error', function (err) { done(err); })
+        .pipe(jest({}));
 });
 
-gulp.task('jest:thrift', (done) => {
-  jest.runCLI({
-    config: Object.assign(jestConfig, { testMatch: ['**/test/specs/thrift/*.js'] })
-  }, '.', () => done());
+gulp.task('tslint', (done) => {
+    return gulp.src('src/**/*.ts')
+        .on('error', function (err) { done(err); })
+        .pipe(tslint({
+            formatter: 'prose'
+        }))
+        .pipe(tslint.report());
 });
 
-gulp.task('thrift-build', shell.task('npm run thrift'));
+gulp.task('tsc', function (done) {
+    var tsProject = ts.createProject('tsconfig.json');
+    return tsProject.src()
+        .pipe(tsProject())
+        .on('error', function (err) { done(err); })
+        .js
+        .pipe(gulp.dest('build'));
+});
 
-gulp.task('watch', ['js', 'thrift'], () =>
-  nodemon({
-    script: 'server/start-servers.js',
-    ext: 'js thrift',
-    watch: ['server', 'test', 'resources/idl'],
-    ignore: [
-      'server/thrift',
-      'node_modules/'
-    ],
-    tasks: (changedFiles) => {
-      let tasks = [];
-      changedFiles.forEach(file => {
-        if (path.extname(file) === '.js' && !tasks.includes('js')) tasks.push('js');
-        if (path.extname(file) === '.thrift' && !tasks.includes('thrift')) tasks.push('thrift');
-      });
-      return tasks;
-    }
-  })
-);
-
-gulp.task('watch:js', ['js'], () =>
-  nodemon({
-    script: 'server/start-server-web.js',
-    ext: 'js',
-    watch: ['server', 'test'],
-    ignore: [
-      'server/thrift',
-      'node_modules/'
-    ],
-    tasks: (changedFiles) => {
-      let tasks = [];
-      changedFiles.forEach(file => {
-        if (path.extname(file) === '.js' && !tasks.includes('js')) tasks.push('js');
-      });
-      return tasks;
-    }
-  })
-);
-
-gulp.task('js', ['lint', 'jest']);
-
-gulp.task('thrift', ['thrift-build']);
-
-gulp.task('default', ['thrift', 'js']);
+gulp.task('compile', ['tslint', 'tsc']);
+gulp.task('test', ['compile', 'jest']);
