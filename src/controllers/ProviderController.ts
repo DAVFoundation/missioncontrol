@@ -18,9 +18,7 @@ export default class ProviderController {
     const topicId = req.params.topicId;
     const params: any = req.body;
     const providerFactory = new ProviderFactory();
-    console.log('==============================');
     const provider: BaseProvider = providerFactory.getProviderInstance({ protocol: params.protocol });
-    console.log(provider);
     // save record in cassandra
     try {
       const result: boolean = await provider.save({ ...params, topicId});
@@ -38,3 +36,5 @@ export default class ProviderController {
     }
   }
 }
+
+
