@@ -26,7 +26,6 @@ export interface IDimensions {
 }
 
 export interface IProvider {
-  davId: DavID;
   topicId: string;
   area: IArea;
   protocol: string;
@@ -37,7 +36,6 @@ export interface IDeliveryProvider extends IProvider {
 }
 
 export interface INeed {
-  davId: DavID;
   topicId: string;
   location: ILocation;
   protocol: string;

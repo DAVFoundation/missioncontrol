@@ -2,7 +2,6 @@ import { kafkaNode, failingToConnectKafkaNode, failingToSendKafkaNode, KafkaClie
 import { INeed } from './types';
 
 const need: INeed = {
-  davId: '111',
   topicId: '222',
   location: {
     longitude: 1,

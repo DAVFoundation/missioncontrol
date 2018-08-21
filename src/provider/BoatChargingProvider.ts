@@ -12,7 +12,6 @@ export class BoatChargingProvider extends BaseProvider {
     // save cassandra record
     const cassandra: Cassandra = await Cassandra.getInstance();
     return cassandra.save(this.getUpsertQuery(), [
-      provider.davId,
       provider.topicId,
       provider.area.min.latitude,
       provider.area.min.longitude,
@@ -33,7 +32,6 @@ export class BoatChargingProvider extends BaseProvider {
     const providers: IProvider[] = [];
     for (const providerRow of result) {
       const provider: IProvider = {
-        davId: providerRow.dav_id,
         topicId: providerRow.topic_id,
         protocol: this.protocol,
         area: {

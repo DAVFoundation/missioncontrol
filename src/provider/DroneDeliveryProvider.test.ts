@@ -5,7 +5,6 @@ import { IDeliveryProvider, INeed } from '../types';
 
 describe('Drone Delivery Provider', () => {
   const provider: IDeliveryProvider = {
-    davId: '123',
     topicId: '321',
     protocol: 'drone_delivery',
     area: {
@@ -26,7 +25,6 @@ describe('Drone Delivery Provider', () => {
   };
 
   const need: INeed = {
-    davId: '111',
     topicId: '222',
     location: {
       longitude: 1,

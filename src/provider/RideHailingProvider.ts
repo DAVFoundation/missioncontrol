@@ -1,20 +1,14 @@
 import { BaseProvider } from './BaseProvider';
-import { IDeliveryProvider, INeed } from '../types';
+import { IProvider, INeed } from '../types';
 import { types } from 'cassandra-driver';
 import Cassandra from '../Cassandra';
 
-export class DroneDeliveryProvider extends BaseProvider {
+export class RideHailingProvider extends BaseProvider {
 
-  private protocol = 'drone_delivery';
-  protected tableName = 'providers_drone_delivery';
-  protected protocolSpecificFields: string[]   = [
-    'max_length',
-    'max_width',
-    'max_height',
+  private protocol = 'ride_hailing';
+  protected tableName = 'providers_ride_hailing';
 
-  ];
-
-  public async save(provider: IDeliveryProvider): Promise<boolean> {
+  public async save(provider: IProvider): Promise<boolean> {
     // save cassandra record
     const cassandra: Cassandra = await Cassandra.getInstance();
     return cassandra.save(this.getUpsertQuery(), [
@@ -23,13 +17,10 @@ export class DroneDeliveryProvider extends BaseProvider {
       provider.area.min.longitude,
       provider.area.max.latitude,
       provider.area.max.longitude,
-      provider.dimensions.length,
-      provider.dimensions.width,
-      provider.dimensions.height,
     ]);
   }
 
-  public async query(need: INeed): Promise<IDeliveryProvider[]> {
+  public async query(need: INeed): Promise<IProvider[]> {
     const cassandra: Cassandra = await Cassandra.getInstance();
     const result: types.ResultSet = await cassandra.query(this.getReadQuery(), [
       need.location.latitude,
@@ -38,9 +29,9 @@ export class DroneDeliveryProvider extends BaseProvider {
       need.location.longitude,
     ]);
 
-    const providers: IDeliveryProvider[] = [];
+    const providers: IProvider[] = [];
     for (const providerRow of result) {
-      const provider: IDeliveryProvider = {
+      const provider: IProvider = {
         topicId: providerRow.topic_id,
         protocol: this.protocol,
         area: {
@@ -52,11 +43,6 @@ export class DroneDeliveryProvider extends BaseProvider {
             longitude: providerRow.max_lat,
             latitude: providerRow.max_long,
           },
-        },
-        dimensions: {
-          length: providerRow.max_length,
-          width: providerRow.max_width,
-          height: providerRow.max_height,
         },
       };
       providers.push(provider);

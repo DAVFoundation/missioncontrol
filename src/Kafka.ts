@@ -53,13 +53,13 @@ export default class Kafka {
     });
   }
 
-  public async sendNeed(topics: string[], need: INeed) {
+  public async sendNeed(topics: string[], need: any) {
     const producer = await this.getProducer();
     const payloads = topics.map((topic) => {
       return {
         topic,
         // TODO: (not for now) - create a SerDe mechanism for protocol
-        messages: JSON.stringify(need),
+        messages: need,
       };
     });
     return new Promise((resolve, reject) => {

@@ -3,7 +3,6 @@ import { IProvider } from '../types';
 export abstract class BaseProvider {
 
   protected basicFields: string[] = [
-    'dav_id',
     'topic_id',
     'min_lat',
     'min_long',
