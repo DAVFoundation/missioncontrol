@@ -36,9 +36,6 @@ export interface IDeliveryProvider extends IProvider {
   dimensions: IDimensions;
 }
 
-export interface IChargingProvider extends IProvider {
-}
-
 export interface INeed {
   davId: DavID;
   topicId: string;
