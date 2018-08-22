@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: ./dockers/Dockerfile.nginx
     image: dav_network_nginx
+    container_name: dav_network_nginx
     depends_on:
       - app
     volumes:
@@ -23,6 +24,7 @@ services:
       context: .
       dockerfile: ./dockers/Dockerfile.app
     image: dav_network_app
+    container_name: dav_network_app
     command: nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts --inspect 9229
     restart: always
     depends_on:
@@ -37,6 +39,7 @@ services:
       context: .
       dockerfile: ./dockers/Dockerfile.zookeeper
     image: dav_network_zookeeper
+    container_name: dav_network_zookeeper
     ports:
       - "2181:2181"
       - "2888:2888"
@@ -50,6 +53,7 @@ services:
       context: .
       dockerfile: ./dockers/Dockerfile.cassandra
     image: dav_network_cassandra
+    container_name: dav_network_cassandra
     ## to change container version or tag using args uncomment following lines
     #   args:
     #     ver: 1
@@ -71,6 +75,7 @@ services:
       context: .
       dockerfile: ./dockers/Dockerfile.kafka
     image: dav_network_kafka
+    container_name: dav_network_kafka
     links:
       - cassandra:cassandra
       - zookeeper:zookeeper
