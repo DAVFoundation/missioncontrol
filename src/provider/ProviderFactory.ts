@@ -21,7 +21,7 @@ export default class ProviderFactory {
       const provider = new providerClass();
       return provider;
     } else {
-      throw new Error('Protocol is not implemented');
+      throw new Error(`Protocol "${protocolOptions.protocol}" is not implemented`);
     }
   }
 }

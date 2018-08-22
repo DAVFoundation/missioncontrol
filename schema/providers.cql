@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS services.providers_drone_delivery (
-    dav_id text PRIMARY KEY, 
-    topic_id text, 
+    topic_id text PRIMARY KEY, 
     min_lat double, 
     min_long double, 
     max_lat double, 
@@ -17,3 +16,22 @@ CREATE INDEX idx_max_lat
    ON services.providers_drone_delivery (max_lat);
 CREATE INDEX idx_max_long
    ON services.providers_drone_delivery (max_long);
+
+CREATE TABLE IF NOT EXISTS services.providers_boat_charging (
+    topic_id text PRIMARY KEY, 
+    min_lat double, 
+    min_long double, 
+    max_lat double, 
+    max_long double, 
+    max_length double, 
+    max_width double, 
+    max_height double
+);
+CREATE INDEX idx_min_lat
+   ON services.providers_boat_charging (min_lat);
+CREATE INDEX idx_min_long
+   ON services.providers_boat_charging (min_long);
+CREATE INDEX idx_max_lat
+   ON services.providers_boat_charging (max_lat);
+CREATE INDEX idx_max_long
+   ON services.providers_boat_charging (max_long);

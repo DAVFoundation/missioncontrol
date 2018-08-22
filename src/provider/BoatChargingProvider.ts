@@ -28,7 +28,6 @@ export class BoatChargingProvider extends BaseProvider {
       need.location.latitude,
       need.location.longitude,
     ]);
-
     const providers: IProvider[] = [];
     for (const providerRow of result) {
       const provider: IProvider = {

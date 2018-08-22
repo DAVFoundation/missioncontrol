@@ -59,7 +59,7 @@ export default class Kafka {
       return {
         topic,
         // TODO: (not for now) - create a SerDe mechanism for protocol
-        messages: need,
+        messages: JSON.stringify(need),
       };
     });
     return new Promise((resolve, reject) => {

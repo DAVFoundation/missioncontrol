@@ -16,9 +16,9 @@ export default class ProviderController {
     const topicId = req.params.topicId;
     const params: any = req.body;
     const providerFactory = new ProviderFactory();
-    const provider: BaseProvider = providerFactory.getProviderInstance({ protocol: params.protocol });
     // save record in cassandra
     try {
+      const provider: BaseProvider = providerFactory.getProviderInstance({ protocol: params.protocol });
       const result: boolean = await provider.save({ ...params, topicId});
       if (result === true) {
         res.status(200).send({
