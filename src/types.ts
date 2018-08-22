@@ -6,7 +6,7 @@ export type BigInteger = string;
 
 export interface IProtocolOptions {
   // TODO: This should be an enum with string values
-  protocol: 'drone_delivery' | 'drone_charging';
+  protocol: string;
 }
 
 export interface ILocation {
