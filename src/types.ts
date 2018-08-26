@@ -39,6 +39,7 @@ export interface INeed {
   topicId: string;
   location: ILocation;
   protocol: string;
+  data: any;
 }
 
 export interface ICassandraHost {
