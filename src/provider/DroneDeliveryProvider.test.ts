@@ -31,6 +31,7 @@ describe('Drone Delivery Provider', () => {
       latitude: 1,
     },
     protocol: 'drone_delivery',
+    data: {},
   };
 
   it('should save provider', async () => {
