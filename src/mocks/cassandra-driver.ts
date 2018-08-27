@@ -50,6 +50,7 @@ export class ResultSet {
       max_length: 1,
       max_width: 1,
       max_height: 1,
+      max_weight: 1,
     },
   ];
   public [Symbol.iterator]() {

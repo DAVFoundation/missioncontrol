@@ -11,7 +11,7 @@ export class DroneDeliveryProvider extends BaseProvider {
     'max_length',
     'max_width',
     'max_height',
-
+    'max_weight',
   ];
 
   public async save(provider: IDeliveryProvider): Promise<boolean> {
@@ -26,16 +26,17 @@ export class DroneDeliveryProvider extends BaseProvider {
       provider.dimensions.length,
       provider.dimensions.width,
       provider.dimensions.height,
+      provider.dimensions.weight,
     ]);
   }
 
   public async query(need: INeed): Promise<IDeliveryProvider[]> {
     const cassandra: Cassandra = await Cassandra.getInstance();
     const result: types.ResultSet = await cassandra.query(this.getReadQuery(), [
-      need.location.latitude,
-      need.location.longitude,
-      need.location.latitude,
-      need.location.longitude,
+      need.data.location.latitude,
+      need.data.location.longitude,
+      need.data.location.latitude,
+      need.data.location.longitude,
     ]);
 
     const providers: IDeliveryProvider[] = [];
@@ -57,6 +58,7 @@ export class DroneDeliveryProvider extends BaseProvider {
           length: providerRow.max_length,
           width: providerRow.max_width,
           height: providerRow.max_height,
+          weight: providerRow.max_weight,
         },
       };
       providers.push(provider);

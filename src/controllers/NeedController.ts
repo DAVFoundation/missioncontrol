@@ -24,7 +24,6 @@ export default class NeedController {
     try {
       const need: INeed = {
         topicId,
-        location,
         protocol,
         data: req.body,
       };

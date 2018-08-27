@@ -23,6 +23,7 @@ export interface IDimensions {
   length: number;
   width: number;
   height: number;
+  weight: number;
 }
 
 export interface IProvider {
@@ -31,13 +32,16 @@ export interface IProvider {
   protocol: string;
 }
 
+export interface IBoatChargingProvider extends IProvider {
+  dimensions: IDimensions;
+}
+
 export interface IDeliveryProvider extends IProvider {
   dimensions: IDimensions;
 }
 
 export interface INeed {
   topicId: string;
-  location: ILocation;
   protocol: string;
   data: any;
 }

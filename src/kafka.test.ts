@@ -3,12 +3,13 @@ import { INeed } from './types';
 
 const need: INeed = {
   topicId: '222',
-  location: {
-    longitude: 1,
-    latitude: 1,
-  },
   protocol: 'drone_delivery',
-  data: {},
+  data: {
+    location: {
+      longitude: 1,
+      latitude: 1,
+    },
+  },
 };
 
 describe('kafka', () => {

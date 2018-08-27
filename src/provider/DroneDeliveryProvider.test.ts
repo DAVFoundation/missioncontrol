@@ -21,17 +21,19 @@ describe('Drone Delivery Provider', () => {
       length: 1,
       width: 1,
       height: 1,
+      weight: 1,
     },
   };
 
   const need: INeed = {
     topicId: '222',
-    location: {
-      longitude: 1,
-      latitude: 1,
-    },
     protocol: 'drone_delivery',
-    data: {},
+    data: {
+      location: {
+        longitude: 1,
+        latitude: 1,
+      },
+    },
   };
 
   it('should save provider', async () => {

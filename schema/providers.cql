@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS services.providers_drone_delivery (
     max_long double, 
     max_length double, 
     max_width double, 
-    max_height double
+    max_height double,
+    max_weight double
 );
 CREATE INDEX idx_min_lat
    ON services.providers_drone_delivery (min_lat);
@@ -25,7 +26,8 @@ topic_id text PRIMARY KEY,
     max_long double, 
     max_length double, 
     max_width double, 
-    max_height double
+    max_height double,
+    max_weight double
 );
 
 CREATE INDEX idx_min_lat
@@ -42,10 +44,7 @@ CREATE TABLE IF NOT EXISTS services.providers_ride_hailing (
     min_lat double, 
     min_long double, 
     max_lat double, 
-    max_long double, 
-    max_length double, 
-    max_width double, 
-    max_height double
+    max_long double
 );
 
 CREATE INDEX idx_ride_hailing_min_lat
