@@ -26,6 +26,7 @@ export default class NeedController {
         topicId,
         location,
         protocol,
+        data: req.body,
       };
 
       const results: IProvider[] = await provider.query(need);

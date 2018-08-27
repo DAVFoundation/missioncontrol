@@ -8,6 +8,7 @@ const need: INeed = {
     latitude: 1,
   },
   protocol: 'drone_delivery',
+  data: {},
 };
 
 describe('kafka', () => {
