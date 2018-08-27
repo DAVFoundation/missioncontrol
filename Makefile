@@ -9,6 +9,9 @@ jest: FORCE
 tsc: FORCE
 	npm run tsc
 
+spellcheck: FORCE
+	npm run spellcheck
+
 pre-push: tslint tsc jest
 
 up: FORCE
