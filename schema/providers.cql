@@ -30,13 +30,13 @@ topic_id text PRIMARY KEY,
     max_weight double
 );
 
-CREATE INDEX idx_min_lat
+CREATE INDEX idx_boat_charging_min_lat
    ON services.providers_boat_charging (min_lat);
-CREATE INDEX idx_min_long
+CREATE INDEX idx_boat_charging_min_long
    ON services.providers_boat_charging (min_long);
-CREATE INDEX idx_max_lat
+CREATE INDEX idx_boat_charging_max_lat
    ON services.providers_boat_charging (max_lat);
-CREATE INDEX idx_max_long
+CREATE INDEX idx_boat_charging_max_long
    ON services.providers_boat_charging (max_long);
 
 CREATE TABLE IF NOT EXISTS services.providers_ride_hailing (

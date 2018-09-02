@@ -22,10 +22,10 @@ export class RideHailingProvider extends BaseProvider {
 
   public async query(need: INeed): Promise<IProvider[]> {
     const cassandra: Cassandra = await Cassandra.getInstance();
-    const minLat = Math.min(need.data.pickupLocation.Lat, need.data.destinationLocation.Lat);
-    const minLong = Math.min(need.data.pickupLocation.Long, need.data.destinationLocation.Long);
-    const maxLat = Math.max(need.data.pickupLocation.Lat, need.data.destinationLocation.Lat);
-    const maxLong = Math.max(need.data.pickupLocation.Long, need.data.destinationLocation.Long);
+    const minLat = Math.min(need.data.pickupLocation.lat, need.data.destinationLocation.lat);
+    const minLong = Math.min(need.data.pickupLocation.long, need.data.destinationLocation.long);
+    const maxLat = Math.max(need.data.pickupLocation.lat, need.data.destinationLocation.lat);
+    const maxLong = Math.max(need.data.pickupLocation.long, need.data.destinationLocation.long);
     const result: types.ResultSet = await cassandra.query(this.getReadQuery(), [
       minLat,
       minLong,
