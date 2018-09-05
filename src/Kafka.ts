@@ -1,10 +1,8 @@
 import { KafkaClient, Producer, Consumer } from 'kafka-node';
-import { INeed, IServiceStatus } from './types';
+import { IServiceStatus } from './types';
 
 export default class Kafka {
   private static _instance: Kafka = null;
-  private client: KafkaClient;
-  private producer: Producer;
 
   // TODO: close consumers
 
@@ -14,24 +12,20 @@ export default class Kafka {
     }
     return Kafka._instance;
   }
-  private constructor() {
-    this.client = new KafkaClient({ kafkaHost: 'kafka:9092' });
-  }
-
   private async getProducer(): Promise<Producer> {
-    if (!this.producer) {
-      this.producer = new Producer(this.client);
-      await new Promise<Producer>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
-        this.producer.on('ready', () => resolve());
-        this.producer.on('error', (err) => reject(err));
-      });
-    }
-    return this.producer;
+    const client = new KafkaClient({ kafkaHost: 'kafka:9092' });
+    const producer = new Producer(client);
+    await new Promise<Producer>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
+      producer.on('ready', () => resolve());
+      producer.on('error', (err) => reject(err));
+    });
+    return producer;
   }
 
   private getConsumer(topic: string, timeoutInMilliseconds: number): Consumer {
+    const client = new KafkaClient({ kafkaHost: 'kafka:9092' });
     const consumer = new Consumer(
-      this.client,
+      client,
       [
           { topic },
       ],
@@ -45,10 +39,12 @@ export default class Kafka {
   }
 
   public async getStatus(): Promise<IServiceStatus> {
+    const client = new KafkaClient({ kafkaHost: 'kafka:9092' });
     return new Promise<IServiceStatus>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
-      this.client.loadMetadataForTopics(['generic'], (err: any, res: any) => {
+      client.loadMetadataForTopics(['generic'], (err: any, res: any) => {
         // TODO: add hosts console.log(res[0]['1']);
         resolve({ connected: !err });
+        client.close();
       });
     });
   }
@@ -69,8 +65,7 @@ export default class Kafka {
         } else {
           resolve(data);
         }
-        this.producer.close();
-        this.producer = undefined;
+        producer.close();
       });
     });
   }
@@ -87,8 +82,7 @@ export default class Kafka {
         } else {
           resolve(data);
         }
-        this.producer.close();
-        this.producer = undefined;
+        producer.close();
       });
     });
   }
@@ -102,8 +96,7 @@ export default class Kafka {
         } else {
           resolve();
         }
-        this.producer.close();
-        this.producer = undefined;
+        producer.close();
       });
     });
   }
