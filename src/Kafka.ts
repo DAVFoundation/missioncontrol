@@ -69,6 +69,8 @@ export default class Kafka {
         } else {
           resolve(data);
         }
+        this.producer.close();
+        this.producer = undefined;
       });
     });
   }
@@ -85,6 +87,8 @@ export default class Kafka {
         } else {
           resolve(data);
         }
+        this.producer.close();
+        this.producer = undefined;
       });
     });
   }
@@ -98,6 +102,8 @@ export default class Kafka {
         } else {
           resolve();
         }
+        this.producer.close();
+        this.producer = undefined;
       });
     });
   }
