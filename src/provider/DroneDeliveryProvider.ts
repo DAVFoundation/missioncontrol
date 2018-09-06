@@ -23,10 +23,10 @@ export class DroneDeliveryProvider extends BaseProvider {
       provider.area.min.longitude,
       provider.area.max.latitude,
       provider.area.max.longitude,
-      provider.dimensions.length,
-      provider.dimensions.width,
-      provider.dimensions.height,
-      provider.dimensions.weight,
+      provider.dimensions && provider.dimensions.length,
+      provider.dimensions && provider.dimensions.width,
+      provider.dimensions && provider.dimensions.height,
+      provider.dimensions && provider.dimensions.weight,
     ]);
   }
 
