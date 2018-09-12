@@ -1,0 +1,95 @@
+version: '3.5'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./dockers/Dockerfile.nginx
+    image: dav_network_nginx
+    container_name: dav_network_nginx
+    depends_on:
+      - app
+    volumes:
+      - ./nginx/app.template:/etc/nginx/conf.d/app.template
+    ports:
+      - "80:80"
+    networks:
+      - dav_network
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+      - WEB_REVERSE_PROXY_PORT=3005
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/app.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
+    restart: always
+  app:
+    build:
+      context: .
+      dockerfile: ./dockers/Dockerfile.app
+    image: dav_network_app
+    container_name: dav_network_app
+    command: nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts --inspect 9229
+    restart: always
+    networks:
+      - dav_network
+    depends_on:
+      - zookeeper
+      - kafka
+      - cassandra
+    volumes:
+      - /app/node_modules
+      - .:/app
+  zookeeper:
+    build:
+      context: .
+      dockerfile: ./dockers/Dockerfile.zookeeper
+    image: dav_network_zookeeper
+    container_name: dav_network_zookeeper
+    networks:
+      - dav_network
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+  cassandra:
+    build:
+      context: .
+      dockerfile: ./dockers/Dockerfile.cassandra
+    image: dav_network_cassandra
+    container_name: dav_network_cassandra
+    ports:
+      - '7000:7000'
+      - '7001:7001'
+      - '7199:7199'
+      - '9042:9042'
+      - '9160:9160'
+    restart: always
+    volumes:
+      - ./data/cassandra:/var/lib/cassandra
+    networks:
+      - dav_network
+    environment:
+      CASSANDRA_CLUSTER_NAME: dcluster
+      CASSANDRA_BROADCAST_ADDRESS: 172.18.0.1
+  kafka:
+    build:
+      context: .
+      dockerfile: ./dockers/Dockerfile.kafka
+    image: dav_network_kafka
+    container_name: dav_network_kafka
+    links:
+      - cassandra:cassandra
+      - zookeeper:zookeeper
+    ports:
+      - "9092:9092"
+    networks:
+      - dav_network
+    environment:
+      KAFKA_LOG_DIRS: /kafka
+      KAFKA_ADVERTISED_HOST_NAME: 172.18.0.1
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_LOG_RETENTION_HOURS: "168"
+      KAFKA_LOG_RETENTION_BYTES: "100000000"
+      KAFKA_ZOOKEEPER_CONNECT:  zookeeper:2181
+networks:
+  dav_network:
+    name: dav_network

@@ -1,0 +1,123 @@
+{
+	"apiVersion": "apps/v1beta1",
+	"kind": "StatefulSet",
+	"metadata": {
+		"name": "zookeeper"
+	},
+	"spec": {
+		"selector": {
+			"matchLabels": {
+				"app": "zookeeper"
+			}
+		},
+		"serviceName": "zookeeper",
+		"replicas": 3,
+		"template": {
+			"metadata": {
+				"labels": {
+					"app": "zookeeper",
+					"storage": "ephemeral"
+				},
+				"annotations": null
+			},
+			"spec": {
+				"terminationGracePeriodSeconds": 10,
+				"initContainers": [
+					{
+						"name": "init-config",
+						"image": "solsson/kafka-initutils@sha256:18bf01c2c756b550103a99b3c14f741acccea106072cd37155c6d24be4edd6e2",
+						"command": [
+							"/bin/bash",
+							"/etc/kafka-configmap/init.sh"
+						],
+						"volumeMounts": [
+							{
+								"name": "configmap",
+								"mountPath": "/etc/kafka-configmap"
+							},
+							{
+								"name": "config",
+								"mountPath": "/etc/kafka"
+							},
+							{
+								"name": "data",
+								"mountPath": "/var/lib/zookeeper/data"
+							}
+						]
+					}
+				],
+				"containers": [
+					{
+						"name": "zookeeper",
+						"image": "solsson/kafka:1.0.2@sha256:7fdb326994bcde133c777d888d06863b7c1a0e80f043582816715d76643ab789",
+						"env": [
+							{
+								"name": "KAFKA_LOG4J_OPTS",
+								"value": "-Dlog4j.configuration=file:/etc/kafka/log4j.properties"
+							}
+						],
+						"command": [
+							"./bin/zookeeper-server-start.sh",
+							"/etc/kafka/zookeeper.properties"
+						],
+						"ports": [
+							{
+								"containerPort": 2181,
+								"name": "client"
+							},
+							{
+								"containerPort": 2888,
+								"name": "peer"
+							},
+							{
+								"containerPort": 3888,
+								"name": "leader-election"
+							}
+						],
+						"resources": {
+							"requests": {
+								"cpu": "10m",
+								"memory": "50Mi"
+							}
+						},
+						"readinessProbe": {
+							"exec": {
+								"command": [
+									"/bin/sh",
+									"-c",
+									"[ \"imok\" = \"$(echo ruok | nc -w 1 -q 1 127.0.0.1 2181)\" ]"
+								]
+							}
+						},
+						"volumeMounts": [
+							{
+								"name": "config",
+								"mountPath": "/etc/kafka"
+							},
+							{
+								"name": "data",
+								"mountPath": "/var/lib/zookeeper/data"
+							}
+						]
+					}
+				],
+				"volumes": [
+					{
+						"name": "configmap",
+						"configMap": {
+							"name": "zookeeper-config"
+						}
+					},
+					{
+						"name": "config",
+						"emptyDir": {}
+					},
+					{
+						"name": "data",
+						"emptyDir": {}
+					}
+				]
+			}
+		}
+	}
+}
