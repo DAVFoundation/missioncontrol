@@ -1,12 +1,12 @@
 import { cassandraDriver } from '../mocks/cassandra-driver';
 jest.doMock('cassandra-driver', cassandraDriver);
-import { DroneDeliveryProvider } from './DroneDeliveryProvider';
-import { IDeliveryProvider, INeed } from '../types';
+import { BoatChargingProvider } from './BoatChargingProvider';
+import { IBoatChargingProvider, INeed } from '../types';
 
 describe('Drone Delivery Provider', () => {
-  const provider: IDeliveryProvider = {
+  const provider: IBoatChargingProvider = {
     topicId: '321',
-    protocol: 'drone_delivery',
+    protocol: 'boat_charging',
     area: {
       min: {
         longitude: 1,
@@ -27,7 +27,7 @@ describe('Drone Delivery Provider', () => {
 
   const need: INeed = {
     topicId: '222',
-    protocol: 'drone_delivery',
+    protocol: 'boat_charging',
     data: {
       location: {
         longitude: 1,
@@ -37,19 +37,19 @@ describe('Drone Delivery Provider', () => {
   };
 
   it('should save provider', async () => {
-    const droneDeliveryProvider = new DroneDeliveryProvider();
+    const droneDeliveryProvider = new BoatChargingProvider();
     expect(await droneDeliveryProvider.save(provider)).toBe(true);
   });
 
   it('should load provider', async () => {
-    const droneDeliveryProvider = new DroneDeliveryProvider();
+    const droneDeliveryProvider = new BoatChargingProvider();
     expect(await droneDeliveryProvider.query(need)).toEqual([provider]);
   });
 
   it('should save provider with no dimensions', async () => {
-    const noDimensionsProvider: IDeliveryProvider = {
+    const noDimensionsProvider: IBoatChargingProvider = {
       topicId: '321',
-      protocol: 'drone_delivery',
+      protocol: 'boat_charging',
       area: {
         min: {
           longitude: 1,
@@ -61,12 +61,12 @@ describe('Drone Delivery Provider', () => {
         },
       },
     };
-    const droneDeliveryProvider = new DroneDeliveryProvider();
+    const droneDeliveryProvider = new BoatChargingProvider();
     expect(await droneDeliveryProvider.save(noDimensionsProvider)).toBe(true);
   });
 
   it('should load provider', async () => {
-    const droneDeliveryProvider = new DroneDeliveryProvider();
+    const droneDeliveryProvider = new BoatChargingProvider();
     expect(await droneDeliveryProvider.query(need)).toEqual([provider]);
   });
 

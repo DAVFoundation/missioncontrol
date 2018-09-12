@@ -33,11 +33,11 @@ export interface IProvider {
 }
 
 export interface IBoatChargingProvider extends IProvider {
-  dimensions: IDimensions;
+  dimensions?: IDimensions;
 }
 
 export interface IDeliveryProvider extends IProvider {
-  dimensions: IDimensions;
+  dimensions?: IDimensions;
 }
 
 export interface INeed {
