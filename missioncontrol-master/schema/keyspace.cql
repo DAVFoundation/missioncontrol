@@ -1,0 +1,1 @@
+CREATE KEYSPACE IF NOT EXISTS services WITH REPLICATION = {  'class'  : 'SimpleStrategy', 'replication_factor' : 3 };
