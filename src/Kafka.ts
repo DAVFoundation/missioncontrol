@@ -1,6 +1,7 @@
 import { KafkaClient, Producer, Consumer } from 'kafka-node';
 import { IServiceStatus } from './types';
 
+const kafkaHost = process.env.KAFKA_HOST || 'localhost:9092';
 export default class Kafka {
   private static _instance: Kafka = null;
 
@@ -13,7 +14,7 @@ export default class Kafka {
     return Kafka._instance;
   }
   private async getProducer(): Promise<Producer> {
-    const client = new KafkaClient({ kafkaHost: 'kafka:9092' });
+    const client = new KafkaClient({ kafkaHost });
     const producer = new Producer(client);
     await new Promise<Producer>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
       producer.on('ready', () => resolve());
@@ -23,23 +24,23 @@ export default class Kafka {
   }
 
   private getConsumer(topic: string, timeoutInMilliseconds: number): Consumer {
-    const client = new KafkaClient({ kafkaHost: 'kafka:9092' });
+    const client = new KafkaClient({ kafkaHost });
     const consumer = new Consumer(
       client,
       [
-          { topic },
+        { topic },
       ],
       {
-          groupId: topic,
-          fetchMaxWaitMs: timeoutInMilliseconds,
-          autoCommit: true,
+        groupId: topic,
+        fetchMaxWaitMs: timeoutInMilliseconds,
+        autoCommit: true,
       },
     );
     return consumer;
   }
 
   public async getStatus(): Promise<IServiceStatus> {
-    const client = new KafkaClient({ kafkaHost: 'kafka:9092' });
+    const client = new KafkaClient({ kafkaHost });
     return new Promise<IServiceStatus>((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
       client.loadMetadataForTopics(['generic'], (err: any, res: any) => {
         // TODO: add hosts console.log(res[0]['1']);
@@ -73,7 +74,7 @@ export default class Kafka {
   public async sendMessage(topic: string, messages: string) {
     const producer = await this.getProducer();
     const payloads = [
-      {topic, messages},
+      { topic, messages },
     ];
     return new Promise((resolve, reject) => {
       producer.send(payloads, (err: any, data: any) => {
@@ -104,7 +105,7 @@ export default class Kafka {
   public getMessages(topic: string, timeoutInMilliseconds: number): Promise<string[]> {
     const consumer = this.getConsumer(topic, timeoutInMilliseconds);
     const messages: string[] = [];
-    const messagesPromise =  new Promise<string[]>((resolve, reject) => {
+    const messagesPromise = new Promise<string[]>((resolve, reject) => {
       consumer.on('message', (message) => {
         messages.push(message.value.toString());
         if (message.offset === (message.highWaterOffset - 1)) {
@@ -114,7 +115,7 @@ export default class Kafka {
         }
       });
     });
-    const timeoutPromise = new Promise<string[]>((resolve) => setTimeout(() =>  {
+    const timeoutPromise = new Promise<string[]>((resolve) => setTimeout(() => {
       resolve(messages);
     }, timeoutInMilliseconds));
     return Promise.race([messagesPromise, timeoutPromise]);

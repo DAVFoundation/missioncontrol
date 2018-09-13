@@ -3,7 +3,7 @@
   "kind": "Deployment",
   "metadata": {
     "name": "davnn",
-    "namespace":"davnn"
+    "namespace": "davnn"
   },
   "spec": {
     "selector": {
@@ -93,14 +93,17 @@
           {
             "name": "api",
             "image": "davnetwork/dav-api",
-            "env":[
-              {
-                "name":"CASSANDRA_KEYSPACE",
-                "value":"davnn"
+            "env": [{
+                "name": "CASSANDRA_KEYSPACE",
+                "value": "davnn"
               },
               {
-                "name":"CASSANDRA_ENDPOINTS",
-                "value":"localhost"
+                "name": "CASSANDRA_ENDPOINTS",
+                "value": "localhost"
+              },
+              {
+                "name": "KAFKA_HOST",
+                "value": "localhost:9092"
               }
             ],
             "ports": [{
