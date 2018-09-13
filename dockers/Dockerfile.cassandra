@@ -1,1 +1,1 @@
-FROM cassandra
+FROM gcr.io/google-samples/cassandra:v13

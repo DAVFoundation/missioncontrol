@@ -2,7 +2,8 @@
 	"apiVersion": "apps/v1beta1",
 	"kind": "StatefulSet",
 	"metadata": {
-		"name": "zookeeper"
+		"name": "zookeeper",
+		"namespace":"davnn"
 	},
 	"spec": {
 		"selector": {
@@ -25,22 +26,22 @@
 				"initContainers": [
 					{
 						"name": "init-config",
-						"image": "solsson/kafka-initutils@sha256:18bf01c2c756b550103a99b3c14f741acccea106072cd37155c6d24be4edd6e2",
+						"image": "davnetwork/dav-zookeeper-init",
 						"command": [
 							"/bin/bash",
 							"/etc/kafka-configmap/init.sh"
 						],
 						"volumeMounts": [
 							{
-								"name": "configmap",
+								"name": "zookeeper-configmap",
 								"mountPath": "/etc/kafka-configmap"
 							},
 							{
-								"name": "config",
+								"name": "zookeeper-configs",
 								"mountPath": "/etc/kafka"
 							},
 							{
-								"name": "data",
+								"name": "zookeeper-data",
 								"mountPath": "/var/lib/zookeeper/data"
 							}
 						]
@@ -49,7 +50,7 @@
 				"containers": [
 					{
 						"name": "zookeeper",
-						"image": "solsson/kafka:1.0.2@sha256:7fdb326994bcde133c777d888d06863b7c1a0e80f043582816715d76643ab789",
+						"image": "davnetwork/dav-zookeeper",
 						"env": [
 							{
 								"name": "KAFKA_LOG4J_OPTS",
@@ -91,11 +92,11 @@
 						},
 						"volumeMounts": [
 							{
-								"name": "config",
+								"name": "zookeeper-configs",
 								"mountPath": "/etc/kafka"
 							},
 							{
-								"name": "data",
+								"name": "zookeeper-data",
 								"mountPath": "/var/lib/zookeeper/data"
 							}
 						]
@@ -103,17 +104,17 @@
 				],
 				"volumes": [
 					{
-						"name": "configmap",
+						"name": "zookeeper-configmap",
 						"configMap": {
-							"name": "zookeeper-config"
+							"name": "zookeeper-configmap"
 						}
 					},
 					{
-						"name": "config",
+						"name": "zookeeper-configs",
 						"emptyDir": {}
 					},
 					{
-						"name": "data",
+						"name": "zookeeper-data",
 						"emptyDir": {}
 					}
 				]
