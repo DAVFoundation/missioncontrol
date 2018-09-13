@@ -16,7 +16,7 @@
     "url": "git+https://github.com/DAVFoundation/missioncontrol.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/DAVFoundation/missioncontrol/issues"
   },
