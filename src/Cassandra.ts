@@ -8,8 +8,8 @@ export default class Cassandra {
   private connected: boolean = false;
 
   private options = {
-    contactPoints: process.env.CASSANDRA_ENDPOINTS.split(','),
-    keyspace: process.env.CASSANDRA_KEYSPACE,
+    contactPoints: (process.env.CASSANDRA_ENDPOINTS || 'localhost').split(','),
+    keyspace: Cassandra.keyspace,
     pooling: {
       coreConnectionsPerHost: {
         [types.distance.local]: 2,
@@ -26,6 +26,10 @@ export default class Cassandra {
       await Cassandra._instance.connect();
     }
     return Cassandra._instance;
+  }
+
+  public static get keyspace(): string {
+    return process.env.CASSANDRA_KEYSPACE || 'davnn';
   }
 
   private constructor() {

@@ -1,4 +1,5 @@
 import { IProvider } from '../types';
+import Cassandra from '../Cassandra';
 
 export abstract class BaseProvider {
 
@@ -17,7 +18,8 @@ export abstract class BaseProvider {
   protected getUpsertQuery(): string {
     const fields: string[] = this.basicFields.concat(this.protocolSpecificFields);
     const markers: string[] = new Array<string>(fields.length).fill('?');
-    return `INSERT INTO davnn.${this.tableName} (
+
+    return `INSERT INTO ${Cassandra.keyspace}.${this.tableName} (
       ${fields.join(', ')}
     ) VALUES (
       ${markers.join(', ')}
@@ -26,7 +28,7 @@ export abstract class BaseProvider {
 
   protected getReadQuery(): string {
     const fields: string[] = this.basicFields.concat(this.protocolSpecificFields);
-    return `SELECT ${fields.join(', ')} FROM davnn.${this.tableName}
+    return `SELECT ${fields.join(', ')} FROM ${Cassandra.keyspace}.${this.tableName}
                     WHERE min_lat < ?
                     AND min_long < ?
                     AND max_lat > ?
