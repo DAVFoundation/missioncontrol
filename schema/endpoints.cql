@@ -1,1 +1,1 @@
-CREATE TABLE IF NOT EXISTS services.endpoints (dav_id text PRIMARY KEY, topic_id text);
+CREATE TABLE IF NOT EXISTS davnn.endpoints (dav_id text PRIMARY KEY, topic_id text);

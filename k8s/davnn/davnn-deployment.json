@@ -11,7 +11,7 @@
         "app": "davnn"
       }
     },
-    "replicas": 1,
+    "replicas": 0,
     "template": {
       "metadata": {
         "labels": {
@@ -93,6 +93,16 @@
           {
             "name": "api",
             "image": "davnetwork/dav-api",
+            "env":[
+              {
+                "name":"CASSANDRA_KEYSPACE",
+                "value":"davnn"
+              },
+              {
+                "name":"CASSANDRA_ENDPOINTS",
+                "value":"localhost"
+              }
+            ],
             "ports": [{
                 "containerPort": 3005
               },
@@ -137,12 +147,6 @@
               "./bin/kafka-server-start.sh",
               "/etc/kafka/server.properties"
             ],
-            "resources": {
-              "requests": {
-                "cpu": "100m",
-                "memory": "100Mi"
-              }
-            },
             "readinessProbe": {
               "tcpSocket": {
                 "port": 9092
@@ -180,16 +184,6 @@
                 "name": "cql"
               }
             ],
-            "resources": {
-              "limits": {
-                "cpu": "1000m",
-                "memory": "1Gi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "512Mi"
-              }
-            },
             "securityContext": {
               "capabilities": {
                 "add": [

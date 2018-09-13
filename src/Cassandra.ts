@@ -8,8 +8,8 @@ export default class Cassandra {
   private connected: boolean = false;
 
   private options = {
-    contactPoints: ['cassandra'],
-    keyspace: 'services',
+    contactPoints: process.env.CASSANDRA_ENDPOINTS.split(','),
+    keyspace: process.env.CASSANDRA_KEYSPACE,
     pooling: {
       coreConnectionsPerHost: {
         [types.distance.local]: 2,

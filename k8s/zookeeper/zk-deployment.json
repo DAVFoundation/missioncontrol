@@ -12,7 +12,7 @@
 			}
 		},
 		"serviceName": "zookeeper",
-		"replicas": 3,
+		"replicas": 0,
 		"template": {
 			"metadata": {
 				"labels": {
@@ -75,12 +75,6 @@
 								"name": "leader-election"
 							}
 						],
-						"resources": {
-							"requests": {
-								"cpu": "10m",
-								"memory": "50Mi"
-							}
-						},
 						"readinessProbe": {
 							"exec": {
 								"command": [

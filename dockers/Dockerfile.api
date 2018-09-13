@@ -1,5 +1,11 @@
 FROM node:9
 
+RUN apt-get update &&\
+    apt-get install -y python-pip
+
+RUN pip install cqlsh
+RUN sed -i "s/^DEFAULT_CQLVER = '[0-9.]*'$/DEFAULT_CQLVER = '3.4.4'/" /usr/local/bin/cqlsh
+
 RUN npm install -g nodemon
 
 WORKDIR /app

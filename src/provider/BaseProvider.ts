@@ -17,7 +17,7 @@ export abstract class BaseProvider {
   protected getUpsertQuery(): string {
     const fields: string[] = this.basicFields.concat(this.protocolSpecificFields);
     const markers: string[] = new Array<string>(fields.length).fill('?');
-    return `INSERT INTO services.${this.tableName} (
+    return `INSERT INTO davnn.${this.tableName} (
       ${fields.join(', ')}
     ) VALUES (
       ${markers.join(', ')}
@@ -26,7 +26,7 @@ export abstract class BaseProvider {
 
   protected getReadQuery(): string {
     const fields: string[] = this.basicFields.concat(this.protocolSpecificFields);
-    return `SELECT ${fields.join(', ')} FROM services.${this.tableName}
+    return `SELECT ${fields.join(', ')} FROM davnn.${this.tableName}
                     WHERE min_lat < ?
                     AND min_long < ?
                     AND max_lat > ?

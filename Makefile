@@ -22,3 +22,8 @@ down: FORCE
 
 up: FORCE
 	docker-compose up
+
+deploy-schema:
+	cqlsh -f schema/keyspace.cql
+	cqlsh -f schema/endpoints.cql
+	cqlsh -f schema/providers.cql

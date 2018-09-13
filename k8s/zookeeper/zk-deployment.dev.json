@@ -1,0 +1,18 @@
+{
+  "spec": {
+    "replicas": 3,
+    "template": {
+      "spec": {
+        "containers": [{
+          "name": "zookeeper",
+          "resources": {
+            "requests": {
+              "cpu": "10m",
+              "memory": "50Mi"
+            }
+          }
+        }]
+      }
+    }
+  }
+}
