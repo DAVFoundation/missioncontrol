@@ -59,5 +59,5 @@ remove-global:
 	kubectl delete -f davnn-rbac.json
 	kubectl delete -f namespace.json
 
-connect-local:
+start-proxy:
 	kubectl port-forward --namespace=davnn deployment/davnn 8080:80 9092:9092 7000:7000
