@@ -20,8 +20,11 @@ deploy-zookeeper:
 	kubectl apply -f zookeeper/zk-svc.json
 	kubectl apply -f zookeeper/zk-deployment.json
 
-deploy-zookeeper-local: deploy-zookeeper
+deploy-zookeeper-dev: deploy-zookeeper
 	kubectl patch -f zookeeper/zk-deployment.json -p "$$(cat zookeeper/zk-deployment.dev.json)"
+
+deploy-zookeeper-prod: deploy-zookeeper
+	kubectl patch -f zookeeper/zk-deployment.json -p "$$(cat zookeeper/zk-deployment.prod.json)"
 
 remove-zookeeper:
 	kubectl delete configmap --namespace=davnn zookeeper-configmap
@@ -37,8 +40,11 @@ deploy-davnn:
 		--from-file=davnn/nginx/app.template
 	kubectl apply -f davnn/davnn-deployment.json
 
-deploy-davnn-local: deploy-davnn
+deploy-davnn-dev: deploy-davnn
 	kubectl patch -f davnn/davnn-deployment.json -p "$$(cat davnn/davnn-deployment.dev.json)"
+
+deploy-davnn-prod: deploy-davnn
+	kubectl patch -f davnn/davnn-deployment.json -p "$$(cat davnn/davnn-deployment.prod.json)"
 
 remove-davnn:
 	kubectl delete -f davnn/davnn-deployment.json
