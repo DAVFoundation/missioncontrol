@@ -27,9 +27,9 @@ make deploy-global
 ```
 
 ### Deploy a Zookeeper cluster
+** **This step should be done once per DAVNN cluster** **
 
 At this stage DAVNN pods require a ZK cluster to run.
-The cluster should only be created once globally.
 
 Open a terminal in the project folder and run:
 ```bash
@@ -66,6 +66,36 @@ make deploy-davnn-prod
 ```
 
 Wait until your DAVNN pod is active.
+
+### Create schema
+** **This step should be done once per DAVNN cluster** **
+
+Find your pod id:
+```bash
+kubectl get pods --namespace=davnn
+```
+
+Your should see something like this:
+```bash
+NAME                     READY     STATUS    RESTARTS   AGE
+davnn-7bf6f57c4b-6zxg7   4/4       Running   0          25m
+zookeeper-0              1/1       Running   0          30m
+zookeeper-1              1/1       Running   0          29m
+zookeeper-2              1/1       Running   0          29m
+```
+
+The `davnn-7bf6f57c4b-6zxg7` is your DAVNN pod - copy this id for the next step.
+
+Connect to the DAVNN pod `api` container via SSH.
+E.g.:
+```bash
+kubectl exec -it --namespace=davnn davnn-<POD_ID> -c api bash
+```
+
+When connected run the deploy-schema command:
+```bash
+make deploy-schema
+```
 
 ## Contributing Code, Reporting Bugs and Suggesting Features
 
