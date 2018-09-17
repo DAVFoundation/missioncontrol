@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import kafka from '../Kafka';
 import cassandra from '../Cassandra';
 import { ICassandraStatus, IServiceStatus } from '../types';
+import Kafka from '../Kafka';
 
 // TODO: Need to add tests for this module
 
@@ -25,7 +26,7 @@ export default class StatsController {
 
     let kafkaStatus: IServiceStatus;
     try {
-      kafkaStatus = await kafka.getInstance().getStatus();
+      kafkaStatus = await Kafka.getStatus();
     } catch (error) {
       kafkaStatus.error = error.message;
     }

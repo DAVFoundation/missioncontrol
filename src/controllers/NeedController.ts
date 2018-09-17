@@ -1,8 +1,8 @@
-import { Request, Response} from 'express';
+import Kafka from '../Kafka';
+import { Request, Response } from 'express';
 import ProviderFactory from '../provider/ProviderFactory';
 import { BaseProvider } from '../provider/BaseProvider';
 import { INeed, IProvider } from '../types';
-import Kafka from '../Kafka';
 
 // TODO: Need to add tests for this module
 
@@ -10,6 +10,11 @@ import Kafka from '../Kafka';
  * NeedController class
  */
 export default class NeedController {
+  private static async sendNeed(topics: string[], need: any): Promise<void> {
+    const payloads = topics.map((topic) => ({ topic, messages: JSON.stringify(need) }));
+    return Kafka.sendPayloads(payloads);
+  }
+
   /**
    * Publish need
    * @param req express Request
@@ -34,7 +39,7 @@ export default class NeedController {
           return result.topicId;
         });
         const originalNeed: any = req.body;
-        Kafka.getInstance().sendNeed(topics, originalNeed);
+        await NeedController.sendNeed(topics, originalNeed);
         res.status(200).send({
           message: 'Need was published',
         });
@@ -47,8 +52,9 @@ export default class NeedController {
       // tslint:disable-next-line:no-console
       console.log(err);
       res.status(500).send({
-        error: `An error ocurred ${ err.message || JSON.stringify(err) }`,
+        error: `An error ocurred ${err.message || JSON.stringify(err)}`,
       });
     }
   }
+
 }

@@ -6,7 +6,7 @@
     "removeComments": false,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "lib": ["es2015", "dom"],
+    "lib": ["es2017", "dom"],
     "outDir": "build"
   },
   "include": [

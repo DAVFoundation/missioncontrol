@@ -2,21 +2,29 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { cassandraDriver } from './mocks/cassandra-driver';
 jest.doMock('cassandra-driver', cassandraDriver);
-import { kafkaNode } from './mocks/kafka-node';
 import { Application } from 'express';
-jest.doMock('kafka-node', kafkaNode);
+import { Observable } from 'dav-js/src/common-types';
 
 chai.use(chaiHttp);
 const expect = chai.expect;
+
+const kafkaMock = {
+  createTopic: jest.fn(() => Promise.resolve()),
+  sendMessage: jest.fn(() => Promise.resolve()),
+  sendPayloads: jest.fn(() => Promise.resolve()),
+  rawMessages: jest.fn(() => Promise.resolve()),
+  isConnected: jest.fn(() => Promise.resolve(true)),
+};
+
+jest.doMock('dav-js/src/KafkaNode', () => ({ default: jest.fn(() => kafkaMock) }));
 
 describe('baseRoute', () => {
 
   let app: Application;
 
   beforeAll(async () => {
-    app =  (await import('./App')).default;
+    app = (await import('./App')).default;
   });
-
 
   // TODO: You could create a container suite. Include all suites in it and use a single 'beforeEach' when it is duplicated.
   beforeEach(() => {
@@ -43,9 +51,8 @@ describe('baseRoute', () => {
 describe('status', () => {
 
   let app: Application;
-
   beforeAll(async () => {
-    app =  (await import('./App')).default;
+    app = (await import('./App')).default;
   });
 
   // TODO: Expected values are usually per test - not suite.
@@ -54,7 +61,7 @@ describe('status', () => {
     kafka: { connected: true },
     cassandra: {
       connected: true,
-      hosts: [{address: 'localhost', connections: 0, queries: 1}],
+      hosts: [{ address: 'localhost', connections: 0, queries: 1 }],
     },
   };
 
@@ -67,7 +74,6 @@ describe('status', () => {
     const res = await chai.request(app).get('/health');
     expect(res.body.message).to.eql(expectedResult);
   });
-
 });
 
 describe('provider', () => {
@@ -75,7 +81,7 @@ describe('provider', () => {
   let app: Application;
 
   beforeAll(async () => {
-    app =  (await import('./App')).default;
+    app = (await import('./App')).default;
   });
 
   // TODO: Should this maybe be in a test - not suite.
@@ -86,11 +92,12 @@ describe('provider', () => {
       max: { latitude: 43.396312072116764, longitude: 83.08981250773137 },
     },
     dimensions: {
-     length: 1,
-     width: 1,
-     height: 1,
-     },
-    protocol: 'drone_delivery'};
+      length: 1,
+      width: 1,
+      height: 1,
+    },
+    protocol: 'drone_delivery',
+  };
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -109,7 +116,7 @@ describe('need', () => {
   let app: Application;
 
   beforeAll(async () => {
-    app =  (await import('./App')).default;
+    app = (await import('./App')).default;
   });
 
   const requestData = {
@@ -143,30 +150,7 @@ describe('kafka', () => {
   describe('createTopic method', () => {
 
     it('should create topic without errors', async () => {
-      const clientMock = {
-        on: (state: string, cb: any) => cb(),
-      };
-
-      const producerMock = {
-        on: jest.fn((state: string, cb: any) => cb()),
-        createTopics: jest.fn((topics: string[], async: boolean, cb: (error: any, data: any) => any) => {
-          if (topics[0] === 'testTopic') {
-            cb(null, null);
-          } else {
-            cb('error', null);
-          }
-        }),
-      };
-
-      jest.doMock('kafka-node', () => ({
-          KafkaClient: jest.fn().mockImplementation(() => {
-            return clientMock;
-          }),
-          Producer: jest.fn().mockImplementation(() => {
-            return producerMock;
-          }),
-      }));
-      const app =  (await import('./App')).default;
+      const app = (await import('./App')).default;
       const res = await chai.request(app).post('/topic/create/testTopic');
 
       expect(res.status).to.eql(200);
@@ -174,30 +158,9 @@ describe('kafka', () => {
     });
 
     it('should get error in create topic', async () => {
-      const clientMock = {
-        on: (state: string, cb: any) => cb(),
-      };
+      kafkaMock.createTopic.mockRejectedValue('');
 
-      const producerMock = {
-        on: jest.fn((state: string, cb: any) => cb()),
-        createTopics: jest.fn((topics: string[], async: boolean, cb: (error: any, data: any) => any) => {
-          if (topics[0] === 'testTopic') {
-            cb('error', null);
-          } else {
-            cb(null, null);
-          }
-        }),
-      };
-
-      jest.doMock('kafka-node', () => ({
-          KafkaClient: jest.fn().mockImplementation(() => {
-            return clientMock;
-          }),
-          Producer: jest.fn().mockImplementation(() => {
-            return producerMock;
-          }),
-      }));
-      const app =  (await import('./App')).default;
+      const app = (await import('./App')).default;
       const res = await chai.request(app).post('/topic/create/testTopic');
 
       expect(res.status).to.eql(500);
@@ -207,30 +170,7 @@ describe('kafka', () => {
   describe('sendMessage method', () => {
 
     it('should send message without errors', async () => {
-      const clientMock = {
-        on: (state: string, cb: any) => cb(),
-      };
-
-      const producerMock = {
-        on: jest.fn((state: string, cb: any) => cb()),
-        send: jest.fn((payloads: Array<{ topic: string, messages: string }>, cb: (error: any, data: any) => any) => {
-          if (payloads[0].topic === 'testTopic') {
-            cb(null, null);
-          } else {
-            cb('error', null);
-          }
-        }),
-      };
-
-      jest.doMock('kafka-node', () => ({
-          KafkaClient: jest.fn().mockImplementation(() => {
-            return clientMock;
-          }),
-          Producer: jest.fn().mockImplementation(() => {
-            return producerMock;
-          }),
-      }));
-      const app =  (await import('./App')).default;
+      const app = (await import('./App')).default;
       const res = await chai.request(app).post('/topic/publish/testTopic');
 
       expect(res.status).to.eql(200);
@@ -238,120 +178,48 @@ describe('kafka', () => {
     });
 
     it('should get error in send message', async () => {
-      const clientMock = {
-        on: (state: string, cb: any) => cb(),
-      };
+      kafkaMock.sendMessage.mockRejectedValue('');
 
-      const producerMock = {
-        on: jest.fn((state: string, cb: any) => cb()),
-        send: jest.fn((payloads: Array<{ topic: string, messages: string }>, cb: (error: any, data: any) => any) => {
-          if (payloads[0].topic === 'testTopic') {
-            cb('error', null);
-          } else {
-            cb(null, null);
-          }
-        }),
-      };
-
-      jest.doMock('kafka-node', () => ({
-          KafkaClient: jest.fn().mockImplementation(() => {
-            return clientMock;
-          }),
-          Producer: jest.fn().mockImplementation(() => {
-            return producerMock;
-          }),
-      }));
-      const app =  (await import('./App')).default;
+      const app = (await import('./App')).default;
       const res = await chai.request(app).post('/topic/publish/testTopic');
 
       expect(res.status).to.eql(500);
     });
   });
 
-  describe ('getMessages method', () => {
+  describe('getMessages method', () => {
 
     it('should get one message without errors', async () => {
-      const clientMock = {
-        on: (state: string, cb: any) => cb(),
-      };
-
-      const messageContentObject = JSON.stringify({protocol: 'drone-charging', type: 'bid', price: '3'});
-      const consumerMock = {
-        on: jest.fn((state: string, cb: any) => {
-          cb({topic: 'topicTest', value: messageContentObject, offset: 0, highWaterOffset: 1});
-        }),
-        close: jest.fn(),
-      };
-
-      jest.doMock('kafka-node', () => ({
-          KafkaClient: jest.fn().mockImplementation(() => {
-            return clientMock;
-          }),
-          Consumer: jest.fn().mockImplementation(() => {
-            return consumerMock;
-          }),
-      }));
-      const app =  (await import('./App')).default;
-      const res = await chai.request(app).get('/topic/consume/testTopic').query({timeout: 1000});
+      const messageContentObject = JSON.stringify({ protocol: 'drone-charging', type: 'bid', price: '3' });
+      const messages = Observable.from([{ topic: 'topicTest', value: messageContentObject, offset: 0, highWaterOffset: 1 }]);
+      kafkaMock.rawMessages.mockResolvedValue(messages);
+      const app = (await import('./App')).default;
+      const res = await chai.request(app).get('/topic/consume/testTopic').query({ timeout: 1000 });
 
       expect(res.status).to.eql(200);
       expect(res.text).to.eql(JSON.stringify([messageContentObject]));
     });
 
     it('should get two message without errors', async () => {
-      const clientMock = {
-        on: (state: string, cb: any) => cb(),
-      };
+      const firstMessageContentObject = JSON.stringify({ protocol: 'drone-charging', type: 'bid', price: '3' });
+      const secondMessageContentObject = JSON.stringify({ protocol: 'drone-delivering', type: 'bid', price: '34' });
+      const firstMessage = { topic: 'topic', value: firstMessageContentObject, offset: 0, highWaterOffset: 2 };
+      const secondMessage = { topic: 'topic', value: secondMessageContentObject, offset: 1, highWaterOffset: 2 };
+      const messages = Observable.from([firstMessage, secondMessage]);
+      kafkaMock.rawMessages.mockResolvedValue(messages);
 
-      const messageContentObject = JSON.stringify({protocol: 'drone-charging', type: 'bid', price: '3'});
-      const secondMessageContentObject = JSON.stringify({protocol: 'drone-delivering', type: 'bid', price: '34'});
-      const firstMessage = {topic: 'topic', value: messageContentObject, offset: 0, highWaterOffset: 2};
-      const secondMessage = {topic: 'topic', value: secondMessageContentObject, offset: 1, highWaterOffset: 2};
-      const consumerMock = {
-        on: jest.fn((state: string, cb: any) => {
-          cb(firstMessage);
-          cb(secondMessage);
-        }),
-        close: jest.fn(),
-      };
-
-      jest.doMock('kafka-node', () => ({
-          KafkaClient: jest.fn().mockImplementation(() => {
-            return clientMock;
-          }),
-          Consumer: jest.fn().mockImplementation(() => {
-            return consumerMock;
-          }),
-      }));
-      const app =  (await import('./App')).default;
-      const res = await chai.request(app).get('/topic/consume/testTopic').query({timeout: 1000});
+      const app = (await import('./App')).default;
+      const res = await chai.request(app).get('/topic/consume/testTopic').query({ timeout: 1000 });
 
       expect(res.status).to.eql(200);
-      expect(res.text).to.eql(JSON.stringify([messageContentObject, secondMessageContentObject]));
+      expect(res.text).to.eql(JSON.stringify([firstMessageContentObject, secondMessageContentObject]));
     });
 
     it('should get timeout due to empty topic', async () => {
-      const clientMock = {
-        on: (state: string, cb: any) => cb(),
-      };
-
-      const consumerMock = {
-        on: jest.fn((state: string, cb: any) => {
-          return;
-        }),
-        close: jest.fn(),
-      };
-
-      jest.doMock('kafka-node', () => ({
-          KafkaClient: jest.fn().mockImplementation(() => {
-            return clientMock;
-          }),
-          Consumer: jest.fn().mockImplementation(() => {
-            return consumerMock;
-          }),
-      }));
-      const app =  (await import('./App')).default;
-      const res = await chai.request(app).get('/topic/consume/testTopic').query({timeout: 1000});
+      const messages = Observable.from([]);
+      kafkaMock.rawMessages.mockResolvedValue(messages);
+      const app = (await import('./App')).default;
+      const res = await chai.request(app).get('/topic/consume/testTopic').query({ timeout: 1000 });
 
       expect(res.status).to.eql(200);
       expect(res.text).to.eql(JSON.stringify([]));
