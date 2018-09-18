@@ -2,3 +2,4 @@ node_modules
 build
 data
 coverage
+package-lock.json
