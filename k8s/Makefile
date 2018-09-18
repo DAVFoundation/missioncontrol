@@ -1,21 +1,23 @@
 FORCE:
 
+build: TIMESTAMP=$(shell date +%y%m%d-%H%M -u)
 build: FORCE
-	docker build ../. -f ../dockers/Dockerfile.api -t davnetwork/dav-api
-	docker build ../. -f ../dockers/Dockerfile.cassandra -t davnetwork/dav-cassandra
-	docker build ../. -f ../dockers/Dockerfile.kafka -t davnetwork/dav-kafka
-	docker build ../. -f ../dockers/Dockerfile.kafka-init -t davnetwork/dav-kafka-init
-	docker build ../. -f ../dockers/Dockerfile.nginx -t davnetwork/dav-nginx
-	docker build ../. -f ../dockers/Dockerfile.zookeeper -t davnetwork/dav-zookeeper
-	docker build ../. -f ../dockers/Dockerfile.zookeeper-init -t davnetwork/dav-zookeeper-init
+	@echo Building with timestamp $(TIMESTAMP)
+	docker build ../. -f ../dockers/Dockerfile.api -t davnetwork/dav-api:$(TIMESTAMP)
+	docker build ../. -f ../dockers/Dockerfile.cassandra -t davnetwork/dav-cassandra:$(TIMESTAMP)
+	docker build ../. -f ../dockers/Dockerfile.kafka -t davnetwork/dav-kafka:$(TIMESTAMP)
+	docker build ../. -f ../dockers/Dockerfile.kafka-init -t davnetwork/dav-kafka-init:$(TIMESTAMP)
+	docker build ../. -f ../dockers/Dockerfile.nginx -t davnetwork/dav-nginx:$(TIMESTAMP)
+	docker build ../. -f ../dockers/Dockerfile.zookeeper -t davnetwork/dav-zookeeper:$(TIMESTAMP)
+	docker build ../. -f ../dockers/Dockerfile.zookeeper-init -t davnetwork/dav-zookeeper-init:$(TIMESTAMP)
 
-	docker push davnetwork/dav-api
-	docker push davnetwork/dav-cassandra
-	docker push davnetwork/dav-kafka
-	docker push davnetwork/dav-kafka-init
-	docker push davnetwork/dav-nginx
-	docker push davnetwork/dav-zookeeper
-	docker push davnetwork/dav-zookeeper-init
+	docker push davnetwork/dav-api:$(TIMESTAMP)
+	docker push davnetwork/dav-cassandra:$(TIMESTAMP)
+	docker push davnetwork/dav-kafka:$(TIMESTAMP)
+	docker push davnetwork/dav-kafka-init:$(TIMESTAMP)
+	docker push davnetwork/dav-nginx:$(TIMESTAMP)
+	docker push davnetwork/dav-zookeeper:$(TIMESTAMP)
+	docker push davnetwork/dav-zookeeper-init:$(TIMESTAMP)
 
 deploy-zookeeper: FORCE
 	kubectl create configmap --namespace=davnn zookeeper-configmap --from-file=zookeeper/init.sh --from-file=zookeeper/zookeeper.properties --from-file=zookeeper/log4j.properties
