@@ -1,4 +1,6 @@
-build:
+FORCE:
+
+build: FORCE
 	docker build ../. -f ../dockers/Dockerfile.api -t davnetwork/dav-api
 	docker build ../. -f ../dockers/Dockerfile.cassandra -t davnetwork/dav-cassandra
 	docker build ../. -f ../dockers/Dockerfile.kafka -t davnetwork/dav-kafka
@@ -15,7 +17,7 @@ build:
 	docker push davnetwork/dav-zookeeper
 	docker push davnetwork/dav-zookeeper-init
 
-deploy-zookeeper:
+deploy-zookeeper: FORCE
 	kubectl create configmap --namespace=davnn zookeeper-configmap --from-file=zookeeper/init.sh --from-file=zookeeper/zookeeper.properties --from-file=zookeeper/log4j.properties
 	kubectl apply -f zookeeper/zk-svc.json
 	kubectl apply -f zookeeper/zk-deployment.json
@@ -26,12 +28,12 @@ deploy-zookeeper-dev: deploy-zookeeper
 deploy-zookeeper-prod: deploy-zookeeper
 	kubectl patch -f zookeeper/zk-deployment.json -p "$$(cat zookeeper/zk-deployment.prod.json)"
 
-remove-zookeeper:
+remove-zookeeper: FORCE
 	kubectl delete configmap --namespace=davnn zookeeper-configmap
 	kubectl delete -f zookeeper/zk-deployment.json
 	kubectl delete -f zookeeper/zk-svc.json
 
-deploy-davnn:
+deploy-davnn: FORCE
 	kubectl create configmap --namespace=davnn kafka-configmap \
 		--from-file=davnn/kafka/init.sh \
 		--from-file=davnn/kafka/server.properties \
@@ -46,18 +48,18 @@ deploy-davnn-dev: deploy-davnn
 deploy-davnn-prod: deploy-davnn
 	kubectl patch -f davnn/davnn-deployment.json -p "$$(cat davnn/davnn-deployment.prod.json)"
 
-remove-davnn:
+remove-davnn: FORCE
 	kubectl delete -f davnn/davnn-deployment.json
 	kubectl delete configmap --namespace=davnn kafka-configmap
 	kubectl delete configmap --namespace=davnn nginx-configmap
 
-deploy-global:
+deploy-global: FORCE
 	kubectl apply -f namespace.json
 	kubectl apply -f davnn-rbac.json
 
-remove-global:
+remove-global: FORCE
 	kubectl delete -f davnn-rbac.json
 	kubectl delete -f namespace.json
 
-start-proxy:
+start-proxy: FORCE
 	kubectl port-forward --namespace=davnn deployment/davnn 8080:80 9092:9092 7000:7000

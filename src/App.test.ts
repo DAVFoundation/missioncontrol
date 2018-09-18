@@ -16,7 +16,7 @@ const kafkaMock = {
   isConnected: jest.fn(() => Promise.resolve(true)),
 };
 
-jest.doMock('dav-js/src/KafkaNode', () => ({ default: jest.fn(() => kafkaMock) }));
+jest.doMock('dav-js', () => ({ KafkaNode: jest.fn(() => kafkaMock) }));
 
 describe('baseRoute', () => {
 

@@ -1,5 +1,4 @@
-import Kafka from 'dav-js/src/KafkaNode';
-import IConfig from 'dav-js/src/IConfig';
+import { KafkaNode as Kafka, IConfig } from 'dav-js';
 import { ProduceRequest } from 'kafka-node';
 import { IServiceStatus } from './types';
 
