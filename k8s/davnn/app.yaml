@@ -3,8 +3,8 @@ environments:
   dev:
     destination:
       namespace: davnn
-      server: https://35.229.97.101
-    k8sVersion: v1.10.7
+      server: https://192.168.39.138:8443
+    k8sVersion: v1.10.0
     path: dev
 kind: ksonnet.io/app
 name: davnn
