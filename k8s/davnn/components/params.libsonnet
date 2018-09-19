@@ -1,4 +1,4 @@
-local globals = import "../components/globals.libsonnet";
+local globals = import '../components/globals.libsonnet';
 {
   global: globals,
   components: {
@@ -6,15 +6,17 @@ local globals = import "../components/globals.libsonnet";
     // Each object below should correspond to a component in the components/ directory
     'davnn-namespace': {
     },
+    'davnn-rbac': {
+    },
     'davnn-deployment': {
       version: 'latest',
       name: 'davnn',
     },
-    "kafka-configmap": {
-      name: "kafka-configmap",
+    'kafka-configmap': {
+      name: 'kafka-configmap',
     },
-    "nginx-configmap": {
-      name: "nginx-configmap",
+    'nginx-configmap': {
+      name: 'nginx-configmap',
     },
   },
 }

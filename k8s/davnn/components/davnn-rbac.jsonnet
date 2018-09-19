@@ -1,15 +1,17 @@
+local env = std.extVar("__ksonnet/environments");
+local params = std.extVar("__ksonnet/params").components["davnn-namespace"];
 {
     "apiVersion": "rbac.authorization.k8s.io/v1beta1",
     "kind": "ClusterRoleBinding",
     "metadata": {
         "name": "davnn-rbac",
-        "namespace": "davnn"
+        "namespace": params.davnnNamespace
     },
     "subjects": [
         {
             "kind": "ServiceAccount",
             "name": "default",
-            "namespace": "davnn"
+            "namespace": params.davnnNamespace
         }
     ],
     "roleRef": {
