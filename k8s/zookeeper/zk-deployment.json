@@ -25,7 +25,7 @@
         "terminationGracePeriodSeconds": 10,
         "initContainers": [{
           "name": "init-config",
-          "image": "davnetwork/dav-zookeeper-init",
+          "image": "davnetwork/dav-zookeeper-init:latest",
           "imagePullPolicy": "Always",
           "command": [
             "/bin/bash",
@@ -47,7 +47,7 @@
         }],
         "containers": [{
           "name": "zookeeper",
-		  "image": "davnetwork/dav-zookeeper",
+		  "image": "davnetwork/dav-zookeeper:latest",
 		  "imagePullPolicy": "Always",
           "env": [{
             "name": "KAFKA_LOG4J_OPTS",

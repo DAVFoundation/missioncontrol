@@ -23,7 +23,7 @@
         "terminationGracePeriodSeconds": 30,
         "initContainers": [{
           "name": "davnn-init-config",
-          "image": "davnetwork/dav-kafka-init",
+          "image": "davnetwork/dav-kafka-init:latest",
           "imagePullPolicy": "Always",
           "env": [{
               "name": "NODE_NAME",
@@ -66,7 +66,7 @@
         }],
         "containers": [{
             "name": "nginx",
-            "image": "davnetwork/dav-nginx",
+            "image": "davnetwork/dav-nginx:latest",
             "imagePullPolicy": "Always",
             "env": [{
                 "name": "WEB_REVERSE_PROXY_PORT",
@@ -94,7 +94,7 @@
           },
           {
             "name": "api",
-            "image": "davnetwork/dav-api",
+            "image": "davnetwork/dav-api:latest",
             "imagePullPolicy": "Always",
             "env": [{
                 "name": "CASSANDRA_KEYSPACE",
@@ -126,7 +126,7 @@
           },
           {
             "name": "kafka",
-            "image": "davnetwork/dav-kafka",
+            "image": "davnetwork/dav-kafka:latest",
             "imagePullPolicy": "Always",
             "env": [{
                 "name": "KAFKA_LOG4J_OPTS",
@@ -172,7 +172,7 @@
           },
           {
             "name": "cassandra",
-            "image": "davnetwork/dav-cassandra",
+            "image": "davnetwork/dav-cassandra:latest",
             "imagePullPolicy": "Always",
             "ports": [{
                 "containerPort": 7000,
