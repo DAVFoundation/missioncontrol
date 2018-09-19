@@ -1,0 +1,15 @@
+apiVersion: 0.2.0
+environments:
+  dev:
+    destination:
+      namespace: davnn
+      server: https://35.229.97.101
+    k8sVersion: v1.10.7
+    path: dev
+kind: ksonnet.io/app
+name: davnn
+registries:
+  incubator:
+    protocol: github
+    uri: github.com/ksonnet/parts/tree/master/incubator
+version: 0.0.1
