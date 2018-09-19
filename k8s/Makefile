@@ -19,49 +19,29 @@ build: FORCE
 	docker push davnetwork/dav-zookeeper:$(TIMESTAMP)
 	docker push davnetwork/dav-zookeeper-init:$(TIMESTAMP)
 
-deploy-zookeeper: FORCE
-	kubectl create configmap --namespace=davnn zookeeper-configmap --from-file=zookeeper/init.sh --from-file=zookeeper/zookeeper.properties --from-file=zookeeper/log4j.properties
-	kubectl apply -f zookeeper/zk-svc.json
-	kubectl apply -f zookeeper/zk-deployment.json
+deploy-zookeeper-dev: FORCE
+	cd zookeeper && ks apply dev
 
-deploy-zookeeper-dev: deploy-zookeeper
-	kubectl patch -f zookeeper/zk-deployment.json -p "$$(cat zookeeper/zk-deployment.dev.json)"
+deploy-zookeeper-prod: FORCE
+	cd zookeeper && ks apply prod
 
-deploy-zookeeper-prod: deploy-zookeeper
-	kubectl patch -f zookeeper/zk-deployment.json -p "$$(cat zookeeper/zk-deployment.prod.json)"
+remove-zookeeper-dev: FORCE
+	cd zookeeper && ks delete dev
 
-remove-zookeeper: FORCE
-	kubectl delete configmap --namespace=davnn zookeeper-configmap
-	kubectl delete -f zookeeper/zk-deployment.json
-	kubectl delete -f zookeeper/zk-svc.json
+remove-zookeeper-prod: FORCE
+	cd zookeeper && ks delete prod
 
-deploy-davnn: FORCE
-	kubectl create configmap --namespace=davnn kafka-configmap \
-		--from-file=davnn/kafka/init.sh \
-		--from-file=davnn/kafka/server.properties \
-		--from-file=davnn/kafka/log4j.properties
-	kubectl create configmap --namespace=davnn nginx-configmap \
-		--from-file=davnn/nginx/app.template
-	kubectl apply -f davnn/davnn-deployment.json
+deploy-davnn-dev: FORCE
+	cd davnn && ks apply dev
 
-deploy-davnn-dev: deploy-davnn
-	kubectl patch -f davnn/davnn-deployment.json -p "$$(cat davnn/davnn-deployment.dev.json)"
+deploy-davnn-prod: FORCE
+	cd davnn && ks apply prod
 
-deploy-davnn-prod: deploy-davnn
-	kubectl patch -f davnn/davnn-deployment.json -p "$$(cat davnn/davnn-deployment.prod.json)"
+remove-davnn-dev: FORCE
+	cd davnn && ks delete dev
 
-remove-davnn: FORCE
-	kubectl delete -f davnn/davnn-deployment.json
-	kubectl delete configmap --namespace=davnn kafka-configmap
-	kubectl delete configmap --namespace=davnn nginx-configmap
-
-deploy-global: FORCE
-	kubectl apply -f namespace.json
-	kubectl apply -f davnn-rbac.json
-
-remove-global: FORCE
-	kubectl delete -f davnn-rbac.json
-	kubectl delete -f namespace.json
+remove-davnn-prod: FORCE
+	cd davnn && ks delete prod
 
 start-proxy: FORCE
 	kubectl port-forward --namespace=davnn deployment/davnn 8080:80 9092:9092 7000:7000
