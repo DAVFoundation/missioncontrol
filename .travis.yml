@@ -1,3 +1,6 @@
+sudo: required
+services:
+  - docker
 language: node_js
 node_js:
 - '9'
@@ -15,6 +18,8 @@ before_script:
 script:
 - npm run tsc
 after_success:
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- cd k8s && make build
 after_failure:
 deploy:
 after_deploy:
