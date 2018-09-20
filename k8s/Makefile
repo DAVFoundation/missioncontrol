@@ -49,3 +49,6 @@ remove-davnn-prod: FORCE
 
 start-proxy: FORCE
 	kubectl port-forward --namespace=davnn deployment/davnn 8080:80 9092:9092 7000:7000
+
+start-proxy-zk: FORCE
+	kubectl port-forward --namespace=davnn service/zookeeper 2181:2181
