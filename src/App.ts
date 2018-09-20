@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express = require('express');
 import * as bodyParser from 'body-parser';
 import NeedController from './controllers/NeedController';
 import StatsController from './controllers/StatsController';

@@ -1,11 +1,12 @@
 import { Observable } from 'rxjs';
-import * as chai from 'chai';
-import chaiHttp = require('chai-http');
 import { cassandraDriver } from './mocks/cassandra-driver';
 jest.doMock('cassandra-driver', cassandraDriver);
 import { Application } from 'express';
 
+import chai = require('chai');
+import chaiHttp = require('chai-http');
 chai.use(chaiHttp);
+
 const expect = chai.expect;
 
 const kafkaMock = {
