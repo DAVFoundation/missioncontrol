@@ -13,13 +13,13 @@ build: FORCE
 	docker build ../. -f ../dockers/Dockerfile.zookeeper -t davnetwork/dav-zookeeper:$(TIMESTAMP)
 	docker build ../. -f ../dockers/Dockerfile.zookeeper-init -t davnetwork/dav-zookeeper-init:$(TIMESTAMP)
 
-	docker push davnetwork/dav-api:$(TIMESTAMP)
-	docker push davnetwork/dav-cassandra:$(TIMESTAMP)
-	docker push davnetwork/dav-kafka:$(TIMESTAMP)
-	docker push davnetwork/dav-kafka-init:$(TIMESTAMP)
-	docker push davnetwork/dav-nginx:$(TIMESTAMP)
-	docker push davnetwork/dav-zookeeper:$(TIMESTAMP)
-	docker push davnetwork/dav-zookeeper-init:$(TIMESTAMP)
+	# docker push davnetwork/dav-api:$(TIMESTAMP)
+	# docker push davnetwork/dav-cassandra:$(TIMESTAMP)
+	# docker push davnetwork/dav-kafka:$(TIMESTAMP)
+	# docker push davnetwork/dav-kafka-init:$(TIMESTAMP)
+	# docker push davnetwork/dav-nginx:$(TIMESTAMP)
+	# docker push davnetwork/dav-zookeeper:$(TIMESTAMP)
+	# docker push davnetwork/dav-zookeeper-init:$(TIMESTAMP)
 
 deploy-zookeeper-dev: FORCE
 	cd zookeeper && ks apply dev
@@ -42,10 +42,10 @@ deploy-davnn-prod: FORCE
 	cd davnn && ks apply prod --ext-str IMAGE_VERSION=$(VERSION)
 
 remove-davnn-dev: FORCE
-	cd davnn && ks delete dev
+	cd davnn && ks delete dev --ext-str IMAGE_VERSION=latest
 
 remove-davnn-prod: FORCE
-	cd davnn && ks delete prod
+	cd davnn && ks delete prod --ext-str IMAGE_VERSION=latest
 
 start-proxy: FORCE
 	kubectl port-forward --namespace=davnn deployment/davnn 8080:80 9092:9092 7000:7000
