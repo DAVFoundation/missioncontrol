@@ -13,13 +13,13 @@ build: FORCE
 	docker build ../. -f ../dockers/Dockerfile.zookeeper -t davnetwork/dav-zookeeper:$(TIMESTAMP)
 	docker build ../. -f ../dockers/Dockerfile.zookeeper-init -t davnetwork/dav-zookeeper-init:$(TIMESTAMP)
 
-	# docker push davnetwork/dav-api:$(TIMESTAMP)
-	# docker push davnetwork/dav-cassandra:$(TIMESTAMP)
-	# docker push davnetwork/dav-kafka:$(TIMESTAMP)
-	# docker push davnetwork/dav-kafka-init:$(TIMESTAMP)
-	# docker push davnetwork/dav-nginx:$(TIMESTAMP)
-	# docker push davnetwork/dav-zookeeper:$(TIMESTAMP)
-	# docker push davnetwork/dav-zookeeper-init:$(TIMESTAMP)
+	docker push davnetwork/dav-api:$(TIMESTAMP)
+	docker push davnetwork/dav-cassandra:$(TIMESTAMP)
+	docker push davnetwork/dav-kafka:$(TIMESTAMP)
+	docker push davnetwork/dav-kafka-init:$(TIMESTAMP)
+	docker push davnetwork/dav-nginx:$(TIMESTAMP)
+	docker push davnetwork/dav-zookeeper:$(TIMESTAMP)
+	docker push davnetwork/dav-zookeeper-init:$(TIMESTAMP)
 
 deploy-zookeeper-dev: FORCE
 	cd zookeeper && ks apply dev
