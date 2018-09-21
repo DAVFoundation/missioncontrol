@@ -21,6 +21,7 @@ local version = std.extVar('IMAGE_VERSION');
       metadata: {
         labels: {
           app: params.name,
+          version:version,
         },
         annotations: null,
       },
