@@ -22,27 +22,27 @@ build: FORCE
 	docker push davnetwork/dav-zookeeper-init:$(TIMESTAMP)
 
 deploy-zookeeper-dev: FORCE
-	cd zookeeper && ks apply dev
+	cd zookeeper && ks env set dev --server=https://$$(minikube ip):8443 && ks apply dev
 
 deploy-zookeeper-prod: FORCE
 	cd zookeeper && ks apply prod
 
 remove-zookeeper-dev: FORCE
-	cd zookeeper && ks delete dev
+	cd zookeeper && ks env set dev --server=https://$$(minikube ip):8443 && ks delete dev
 
 remove-zookeeper-prod: FORCE
 	cd zookeeper && ks delete prod
 
 deploy-davnn-dev: FORCE
 	@echo "Deploying version $(VERSION)"
-	cd davnn && ks apply dev --ext-str IMAGE_VERSION=$(VERSION)
+	cd davnn && ks env set dev --server=https://$$(minikube ip):8443 && ks apply dev --ext-str IMAGE_VERSION=$(VERSION)
 
 deploy-davnn-prod: FORCE
 	@echo "Deploying version $(VERSION)"
 	cd davnn && ks apply prod --ext-str IMAGE_VERSION=$(VERSION)
 
 remove-davnn-dev: FORCE
-	cd davnn && ks delete dev --ext-str IMAGE_VERSION=latest
+	cd davnn && ks env set dev --server=https://$$(minikube ip):8443 && ks delete dev --ext-str IMAGE_VERSION=latest
 
 remove-davnn-prod: FORCE
 	cd davnn && ks delete prod --ext-str IMAGE_VERSION=latest

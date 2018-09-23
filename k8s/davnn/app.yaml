@@ -3,7 +3,7 @@ environments:
   dev:
     destination:
       namespace: davnn
-      server: https://192.168.39.185:8443
+      server: https://192.168.39.126:8443
     k8sVersion: v1.10.0
     path: dev
   prod:
