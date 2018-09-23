@@ -9,7 +9,7 @@ Mission Control is a service running on the DAV network, and serving as a market
 
 ### K8S Cluster
 
-First think you need to do is create and connect to a K8S cluster.
+First thing you need to do is create and connect to a K8S cluster.
 This can be one of various options:
 1) A local K8S deployment (e.g. via [minikube](https://kubernetes.io/docs/setup/minikube/))
 1) A GCP GKE Cluster.
