@@ -32,7 +32,7 @@ export interface IProvider {
   protocol: string;
 }
 
-export interface IBoatChargingProvider extends IProvider {
+export interface IVesselChargingProvider extends IProvider {
   dimensions?: IDimensions;
 }
 

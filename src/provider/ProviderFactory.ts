@@ -1,6 +1,6 @@
 // ProviderFactory.ts
 import { DroneDeliveryProvider } from './DroneDeliveryProvider';
-import { BoatChargingProvider } from './BoatChargingProvider';
+import { VesselChargingProvider } from './VesselChargingProvider';
 import { IProtocolOptions } from '../types';
 import { BaseProvider } from './BaseProvider';
 import { RideHailingProvider } from './RideHailingProvider';
@@ -11,7 +11,7 @@ export default class ProviderFactory {
   // getProviderInstance(protocolOptions: { protocol:'drone_delivery' }): DroneDeliveryProvider;
   private _classMap: any = {
     drone_delivery: DroneDeliveryProvider,
-    boat_charging: BoatChargingProvider,
+    vessel_charging: VesselChargingProvider,
     ride_hailing: RideHailingProvider,
   };
 

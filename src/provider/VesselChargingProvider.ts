@@ -1,12 +1,12 @@
 import { BaseProvider } from './BaseProvider';
-import { IBoatChargingProvider, INeed } from '../types';
+import { IVesselChargingProvider, INeed } from '../types';
 import { types } from 'cassandra-driver';
 import Cassandra from '../Cassandra';
 
-export class BoatChargingProvider extends BaseProvider {
+export class VesselChargingProvider extends BaseProvider {
 
-  private protocol = 'boat_charging';
-  protected tableName = 'providers_boat_charging';
+  private protocol = 'vessel_charging';
+  protected tableName = 'providers_vessel_charging';
   protected protocolSpecificFields: string[]   = [
     'max_length',
     'max_width',
@@ -14,7 +14,7 @@ export class BoatChargingProvider extends BaseProvider {
     'max_weight',
   ];
 
-  public async save(provider: IBoatChargingProvider): Promise<boolean> {
+  public async save(provider: IVesselChargingProvider): Promise<boolean> {
     // save cassandra record
     const cassandra: Cassandra = await Cassandra.getInstance();
     return cassandra.save(this.getUpsertQuery(), [
@@ -30,7 +30,7 @@ export class BoatChargingProvider extends BaseProvider {
     ]);
   }
 
-  public async query(need: INeed): Promise<IBoatChargingProvider[]> {
+  public async query(need: INeed): Promise<IVesselChargingProvider[]> {
     const cassandra: Cassandra = await Cassandra.getInstance();
     const result: types.ResultSet = await cassandra.query(this.getReadQuery(), [
       need.data.location.latitude,
@@ -38,9 +38,9 @@ export class BoatChargingProvider extends BaseProvider {
       need.data.location.latitude,
       need.data.location.longitude,
     ]);
-    const providers: IBoatChargingProvider[] = [];
+    const providers: IVesselChargingProvider[] = [];
     for (const providerRow of result) {
-      const provider: IBoatChargingProvider = {
+      const provider: IVesselChargingProvider = {
         topicId: providerRow.topic_id,
         protocol: this.protocol,
         area: {

@@ -18,7 +18,7 @@ CREATE INDEX IF NOT EXISTS idx_max_lat
 CREATE INDEX IF NOT EXISTS idx_max_long
    ON davnn.providers_drone_delivery (max_long);
 
-CREATE TABLE IF NOT EXISTS davnn.providers_boat_charging (
+CREATE TABLE IF NOT EXISTS davnn.providers_vessel_charging (
 topic_id text PRIMARY KEY,
     min_lat double,
     min_long double,
@@ -30,14 +30,14 @@ topic_id text PRIMARY KEY,
     max_weight double
 );
 
-CREATE INDEX IF NOT EXISTS idx_boat_charging_min_lat
-   ON davnn.providers_boat_charging (min_lat);
-CREATE INDEX IF NOT EXISTS idx_boat_charging_min_long
-   ON davnn.providers_boat_charging (min_long);
-CREATE INDEX IF NOT EXISTS idx_boat_charging_max_lat
-   ON davnn.providers_boat_charging (max_lat);
-CREATE INDEX IF NOT EXISTS idx_boat_charging_max_long
-   ON davnn.providers_boat_charging (max_long);
+CREATE INDEX IF NOT EXISTS idx_vessel_charging_min_lat
+   ON davnn.providers_vessel_charging (min_lat);
+CREATE INDEX IF NOT EXISTS idx_vessel_charging_min_long
+   ON davnn.providers_vessel_charging (min_long);
+CREATE INDEX IF NOT EXISTS idx_vessel_charging_max_lat
+   ON davnn.providers_vessel_charging (max_lat);
+CREATE INDEX IF NOT EXISTS idx_vessel_charging_max_long
+   ON davnn.providers_vessel_charging (max_long);
 
 CREATE TABLE IF NOT EXISTS davnn.providers_ride_hailing (
     topic_id text PRIMARY KEY,
