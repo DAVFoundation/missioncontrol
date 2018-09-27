@@ -1,0 +1,18 @@
+{
+  "name": "k8s",
+  "version": "1.0.0",
+  "description": "",
+  "main": "getVersion.js",
+  "directories": {
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "docker-registry-client": "^3.3.0",
+    "i": "^0.3.6",
+    "npm": "^6.4.1"
+  }
+}

@@ -1,4 +1,5 @@
-VERSION=$(shell (docker pull -a davnetwork/dav-api >/dev/null) && (docker images |grep davnetwork/dav-api|awk '{print $$2}'|grep -e '^[0-9-]*$$' |sort -r | head -n 1))
+VERSION=$(shell ./getVersion.js)
+MINIKUBE_IP=$(shell minikube ip)
 
 FORCE:
 
@@ -22,27 +23,27 @@ build: FORCE
 	docker push davnetwork/dav-zookeeper-init:$(TIMESTAMP)
 
 deploy-zookeeper-dev: FORCE
-	cd zookeeper && ks env set dev --server=https://$$(minikube ip):8443 && ks apply dev
+	cd zookeeper && ks env set dev --server=https://$(MINIKUBE_IP):8443 && ks apply dev --ext-str IMAGE_VERSION=$(VERSION)
 
 deploy-zookeeper-prod: FORCE
-	cd zookeeper && ks apply prod
+	cd zookeeper && ks apply prod --ext-str IMAGE_VERSION=$(VERSION)
 
 remove-zookeeper-dev: FORCE
-	cd zookeeper && ks env set dev --server=https://$$(minikube ip):8443 && ks delete dev
+	cd zookeeper && ks env set dev --server=https://$(MINIKUBE_IP):8443 && ks delete dev --ext-str IMAGE_VERSION=latest
 
 remove-zookeeper-prod: FORCE
-	cd zookeeper && ks delete prod
+	cd zookeeper && ks delete prod --ext-str IMAGE_VERSION=latest
 
 deploy-davnn-dev: FORCE
 	@echo "Deploying version $(VERSION)"
-	cd davnn && ks env set dev --server=https://$$(minikube ip):8443 && ks apply dev --ext-str IMAGE_VERSION=$(VERSION)
+	cd davnn && ks env set dev --server=https://$(MINIKUBE_IP):8443 && ks apply dev --ext-str IMAGE_VERSION=$(VERSION)
 
 deploy-davnn-prod: FORCE
 	@echo "Deploying version $(VERSION)"
 	cd davnn && ks apply prod --ext-str IMAGE_VERSION=$(VERSION)
 
 remove-davnn-dev: FORCE
-	cd davnn && ks env set dev --server=https://$$(minikube ip):8443 && ks delete dev --ext-str IMAGE_VERSION=latest
+	cd davnn && ks env set dev --server=https://$(MINIKUBE_IP):8443 && ks delete dev --ext-str IMAGE_VERSION=latest
 
 remove-davnn-prod: FORCE
 	cd davnn && ks delete prod --ext-str IMAGE_VERSION=latest
