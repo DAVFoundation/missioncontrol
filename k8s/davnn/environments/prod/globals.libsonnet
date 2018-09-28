@@ -1,4 +1,5 @@
 {
+  SDK_DEBUG_LOG: 'true',
   resources: {
     'davnn-init-config': {
       limits: {

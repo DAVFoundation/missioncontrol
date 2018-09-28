@@ -21,7 +21,7 @@ local version = std.extVar('IMAGE_VERSION');
       metadata: {
         labels: {
           app: params.name,
-          version:version,
+          version: version,
         },
         annotations: null,
       },
@@ -118,6 +118,10 @@ local version = std.extVar('IMAGE_VERSION');
               {
                 name: 'KAFKA_HOST',
                 value: 'localhost:9092',
+              },
+              {
+                name: 'SDK_DEBUG_LOG',
+                value: params.SDK_DEBUG_LOG,
               },
             ],
             ports: [
