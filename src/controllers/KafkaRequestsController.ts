@@ -37,7 +37,7 @@ export default class KafkaRequestsController {
     public async getMessages(req: Request, res: Response) {
         try {
             const messages = await ((await Kafka.rawMessages(req.params.topicId))
-                .pipe(timeout(req.query.timeout)).pipe(map((message) => message.value)).toArray().toPromise());
+                .pipe(timeout(req.query.timeout)).pipe(map((message: any) => message.value)).toArray().toPromise());
             res.status(200).send(JSON.stringify(messages));
         } catch (err) {
             // tslint:disable-next-line:no-console
