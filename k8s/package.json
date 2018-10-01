@@ -2,14 +2,13 @@
   "name": "k8s",
   "version": "1.0.0",
   "description": "",
+  "license": "ISC",
+  "author": "",
   "main": "getVersion.js",
-  "directories": {
-  },
+  "directories": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "docker-registry-client": "^3.3.0",
     "i": "^0.3.6",
