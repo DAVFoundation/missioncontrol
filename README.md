@@ -100,7 +100,7 @@ make deploy-schema
 ### Use a local proxy
 
 Sometimes it's easier to debug local scripts using a local proxy.
-To run a local proxy that connect to your deployed pod run the following:
+To run a local proxy that connects to your deployed pod run the following:
 ```bash
 make proxy
 ```
