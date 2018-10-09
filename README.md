@@ -107,4 +107,4 @@ make proxy
 
 ## Contributing Code, Reporting Bugs and Suggesting Features
 
-As an organization committed to extreme transparency, collaboration, and open-sourcing in all of our work, we welcome participation from anyone willing to devote some time and energy to help shape DAV - whether you are a first time contributor, a veteran open-sourcerer, or just looking to suggest some ideas.
+As an organization committed to extreme transparency, collaboration, and open-sourcing all of our work, we welcome participation from anyone willing to devote some time and energy to help shape DAV - whether you are a first time contributor, a veteran open-sourcerer, or just looking to suggest some ideas.
