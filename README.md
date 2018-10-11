@@ -7,7 +7,7 @@ Mission Control is a service running on the DAV network, and serving as a market
 
 ## Deploy
 
-### K8S (Kubernetes) Cluster
+### Kubernetes (K8S) Cluster
 
 First thing you need to do is create and connect to a Kubernetes (K8S) cluster.
 This can be one of various options:
