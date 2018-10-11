@@ -7,16 +7,16 @@ Mission Control is a service running on the DAV network, and serving as a market
 
 ## Deploy
 
-### K8S Cluster
+### K8S (Kubernetes) Cluster
 
-First thing you need to do is create and connect to a K8S cluster.
+First thing you need to do is create and connect to a Kubernetes (K8S) cluster.
 This can be one of various options:
 1) A local K8S deployment (e.g. via [minikube](https://kubernetes.io/docs/setup/minikube/))
 1) A GCP GKE Cluster.
 1) A K8S Cluster deployed on AWS EC2 (e.g. using [kops](https://kubernetes.io/docs/setup/custom-cloud/kops/))
 1) An AWS EKS cluster.
 
-* You need to have a local install of kubectl configured to your cluster
+* You need to have a local install of kubectl configured to operate your cluster
 
 ### Prepare your K8S cluster
 
