@@ -18,7 +18,8 @@ const kafkaMock = {
 };
 
 jest.doMock('dav-js', () => ({ KafkaNode: jest.fn(() => kafkaMock) }));
-describe('AppTests', () => {
+
+describe('App', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     jest.resetModules();
