@@ -33,11 +33,12 @@
       "options": [150]
     },
     "quotemark": [true, "single"],
+    "arrow-parens": [true, "ban-single-arg-parens"],
     "new-parens": true,
     "no-arg": true,
     "no-bitwise": true,
     "no-conditional-assignment": true,
-    "no-consecutive-blank-lines": false,
+    "no-consecutive-blank-lines": true,
     "no-console": {
       "severity": "warning",
       "options": [
