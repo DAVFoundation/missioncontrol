@@ -7,12 +7,16 @@ describe('Provider Factory', () => {
   it('should initiate correct provider', () => {
     expect.assertions(1);
     const providerFactory = new ProviderFactory();
-    expect(providerFactory.getProviderInstance({ protocol: 'drone_delivery'})).toBeInstanceOf(DroneDeliveryProvider);
+    expect(
+      providerFactory.getProviderInstance({ protocol: 'drone_delivery' }),
+    ).toBeInstanceOf(DroneDeliveryProvider);
   });
 
   it('should throw unimplemented provider', () => {
     const providerFactory = new ProviderFactory();
     const protocolName = 'drone_charging';
-    expect(() => providerFactory.getProviderInstance({ protocol: protocolName})).toThrowError(`Protocol "${protocolName}" is not implemented`);
+    expect(() =>
+      providerFactory.getProviderInstance({ protocol: protocolName }),
+    ).toThrowError(`Protocol "${protocolName}" is not implemented`);
   });
 });

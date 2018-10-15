@@ -69,5 +69,4 @@ describe('Drone Delivery Provider', () => {
     const droneDeliveryProvider = new VesselChargingProvider();
     expect(await droneDeliveryProvider.query(need)).toEqual([provider]);
   });
-
 });

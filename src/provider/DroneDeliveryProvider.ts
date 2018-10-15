@@ -4,10 +4,9 @@ import { types } from 'cassandra-driver';
 import Cassandra from '../Cassandra';
 
 export class DroneDeliveryProvider extends BaseProvider {
-
   private protocol = 'drone_delivery';
   protected tableName = 'providers_drone_delivery';
-  protected protocolSpecificFields: string[]   = [
+  protected protocolSpecificFields: string[] = [
     'max_length',
     'max_width',
     'max_height',

@@ -1,4 +1,7 @@
-import { cassandraDriver, cassandraFailingToConnectDriver } from './mocks/cassandra-driver';
+import {
+  cassandraDriver,
+  cassandraFailingToConnectDriver,
+} from './mocks/cassandra-driver';
 
 describe('cassandra', () => {
   beforeEach(() => {
@@ -21,7 +24,9 @@ describe('cassandra', () => {
     // TODO: Create mock implementation in the test
     jest.doMock('cassandra-driver', cassandraFailingToConnectDriver);
     const cassandraInstance = (await import('./Cassandra')).default;
-    await expect(cassandraInstance.getInstance()).rejects.toEqual(Error('Cassandra connection error: false'));
+    await expect(cassandraInstance.getInstance()).rejects.toEqual(
+      Error('Cassandra connection error: false'),
+    );
   });
 
   it('should save record', async () => {
@@ -29,7 +34,12 @@ describe('cassandra', () => {
     jest.doMock('cassandra-driver', cassandraDriver);
     const cassandra = (await import('./Cassandra')).default;
     const cassandraInstance = await cassandra.getInstance();
-    expect(await cassandraInstance.save('INSERT INTO table (key, value) VALUES (?, ?)', ['key', 'value'])).toEqual(true);
+    expect(
+      await cassandraInstance.save(
+        'INSERT INTO table (key, value) VALUES (?, ?)',
+        ['key', 'value'],
+      ),
+    ).toEqual(true);
   });
 
   it('should save record', async () => {
@@ -37,7 +47,9 @@ describe('cassandra', () => {
     jest.doMock('cassandra-driver', cassandraDriver);
     const cassandra = (await import('./Cassandra')).default;
     const cassandraInstance = await cassandra.getInstance();
-    expect(await cassandraInstance.getStatus()).toEqual({ connected: true, hosts: [{address: 'localhost', connections: 0, queries: 1}] });
+    expect(await cassandraInstance.getStatus()).toEqual({
+      connected: true,
+      hosts: [{ address: 'localhost', connections: 0, queries: 1 }],
+    });
   });
-
 });

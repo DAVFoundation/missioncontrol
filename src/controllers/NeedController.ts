@@ -11,7 +11,10 @@ import { INeed, IProvider } from '../types';
  */
 export default class NeedController {
   private static async sendNeed(topics: string[], need: any): Promise<void> {
-    const payloads = topics.map((topic) => ({ topic, messages: JSON.stringify(need) }));
+    const payloads = topics.map(topic => ({
+      topic,
+      messages: JSON.stringify(need),
+    }));
     return Kafka.sendPayloads(payloads);
   }
 
@@ -24,7 +27,9 @@ export default class NeedController {
     const topicId = req.params.topicId;
     const { location, protocol } = req.body;
     const providerFactory = new ProviderFactory();
-    const provider: BaseProvider = providerFactory.getProviderInstance({ protocol });
+    const provider: BaseProvider = providerFactory.getProviderInstance({
+      protocol,
+    });
     // save record in cassandra
     try {
       const need: INeed = {
@@ -35,7 +40,7 @@ export default class NeedController {
 
       const results: IProvider[] = await provider.query(need);
       if (results.length > 0) {
-        const topics: string[] = results.map((result) => {
+        const topics: string[] = results.map(result => {
           return result.topicId;
         });
         const originalNeed: any = req.body;
@@ -56,5 +61,4 @@ export default class NeedController {
       });
     }
   }
-
 }

@@ -7,7 +7,6 @@ import Kafka from '../Kafka';
 // TODO: Need to add tests for this module
 
 export default class StatsController {
-
   public getInfo(req: Request, res: Response) {
     res.status(200).send({
       message: 'DAV Network Node',
@@ -39,10 +38,10 @@ export default class StatsController {
       cassandra: cassandraStatus,
     };
 
-    const status = cassandraStatus.connected && kafkaStatus.connected ? 200 : 503;
+    const status =
+      cassandraStatus.connected && kafkaStatus.connected ? 200 : 503;
     res.status(status).send({
       message: stats,
     });
   }
 }
-

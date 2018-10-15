@@ -4,7 +4,6 @@ import { types } from 'cassandra-driver';
 import Cassandra from '../Cassandra';
 
 export class RideHailingProvider extends BaseProvider {
-
   private protocol = 'ride_hailing';
   protected tableName = 'providers_ride_hailing';
 
@@ -22,10 +21,22 @@ export class RideHailingProvider extends BaseProvider {
 
   public async query(need: INeed): Promise<IProvider[]> {
     const cassandra: Cassandra = await Cassandra.getInstance();
-    const minLat = Math.min(need.data.pickupLocation.lat, need.data.destinationLocation.lat);
-    const minLong = Math.min(need.data.pickupLocation.long, need.data.destinationLocation.long);
-    const maxLat = Math.max(need.data.pickupLocation.lat, need.data.destinationLocation.lat);
-    const maxLong = Math.max(need.data.pickupLocation.long, need.data.destinationLocation.long);
+    const minLat = Math.min(
+      need.data.pickupLocation.lat,
+      need.data.destinationLocation.lat,
+    );
+    const minLong = Math.min(
+      need.data.pickupLocation.long,
+      need.data.destinationLocation.long,
+    );
+    const maxLat = Math.max(
+      need.data.pickupLocation.lat,
+      need.data.destinationLocation.lat,
+    );
+    const maxLong = Math.max(
+      need.data.pickupLocation.long,
+      need.data.destinationLocation.long,
+    );
     const result: types.ResultSet = await cassandra.query(this.getReadQuery(), [
       minLat,
       minLong,

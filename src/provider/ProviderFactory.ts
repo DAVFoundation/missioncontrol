@@ -6,7 +6,6 @@ import { BaseProvider } from './BaseProvider';
 import { RideHailingProvider } from './RideHailingProvider';
 
 export default class ProviderFactory {
-
   // getProviderInstance(protocolOptions: ProtocolOptions): BaseProvider;
   // getProviderInstance(protocolOptions: { protocol:'drone_delivery' }): DroneDeliveryProvider;
   private _classMap: any = {
@@ -15,13 +14,17 @@ export default class ProviderFactory {
     ride_hailing: RideHailingProvider,
   };
 
-  public getProviderInstance(protocolOptions: IProtocolOptions): BaseProvider | DroneDeliveryProvider {
+  public getProviderInstance(
+    protocolOptions: IProtocolOptions,
+  ): BaseProvider | DroneDeliveryProvider {
     if (this._classMap[protocolOptions.protocol]) {
       const providerClass = this._classMap[protocolOptions.protocol];
       const provider = new providerClass();
       return provider;
     } else {
-      throw new Error(`Protocol "${protocolOptions.protocol}" is not implemented`);
+      throw new Error(
+        `Protocol "${protocolOptions.protocol}" is not implemented`,
+      );
     }
   }
 }

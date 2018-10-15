@@ -4,10 +4,9 @@ import { types } from 'cassandra-driver';
 import Cassandra from '../Cassandra';
 
 export class VesselChargingProvider extends BaseProvider {
-
   private protocol = 'vessel_charging';
   protected tableName = 'providers_vessel_charging';
-  protected protocolSpecificFields: string[]   = [
+  protected protocolSpecificFields: string[] = [
     'max_length',
     'max_width',
     'max_height',

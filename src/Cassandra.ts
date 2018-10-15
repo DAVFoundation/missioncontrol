@@ -2,7 +2,6 @@ import { Client, types, metadata } from 'cassandra-driver';
 import { ICassandraStatus } from './types';
 
 export default class Cassandra {
-
   private static _instance: Cassandra = null;
 
   private connected: boolean = false;
@@ -20,7 +19,6 @@ export default class Cassandra {
   private client: Client;
 
   public static async getInstance(): Promise<Cassandra> {
-
     if (Cassandra._instance === null) {
       Cassandra._instance = new Cassandra();
       await Cassandra._instance.connect();
@@ -56,7 +54,7 @@ export default class Cassandra {
     };
     if (this.connected) {
       const state: metadata.ClientState = this.client.getState();
-      status.hosts = state.getConnectedHosts().map((host) => {
+      status.hosts = state.getConnectedHosts().map(host => {
         return {
           address: host.address,
           connections: state.getOpenConnections(host),
@@ -80,11 +78,12 @@ export default class Cassandra {
   public async query(query: string, params: any[]): Promise<types.ResultSet> {
     // save record in cassandra
     try {
-      const result = await this.client.execute(query, params, { prepare: true });
+      const result = await this.client.execute(query, params, {
+        prepare: true,
+      });
       return result;
     } catch (err) {
       throw Error('Cassandra query failed: ' + JSON.stringify(err));
     }
   }
-
 }

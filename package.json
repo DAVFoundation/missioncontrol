@@ -2,25 +2,25 @@
   "name": "apiserver",
   "version": "1.0.0",
   "description": "API Server",
-  "main": "index.js",
-  "scripts": {
-    "preinstall": "cp ./.githooks/* .git/hooks",
-    "start": "ts-node ./src/index.ts",
-    "tslint": "gulp tslint",
-    "tsc": "gulp tsc",
-    "jest": "gulp jest",
-    "spellcheck": "npx gulp spellcheck"
+  "homepage": "https://github.com/DAVFoundation/missioncontrol#readme",
+  "bugs": {
+    "url": "https://github.com/DAVFoundation/missioncontrol/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DAVFoundation/missioncontrol.git"
   },
-  "author": "",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/DAVFoundation/missioncontrol/issues"
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "cp ./.githooks/* .git/hooks",
+    "jest": "gulp jest",
+    "spellcheck": "npx gulp spellcheck",
+    "start": "ts-node ./src/index.ts",
+    "tsc": "gulp tsc",
+    "tslint": "gulp tslint"
   },
-  "homepage": "https://github.com/DAVFoundation/missioncontrol#readme",
   "dependencies": {
     "cassandra-driver": "^3.5.0",
     "dav-js": "DAVFoundation/dav-js",

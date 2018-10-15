@@ -2,7 +2,6 @@ import { IProvider } from '../types';
 import Cassandra from '../Cassandra';
 
 export abstract class BaseProvider {
-
   protected basicFields: string[] = [
     'topic_id',
     'min_lat',
@@ -16,7 +15,9 @@ export abstract class BaseProvider {
   protected tableName: string;
 
   protected getUpsertQuery(): string {
-    const fields: string[] = this.basicFields.concat(this.protocolSpecificFields);
+    const fields: string[] = this.basicFields.concat(
+      this.protocolSpecificFields,
+    );
     const markers: string[] = new Array<string>(fields.length).fill('?');
 
     return `INSERT INTO ${Cassandra.keyspace}.${this.tableName} (
@@ -27,8 +28,12 @@ export abstract class BaseProvider {
   }
 
   protected getReadQuery(): string {
-    const fields: string[] = this.basicFields.concat(this.protocolSpecificFields);
-    return `SELECT ${fields.join(', ')} FROM ${Cassandra.keyspace}.${this.tableName}
+    const fields: string[] = this.basicFields.concat(
+      this.protocolSpecificFields,
+    );
+    return `SELECT ${fields.join(', ')} FROM ${Cassandra.keyspace}.${
+      this.tableName
+    }
                     WHERE min_lat < ?
                     AND min_long < ?
                     AND max_lat > ?
@@ -38,5 +43,4 @@ export abstract class BaseProvider {
 
   public abstract save(provider: IProvider): Promise<boolean>;
   public abstract query(need: any): any;
-
 }

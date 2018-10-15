@@ -19,14 +19,12 @@ const kafkaMock = {
 
 jest.doMock('dav-js', () => ({ KafkaNode: jest.fn(() => kafkaMock) }));
 describe('AppTests', () => {
-
   beforeEach(() => {
     jest.resetAllMocks();
     jest.resetModules();
   });
 
   describe('baseRoute', () => {
-
     let app: Application;
 
     beforeAll(async () => {
@@ -45,7 +43,6 @@ describe('AppTests', () => {
   });
 
   describe('status', () => {
-
     let app: Application;
     beforeAll(async () => {
       app = (await import('./App')).default;
@@ -68,7 +65,6 @@ describe('AppTests', () => {
   });
 
   describe('provider', () => {
-
     let app: Application;
 
     beforeAll(async () => {
@@ -91,14 +87,15 @@ describe('AppTests', () => {
     };
 
     it('should save provider', async () => {
-      const res = await chai.request(app).post('/needsForType/topic1').send(requestData);
+      const res = await chai
+        .request(app)
+        .post('/needsForType/topic1')
+        .send(requestData);
       expect(res.body.message).to.eql('Provider was saved');
     });
-
   });
 
   describe('need', () => {
-
     let app: Application;
 
     beforeAll(async () => {
@@ -115,16 +112,16 @@ describe('AppTests', () => {
     };
 
     it('should published need', async () => {
-      const res = await chai.request(app).post('/publishNeed/topic2').send(requestData);
+      const res = await chai
+        .request(app)
+        .post('/publishNeed/topic2')
+        .send(requestData);
       expect(res.body.message).to.eql('Need was published');
     });
-
   });
 
   describe('kafka', () => {
-
     describe('createTopic method', () => {
-
       it('should create topic without errors', async () => {
         const app = (await import('./App')).default;
         const res = await chai.request(app).post('/topic/create/testTopic');
@@ -144,7 +141,6 @@ describe('AppTests', () => {
     });
 
     describe('sendMessage method', () => {
-
       it('should send message without errors', async () => {
         const app = (await import('./App')).default;
         const res = await chai.request(app).post('/topic/publish/testTopic');
@@ -164,38 +160,80 @@ describe('AppTests', () => {
     });
 
     describe('getMessages method', () => {
-
       it('should get one message without errors', async () => {
-        const messageContentObject = JSON.stringify({ protocol: 'drone-charging', type: 'bid', price: '3' });
-        const messages = Observable.from([{ topic: 'topicTest', value: messageContentObject, offset: 0, highWaterOffset: 1 }]);
+        const messageContentObject = JSON.stringify({
+          protocol: 'drone-charging',
+          type: 'bid',
+          price: '3',
+        });
+        const messages = Observable.from([
+          {
+            topic: 'topicTest',
+            value: messageContentObject,
+            offset: 0,
+            highWaterOffset: 1,
+          },
+        ]);
         kafkaMock.rawMessages.mockResolvedValue(messages);
         const app = (await import('./App')).default;
-        const res = await chai.request(app).get('/topic/consume/testTopic').query({ timeout: 1000 });
+        const res = await chai
+          .request(app)
+          .get('/topic/consume/testTopic')
+          .query({ timeout: 1000 });
 
         expect(res.status).to.eql(200);
         expect(res.text).to.eql(JSON.stringify([messageContentObject]));
       });
 
       it('should get two message without errors', async () => {
-        const firstMessageContentObject = JSON.stringify({ protocol: 'drone-charging', type: 'bid', price: '3' });
-        const secondMessageContentObject = JSON.stringify({ protocol: 'drone-delivering', type: 'bid', price: '34' });
-        const firstMessage = { topic: 'topic', value: firstMessageContentObject, offset: 0, highWaterOffset: 2 };
-        const secondMessage = { topic: 'topic', value: secondMessageContentObject, offset: 1, highWaterOffset: 2 };
+        const firstMessageContentObject = JSON.stringify({
+          protocol: 'drone-charging',
+          type: 'bid',
+          price: '3',
+        });
+        const secondMessageContentObject = JSON.stringify({
+          protocol: 'drone-delivering',
+          type: 'bid',
+          price: '34',
+        });
+        const firstMessage = {
+          topic: 'topic',
+          value: firstMessageContentObject,
+          offset: 0,
+          highWaterOffset: 2,
+        };
+        const secondMessage = {
+          topic: 'topic',
+          value: secondMessageContentObject,
+          offset: 1,
+          highWaterOffset: 2,
+        };
         const messages = Observable.from([firstMessage, secondMessage]);
         kafkaMock.rawMessages.mockResolvedValue(messages);
 
         const app = (await import('./App')).default;
-        const res = await chai.request(app).get('/topic/consume/testTopic').query({ timeout: 1000 });
+        const res = await chai
+          .request(app)
+          .get('/topic/consume/testTopic')
+          .query({ timeout: 1000 });
 
         expect(res.status).to.eql(200);
-        expect(res.text).to.eql(JSON.stringify([firstMessageContentObject, secondMessageContentObject]));
+        expect(res.text).to.eql(
+          JSON.stringify([
+            firstMessageContentObject,
+            secondMessageContentObject,
+          ]),
+        );
       });
 
       it('should get timeout due to empty topic', async () => {
         const messages = Observable.from([]);
         kafkaMock.rawMessages.mockResolvedValue(messages);
         const app = (await import('./App')).default;
-        const res = await chai.request(app).get('/topic/consume/testTopic').query({ timeout: 1000 });
+        const res = await chai
+          .request(app)
+          .get('/topic/consume/testTopic')
+          .query({ timeout: 1000 });
 
         expect(res.status).to.eql(200);
         expect(res.text).to.eql(JSON.stringify([]));

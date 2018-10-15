@@ -19,9 +19,11 @@ export interface IHost {
 
 export class ClientState {
   public getConnectedHosts(): IHost[] {
-    return [{
-      address: 'localhost',
-    }];
+    return [
+      {
+        address: 'localhost',
+      },
+    ];
   }
   public getInFlightQueries(host: IHost): number {
     return 1;
@@ -57,14 +59,14 @@ export class ResultSet {
     return {
       next: () => {
         if (this.index < this.values.length) {
-          return {value: this.values[this.index++], done: false};
+          return { value: this.values[this.index++], done: false };
         } else {
           this.index = 0; // If we would like to iterate over this again without forcing manual update of the index
-          return {done: true};
+          return { done: true };
         }
       },
     };
-   }
+  }
 
   public first() {
     return this.values[0];
@@ -77,7 +79,7 @@ export const types = {
     remote: {},
   },
   ResultSet,
-  Row: { },
+  Row: {},
 };
 
 export const cassandraDriver = () => {
