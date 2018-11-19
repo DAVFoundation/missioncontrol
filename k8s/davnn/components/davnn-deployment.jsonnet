@@ -5,7 +5,7 @@ local resources = params.resources;
 local version = std.extVar('IMAGE_VERSION');
 {
   apiVersion: 'apps/v1',
-  kind: 'Deployment',
+  kind: 'StatefulSet',
   metadata: {
     name: params.name,
     namespace: globals.davnnNamespace,
@@ -16,6 +16,7 @@ local version = std.extVar('IMAGE_VERSION');
         app: params.name,
       },
     },
+    serviceName: 'davnn',
     replicas: globals.replicas,
     template: {
       metadata: {
