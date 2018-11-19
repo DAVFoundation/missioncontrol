@@ -26,7 +26,7 @@ OUTSIDE_HOST=localhost
 if [ $? -ne 0 ]; then
   echo "Outside (i.e. cluster-external access) host lookup command failed"
 else
-  OUTSIDE_PORT=9094
+  OUTSIDE_PORT=9096
   SEDS+=("s|#init#advertised.listeners=OUTSIDE://#init#|advertised.listeners=OUTSIDE://${OUTSIDE_HOST}:${OUTSIDE_PORT}|")
   ANNOTATIONS="$ANNOTATIONS kafka-listener-outside-host=$OUTSIDE_HOST kafka-listener-outside-port=$OUTSIDE_PORT"
 fi
