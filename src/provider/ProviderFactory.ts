@@ -4,6 +4,7 @@ import { VesselChargingProvider } from './VesselChargingProvider';
 import { IProtocolOptions } from '../types';
 import { BaseProvider } from './BaseProvider';
 import { RideHailingProvider } from './RideHailingProvider';
+import { VehicleRiderProvider } from './VehicleRiderProvider';
 
 export default class ProviderFactory {
   // getProviderInstance(protocolOptions: ProtocolOptions): BaseProvider;
@@ -12,6 +13,7 @@ export default class ProviderFactory {
     drone_delivery: DroneDeliveryProvider,
     vessel_charging: VesselChargingProvider,
     ride_hailing: RideHailingProvider,
+    vehicle_rider: VehicleRiderProvider,
   };
 
   public getProviderInstance(
