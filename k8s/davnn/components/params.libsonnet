@@ -7,6 +7,8 @@ local globals = import '../components/globals.libsonnet';
     'davnn-deployment': {
       name: 'davnn',
     },
+    'davnn-service': {
+    },
     'kafka-configmap': {
       name: 'kafka-configmap',
     },
