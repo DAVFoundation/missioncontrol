@@ -22,5 +22,5 @@ module.exports = [
   'cassandra',
   'upsert',
   'req',
-  'keyspace'
+  'keyspace',
 ];
