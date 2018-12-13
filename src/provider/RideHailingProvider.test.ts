@@ -34,8 +34,8 @@ describe('Ride Hailing Provider', () => {
   };
 
   it('should save provider', async () => {
-      const rideHailingProvider = new RideHailingProvider();
-      expect(await rideHailingProvider.save(provider)).toBe(true);
+    const rideHailingProvider = new RideHailingProvider();
+    expect(await rideHailingProvider.save(provider)).toBe(true);
   });
   it('should load provider', async () => {
     const rideHailingProvider = new RideHailingProvider();
