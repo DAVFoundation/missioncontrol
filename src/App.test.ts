@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { cassandraDriver } from './mocks/cassandra-driver';
+import { cassandraDriver, cassandraFailingToConnectDriver } from './mocks/cassandra-driver';
 jest.doMock('cassandra-driver', cassandraDriver);
 import { Application } from 'express';
 
@@ -43,7 +43,7 @@ describe('App', () => {
     });
   });
 
-  describe('status', () => {
+  describe('status (ok)', () => {
     let app: Application;
     beforeAll(async () => {
       app = (await import('./App')).default;
@@ -62,6 +62,33 @@ describe('App', () => {
     it('should return status connected', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message).to.eql(expectedResult);
+    });
+  });
+  describe('status (failure)', () => {
+    let app: Application;
+    beforeAll(async () => {
+      jest.doMock('cassandra-driver', cassandraFailingToConnectDriver);
+      app = (await import('./App')).default;
+    });
+
+    const expectedResult = {
+      app: { connected: true },
+      kafka: { connected: true },
+      cassandra: { connected: false },
+    };
+
+    it('should return status HTTP 503 when there is no Cassandra', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.status).to.eql(503);
+    });
+
+    it('should return error when there is no Cassandra', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.body.message).to.eql(expectedResult);
+    });
+
+    afterAll(async () => {
+      jest.doMock('cassandra-driver', cassandraDriver);
     });
   });
 
