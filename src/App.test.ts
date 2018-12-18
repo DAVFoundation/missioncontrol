@@ -1,5 +1,8 @@
 import { Observable } from 'rxjs';
-import { cassandraDriver, cassandraFailingToConnectDriver } from './mocks/cassandra-driver';
+import {
+  cassandraDriver,
+  cassandraFailingToConnectDriver,
+} from './mocks/cassandra-driver';
 jest.doMock('cassandra-driver', cassandraDriver);
 import { Application } from 'express';
 
