@@ -95,7 +95,7 @@ describe('App', () => {
       expect(res.status).to.eql(503);
     });
 
-    it('should return connected status for the app itself', async () => {
+    it('should return connected status for the app itself even if something is failing', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.app.connected).to.eql(true);
     });
