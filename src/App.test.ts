@@ -82,6 +82,11 @@ describe('App', () => {
       expect(res.body.message).to.eql(expectedResult);
     });
 
+    it('should return JSON', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.type).to.eql('application/json');
+    });
+
     it('should return connected status for the app itself', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.app.connected).to.eql(true);
