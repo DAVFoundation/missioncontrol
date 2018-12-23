@@ -35,6 +35,11 @@ describe('App', () => {
       app = (await import('./App')).default;
     });
 
+    it('should return HTTP 200', async () => {
+      const res = await chai.request(app).get('/');
+      expect(res.status).to.eql(200);
+    });
+
     it('should be json', async () => {
       const res = await chai.request(app).get('/');
       expect(res.type).to.eql('application/json');
