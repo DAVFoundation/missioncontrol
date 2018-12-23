@@ -92,7 +92,7 @@ describe('App', () => {
 
     const expectedResult = {
       app: { connected: true },
-      kafka: { connected: true },
+      kafka: { connected: false },
       cassandra: { connected: false },
     };
 
