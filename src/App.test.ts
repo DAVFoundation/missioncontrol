@@ -86,6 +86,11 @@ describe('App', () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.app.connected).to.eql(true);
     });
+
+    it('should return connected status for Kafka', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.body.message.kafka.connected).to.eql(true);
+    });
   });
   describe('status (failure)', () => {
     let app: Application;
