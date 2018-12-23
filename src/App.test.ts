@@ -20,6 +20,16 @@ const kafkaMock = {
   isConnected: jest.fn(() => Promise.resolve(true)),
 };
 
+const kafkaFailingToConnectMock = {
+  createTopic: jest.fn(() => Promise.resolve()),
+  sendMessage: jest.fn(() => Promise.resolve()),
+  sendPayloads: jest.fn(() => Promise.resolve()),
+  rawMessages: jest.fn(() => Promise.resolve()),
+  isConnected: () => {
+    throw new Error('No Kafka, sorry');
+  },
+};
+
 jest.doMock('dav-js', () => ({ KafkaNode: jest.fn(() => kafkaMock) }));
 
 describe('App', () => {
