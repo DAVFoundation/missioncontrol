@@ -67,21 +67,6 @@ describe('App', () => {
       app = (await import('./App')).default;
     });
 
-    // TODO: Expected values are usually per test - not suite.
-    const expectedResult = {
-      app: { connected: true },
-      kafka: { connected: true },
-      cassandra: {
-        connected: true,
-        hosts: [{ address: 'localhost', connections: 0, queries: 1 }],
-      },
-    };
-
-    it('should return status connected', async () => {
-      const res = await chai.request(app).get('/health');
-      expect(res.body.message).to.eql(expectedResult);
-    });
-
     it('should return connected status for the app itself', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.app.connected).to.eql(true);
