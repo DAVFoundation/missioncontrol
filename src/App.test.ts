@@ -67,6 +67,11 @@ describe('App', () => {
       app = (await import('./App')).default;
     });
 
+    it('should return HTTP status 200', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.status).to.eql(200);
+    });
+
     it('should return connected status for the app itself', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.app.connected).to.eql(true);
