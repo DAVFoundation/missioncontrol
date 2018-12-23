@@ -106,6 +106,11 @@ describe('App', () => {
       expect(res.body.message).to.eql(expectedResult);
     });
 
+    it('should return error when there is no Kafka', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.body.message.kafka.connected).to.eql(false);
+    });
+
     afterAll(async () => {
       jest.doMock('cassandra-driver', cassandraDriver);
       jest.doMock('dav-js', () => ({ KafkaNode: jest.fn(() => kafkaMock) }));
