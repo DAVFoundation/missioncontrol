@@ -20,6 +20,16 @@ const kafkaMock = {
   isConnected: jest.fn(() => Promise.resolve(true)),
 };
 
+const kafkaFailingToConnectMock = {
+  createTopic: jest.fn(() => Promise.resolve()),
+  sendMessage: jest.fn(() => Promise.resolve()),
+  sendPayloads: jest.fn(() => Promise.resolve()),
+  rawMessages: jest.fn(() => Promise.resolve()),
+  isConnected: () => {
+    throw new Error('No Kafka, sorry');
+  },
+};
+
 jest.doMock('dav-js', () => ({ KafkaNode: jest.fn(() => kafkaMock) }));
 
 describe('App', () => {
@@ -33,6 +43,11 @@ describe('App', () => {
 
     beforeAll(async () => {
       app = (await import('./App')).default;
+    });
+
+    it('should return HTTP 200', async () => {
+      const res = await chai.request(app).get('/');
+      expect(res.status).to.eql(200);
     });
 
     it('should be json', async () => {
@@ -71,12 +86,13 @@ describe('App', () => {
     let app: Application;
     beforeAll(async () => {
       jest.doMock('cassandra-driver', cassandraFailingToConnectDriver);
+      jest.doMock('dav-js', () => ({ KafkaNode: jest.fn(() => kafkaFailingToConnectMock) }));
       app = (await import('./App')).default;
     });
 
     const expectedResult = {
       app: { connected: true },
-      kafka: { connected: true },
+      kafka: { connected: false },
       cassandra: { connected: false },
     };
 
@@ -90,8 +106,14 @@ describe('App', () => {
       expect(res.body.message).to.eql(expectedResult);
     });
 
+    it('should return error when there is no Kafka', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.body.message.kafka.connected).to.eql(false);
+    });
+
     afterAll(async () => {
       jest.doMock('cassandra-driver', cassandraDriver);
+      jest.doMock('dav-js', () => ({ KafkaNode: jest.fn(() => kafkaMock) }));
     });
   });
 
