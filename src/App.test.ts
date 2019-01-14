@@ -86,7 +86,9 @@ describe('App', () => {
     let app: Application;
     beforeAll(async () => {
       jest.doMock('cassandra-driver', cassandraFailingToConnectDriver);
-      jest.doMock('dav-js', () => ({ KafkaNode: jest.fn(() => kafkaFailingToConnectMock) }));
+      jest.doMock('dav-js', () => ({
+        KafkaNode: jest.fn(() => kafkaFailingToConnectMock),
+      }));
       app = (await import('./App')).default;
     });
 
