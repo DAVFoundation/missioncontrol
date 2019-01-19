@@ -92,12 +92,6 @@ describe('App', () => {
       app = (await import('./App')).default;
     });
 
-    const expectedResult = {
-      app: { connected: true },
-      kafka: { connected: false },
-      cassandra: { connected: false },
-    };
-
     it('should return status HTTP 503 when there is no Cassandra', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.status).to.eql(503);
@@ -105,7 +99,7 @@ describe('App', () => {
 
     it('should return error when there is no Cassandra', async () => {
       const res = await chai.request(app).get('/health');
-      expect(res.body.message).to.eql(expectedResult);
+      expect(res.body.message.cassandra.connected).to.eql(false);
     });
 
     it('should return error when there is no Kafka', async () => {
