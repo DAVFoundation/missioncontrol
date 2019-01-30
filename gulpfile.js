@@ -6,7 +6,7 @@ const spellcheck = require('gulp-ts-spellcheck').default;
 
 gulp.task('jest', done => {
   return gulp
-    .src('')
+    .src('jest.config.js')
     .on('error', function(err) {
       done(err);
     })
@@ -22,7 +22,7 @@ gulp.task('tslint', done => {
     .pipe(
       tslint({
         formatter: 'prose',
-      }),
+      })
     )
     .pipe(tslint.report());
 });
@@ -36,7 +36,7 @@ gulp.task('spellcheck', function(done) {
     .pipe(
       spellcheck({
         dictionary: require('./speller-dictionary.js'),
-      }),
+      })
     )
     .pipe(spellcheck.report({}));
 });
@@ -52,5 +52,5 @@ gulp.task('tsc', function(done) {
     .js.pipe(gulp.dest('build'));
 });
 
-gulp.task('compile', ['tslint', 'tsc']);
-gulp.task('test', ['compile', 'jest']);
+gulp.task('compile', gulp.series('tslint', 'tsc'));
+gulp.task('test', gulp.series('compile', 'jest'));
