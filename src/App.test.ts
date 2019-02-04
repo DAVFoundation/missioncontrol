@@ -102,7 +102,7 @@ describe('App', () => {
       app = (await import('./App')).default;
     });
 
-    it('should return status HTTP 503 when there is no Cassandra', async () => {
+    it('should return status HTTP 503 when something is failing', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.status).to.eql(503);
     });
