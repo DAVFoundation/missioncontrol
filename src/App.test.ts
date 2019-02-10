@@ -86,6 +86,11 @@ describe('App', () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.app.connected).to.eql(true);
     });
+
+    it('should return connected status for Kafka', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.body.message.kafka.connected).to.eql(true);
+    });
   });
   describe('status (failure)', () => {
     let app: Application;
@@ -97,12 +102,12 @@ describe('App', () => {
       app = (await import('./App')).default;
     });
 
-    it('should return status HTTP 503 when there is no Cassandra', async () => {
+    it('should return status HTTP 503 when something is failing', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.status).to.eql(503);
     });
 
-    it('should return connected status for the app itself', async () => {
+    it('should return connected status for the app itself even if something is failing', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.app.connected).to.eql(true);
     });
