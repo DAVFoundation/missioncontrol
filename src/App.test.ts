@@ -91,6 +91,11 @@ describe('App', () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.kafka.connected).to.eql(true);
     });
+
+    it('should have "localhost" as address of the single host in the Cassandra status message', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.body.message.cassandra.hosts).to.have.nested.property('[0].address', 'localhost');
+    });
   });
   describe('status (failure)', () => {
     let app: Application;
