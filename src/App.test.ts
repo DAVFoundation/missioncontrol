@@ -97,7 +97,7 @@ describe('App', () => {
       expect(res.body.message.cassandra.hosts).to.be.an.instanceof(Array);
       expect(res.body.message.cassandra.hosts).to.have.length(1);
     });
-    
+
     it('should have "localhost" as address of the single host in the Cassandra status message', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.cassandra.hosts).to.have.nested.property('[0].address', 'localhost');
@@ -105,7 +105,7 @@ describe('App', () => {
 
     it('should have zero connections in the Cassandra status message', async () => {
       const res = await chai.request(app).get('/health');
-      expect(res.body.message.cassandra.hosts).to.have.deep.nested.property('[0].connections', 0);
+      expect(res.body.message.cassandra.hosts).to.have.nested.property('[0].connections', 0);
     });
   });
 
