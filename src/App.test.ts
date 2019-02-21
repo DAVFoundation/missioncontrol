@@ -103,6 +103,11 @@ describe('App', () => {
       expect(res.body.message.cassandra.hosts).to.have.nested.property('[0].address', 'localhost');
     });
 
+    it('should return connected status for Cassandra', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.body.message.cassandra.connected).to.eql(true);
+    });
+
     it('should have zero connections in the Cassandra status message', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.cassandra.hosts).to.have.nested.property('[0].connections', 0);
