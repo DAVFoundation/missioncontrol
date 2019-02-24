@@ -16,7 +16,7 @@ const kafkaMock = {
   createTopic: jest.fn(() => Promise.resolve()),
   sendMessage: jest.fn(() => Promise.resolve()),
   sendPayloads: jest.fn(() => Promise.resolve()),
-  rawMessages: jest.fn(() => Promise.resolve()),
+  rawMessages: jest.fn().mockResolvedValue(null),
   isConnected: jest.fn(() => Promise.resolve(true)),
 };
 
@@ -24,7 +24,7 @@ const kafkaFailingToConnectMock = {
   createTopic: jest.fn(() => Promise.resolve()),
   sendMessage: jest.fn(() => Promise.resolve()),
   sendPayloads: jest.fn(() => Promise.resolve()),
-  rawMessages: jest.fn(() => Promise.resolve()),
+  rawMessages: jest.fn().mockResolvedValue(null),
   isConnected: () => {
     throw new Error('No Kafka, sorry');
   },
@@ -260,7 +260,7 @@ describe('App', () => {
             highWaterOffset: 1,
           },
         ]);
-        kafkaMock.rawMessages.mockResolvedValue(messages);
+        kafkaMock.rawMessages = jest.fn().mockResolvedValue(messages);
         const app = (await import('./App')).default;
         const res = await chai
           .request(app)
@@ -295,7 +295,7 @@ describe('App', () => {
           highWaterOffset: 2,
         };
         const messages = Observable.from([firstMessage, secondMessage]);
-        kafkaMock.rawMessages.mockResolvedValue(messages);
+        kafkaMock.rawMessages = jest.fn().mockResolvedValue(messages);
 
         const app = (await import('./App')).default;
         const res = await chai
@@ -314,7 +314,7 @@ describe('App', () => {
 
       it('should get timeout due to empty topic', async () => {
         const messages = Observable.from([]);
-        kafkaMock.rawMessages.mockResolvedValue(messages);
+        kafkaMock.rawMessages = jest.fn().mockResolvedValue(messages);
         const app = (await import('./App')).default;
         const res = await chai
           .request(app)
