@@ -115,7 +115,7 @@ describe('App', () => {
 
     it('should have 1 query in the Cassandra status message', async () => {
       const res = await chai.request(app).get('/health');
-      expect(res.body.message.cassandra.hosts).to.have.deep.nested.property('[0].queries', 1);
+      expect(res.body.message.cassandra.hosts).to.have.nested.property('[0].queries', 1);
     });
   });
 
