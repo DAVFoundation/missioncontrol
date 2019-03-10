@@ -179,6 +179,14 @@ describe('App', () => {
         .send(requestData);
       expect(res.body.message).to.eql('Provider was saved');
     });
+
+    it('should be json', async () => {
+      const res = await chai
+        .request(app)
+        .post('/needsForType/topic1')
+        .send(requestData);
+      expect(res.type).to.eql('application/json');
+    });
   });
 
   describe('need', () => {
