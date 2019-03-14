@@ -91,7 +91,6 @@ describe('App', () => {
       const res = await chai.request(app).get('/health');
       expect(res.body).to.be.instanceof(Object);
       expect(res.body).to.have.all.keys('message');
-
     });
 
     it('should return connected status for the app itself', async () => {
