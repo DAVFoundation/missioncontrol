@@ -22,7 +22,7 @@ gulp.task('tslint', done => {
     .pipe(
       tslint({
         formatter: 'prose',
-      })
+      }),
     )
     .pipe(tslint.report());
 });
@@ -36,7 +36,7 @@ gulp.task('spellcheck', function(done) {
     .pipe(
       spellcheck({
         dictionary: require('./speller-dictionary.js'),
-      })
+      }),
     )
     .pipe(spellcheck.report({}));
 });
