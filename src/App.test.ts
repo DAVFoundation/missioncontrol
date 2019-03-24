@@ -178,6 +178,14 @@ describe('App', () => {
       protocol: 'drone_delivery',
     };
 
+    it('should return HTTP status 200', async () => {
+      const res = await chai
+        .request(app)
+        .post('/needsForType/topic1')
+        .send(requestData);
+      expect(res.status).to.eql(200);
+    });
+
     it('should save provider', async () => {
       const res = await chai
         .request(app)
