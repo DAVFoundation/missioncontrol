@@ -67,6 +67,22 @@ describe('App', () => {
       app = (await import('./App')).default;
     });
 
+    it('should return HTTP status 200', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.status).to.eql(200);
+    });
+
+    it('should return JSON', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.type).to.eql('application/json');
+    });
+
+    it('should return an object with "message" property', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.body).to.be.instanceof(Object);
+      expect(res.body).to.have.all.keys('message');
+    });
+
     it('should return connected status for the app itself', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.app.connected).to.eql(true);
@@ -96,6 +112,11 @@ describe('App', () => {
     it('should have zero connections in the Cassandra status message', async () => {
       const res = await chai.request(app).get('/health');
       expect(res.body.message.cassandra.hosts).to.have.nested.property('[0].connections', 0);
+    });
+
+    it('should have 1 query in the Cassandra status message', async () => {
+      const res = await chai.request(app).get('/health');
+      expect(res.body.message.cassandra.hosts).to.have.nested.property('[0].queries', 1);
     });
   });
 
@@ -163,6 +184,14 @@ describe('App', () => {
         .post('/needsForType/topic1')
         .send(requestData);
       expect(res.body.message).to.eql('Provider was saved');
+    });
+
+    it('should be json', async () => {
+      const res = await chai
+        .request(app)
+        .post('/needsForType/topic1')
+        .send(requestData);
+      expect(res.type).to.eql('application/json');
     });
   });
 
