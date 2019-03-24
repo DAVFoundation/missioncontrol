@@ -211,6 +211,14 @@ describe('App', () => {
       protocol: 'drone_delivery',
     };
 
+    it('publish should return HTTP status 200', async () => {
+      const res = await chai
+        .request(app)
+        .post('/publishNeed/topic2')
+        .send(requestData);
+      expect(res.status).to.eql(200);
+    });
+
     it('should published need', async () => {
       const res = await chai
         .request(app)
