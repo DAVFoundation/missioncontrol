@@ -219,6 +219,14 @@ describe('App', () => {
       expect(res.status).to.eql(200);
     });
 
+    it('publish should return correct content type', async () => {
+      const res = await chai
+        .request(app)
+        .post('/publishNeed/topic2')
+        .send(requestData);
+      expect(res.type).to.eql('application/json');
+    });
+
     it('should published need', async () => {
       const res = await chai
         .request(app)
