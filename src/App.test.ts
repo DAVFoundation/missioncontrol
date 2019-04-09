@@ -227,7 +227,7 @@ describe('App', () => {
       expect(res.type).to.eql('application/json');
     });
 
-    it('should published need', async () => {
+    it('publish request should return appropriate JSON message', async () => {
       const res = await chai
         .request(app)
         .post('/publishNeed/topic2')
