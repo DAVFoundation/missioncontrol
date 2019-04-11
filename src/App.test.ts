@@ -203,6 +203,36 @@ describe('App', () => {
     });
   });
 
+  describe('provider (failure)', () => {
+    let app: Application;
+
+    const badRequestData = {
+      davId: 'david1',
+      area: {
+        min: { latitude: 43.331, longitude: 82.762 },
+        max: { latitude: 43.396312072116764, longitude: 83.08981250773137 },
+      },
+      dimensions: {
+        length: 1,
+        width: 1,
+        height: 1,
+      },
+      protocol: 'unknown_provider_that_never_existed',
+    };
+
+    beforeAll(async () => {
+      app = (await import('./App')).default;
+    });
+
+    it('should return HTTP status 500 for provider of unknown type', async () => {
+      const res = await chai
+        .request(app)
+        .post('/needsForType/topic1')
+        .send(badRequestData);
+      expect(res.status).to.eql(500);
+    });
+  });
+
   describe('need', () => {
     let app: Application;
 
