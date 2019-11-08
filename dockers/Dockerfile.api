@@ -1,4 +1,4 @@
-FROM node:9
+FROM node:alpine
 
 RUN apt-get update &&\
     apt-get install -y python-pip bash-completion curl git nano wget make
