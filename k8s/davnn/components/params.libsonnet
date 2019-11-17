@@ -4,10 +4,11 @@ local globals = import '../components/globals.libsonnet';
   components: {
     // Component-level parameters, defined initially from 'ks prototype use ...'
     // Each object below should correspond to a component in the components/ directory
-    'davnn-deployment': {
+    deployment: {
       name: 'davnn',
+      resources: {},
     },
-    'davnn-service': {
+    service: {
     },
     'kafka-configmap': {
       name: 'kafka-configmap',

@@ -1,5 +1,5 @@
 local env = std.extVar('__ksonnet/environments');
-local params = std.extVar('__ksonnet/params').components['davnn-deployment'];
+local params = std.extVar('__ksonnet/params').components.deployment;
 local globals = import '../components/globals.libsonnet';
 local resources = params.resources;
 local version = std.extVar('IMAGE_VERSION');
@@ -30,7 +30,7 @@ local version = std.extVar('IMAGE_VERSION');
         terminationGracePeriodSeconds: 30,
         initContainers: [{
           name: 'davnn-init-config',
-          image: 'davnetwork/dav-kafka-init:' + version,
+          image: 'davnetwork/kafka-init:' + version,
           resources: resources['davnn-init-config'],
           env: [
             {
@@ -76,7 +76,7 @@ local version = std.extVar('IMAGE_VERSION');
         containers: [
           {
             name: 'nginx',
-            image: 'davnetwork/dav-nginx:' + version,
+            image: 'davnetwork/nginx:' + version,
             resources: resources.nginx,
             env: [
               {
@@ -105,7 +105,7 @@ local version = std.extVar('IMAGE_VERSION');
           },
           {
             name: 'api',
-            image: 'davnetwork/dav-api:' + version,
+            image: 'davnetwork/api:' + version,
             resources: resources.api,
             env: [
               {
@@ -143,7 +143,7 @@ local version = std.extVar('IMAGE_VERSION');
           },
           {
             name: 'kafka',
-            image: 'davnetwork/dav-kafka:' + version,
+            image: 'davnetwork/kafka:' + version,
             resources: resources.kafka,
             env: [
               {
@@ -192,7 +192,7 @@ local version = std.extVar('IMAGE_VERSION');
           },
           {
             name: 'cassandra',
-            image: 'davnetwork/dav-cassandra:' + version,
+            image: 'davnetwork/cassandra:' + version,
             resources: resources.cassandra,
             ports: [
               {

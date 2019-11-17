@@ -1,5 +1,5 @@
 local env = std.extVar('__ksonnet/environments');
-local params = std.extVar('__ksonnet/params').components['davnn-service'];
+local params = std.extVar('__ksonnet/params').components.service;
 local globals = import '../components/globals.libsonnet';
 {
   apiVersion: 'v1',

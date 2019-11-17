@@ -11,39 +11,32 @@ Mission Control is a service running on the DAV network, and serving as a market
 
 The first thing you need to do is create and connect to a Kubernetes (K8S) cluster.
 This can be one of the various options:
-1) A local K8S deployment (e.g. via [minikube](https://kubernetes.io/docs/setup/minikube/))
-1) A GCP GKE Cluster
-1) A K8S Cluster deployed on AWS EC2 (e.g. using [kops](https://kubernetes.io/docs/setup/custom-cloud/kops/))
-1) An AWS EKS cluster
 
-* You need to have a local [install of kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) configured to operate your cluster.
+1. A local K8S deployment (e.g. via [minikube](https://kubernetes.io/docs/setup/minikube/))
+1. A GCP GKE Cluster
+1. A K8S Cluster deployed on AWS EC2 (e.g. using [kops](https://kubernetes.io/docs/setup/custom-cloud/kops/))
+1. An AWS EKS cluster
 
-### Prepare your K8S cluster
+- You need to have a local [install of kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) configured to operate your cluster.
+
+### Build images
 
 Open a terminal in the project folder and run:
+
 ```bash
-$ cd k8s
-$ make deploy-global
+make build
 ```
 
 ### Deploy a Zookeeper cluster
-** **This step should be done once per DAVNN cluster** **
+
+\*\* **This step should be done once per DAVNN cluster** \*\*
 
 At this stage, DAVNN pods require a ZK cluster to run.
 
 Open a terminal in the project folder and run:
-```bash
-$ cd k8s
-```
 
-If deploying a local(dev) version - run:
 ```bash
-$ make deploy-zookeeper-dev
-```
-
-If deploying a cloud(prod) version - run:
-```bash
-$ make deploy-zookeeper-prod
+make deploy-zookeeper
 ```
 
 Wait until the ZK cluster is active.
@@ -51,48 +44,20 @@ Wait until the ZK cluster is active.
 ### Deploy a DAVNN pod
 
 Open a terminal in the project folder and run:
-```bash
-$ cd k8s
-```
 
-If deploying a local(dev) version - run:
 ```bash
-$ make deploy-davnn-dev
-```
-
-If deploying a cloud(prod) version - run:
-```bash
-$ make deploy-davnn-prod
+make deploy-davnn
 ```
 
 Wait until your DAVNN pod is active.
 
 ### Create schema
-** **This step should be done once per DAVNN cluster** **
 
-Find your pod id:
-```bash
-$ kubectl get pods --namespace=davnn
-```
-
-Your should see something like this:
-```bash
-NAME                     READY     STATUS    RESTARTS   AGE
-davnn-7bf6f57c4b-6zxg7   4/4       Running   0          25m
-zookeeper-0              1/1       Running   0          30m
-zookeeper-1              1/1       Running   0          29m
-zookeeper-2              1/1       Running   0          29m
-```
-
-The `davnn-7bf6f57c4b-6zxg7` is your DAVNN pod - copy this id for the next step.
+\*\* **This step should be done once per DAVNN cluster** \*\*
 
 Connect to the DAVNN pod `api` container via SSH.
 E.g.:
-```bash
-$ kubectl exec -it --namespace=davnn davnn-<POD_ID> -c api bash
-```
 
-When connected run the deploy-schema command:
 ```bash
 $ make deploy-schema
 ```
@@ -101,8 +66,9 @@ $ make deploy-schema
 
 Sometimes it's easier to debug local scripts using a local proxy.
 To run a local proxy that connects to your deployed pod run the following:
+
 ```bash
-$ make proxy
+$ make start-proxy
 ```
 
 ## Contributing Code, Reporting Bugs and Suggesting Features

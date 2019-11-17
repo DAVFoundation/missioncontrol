@@ -1,17 +1,11 @@
 apiVersion: 0.2.0
 environments:
-  dev:
+  local:
     destination:
       namespace: davnn
       server: https://192.168.39.126:8443
     k8sVersion: v1.10.0
-    path: dev
-  prod:
-    destination:
-      namespace: davnn
-      server: https://35.229.97.101
-    k8sVersion: v1.10.7
-    path: prod
+    path: local
 kind: ksonnet.io/app
 name: davnn
 registries:
