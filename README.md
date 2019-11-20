@@ -55,11 +55,10 @@ Wait until your DAVNN pod is active.
 
 \*\* **This step should be done once per DAVNN cluster** \*\*
 
-Connect to the DAVNN pod `api` container via SSH.
-E.g.:
+Open a terminal in the project folder and run:
 
 ```bash
-$ make deploy-schema
+make deploy-schema
 ```
 
 ### Use a local proxy
@@ -68,7 +67,7 @@ Sometimes it's easier to debug local scripts using a local proxy.
 To run a local proxy that connects to your deployed pod run the following:
 
 ```bash
-$ make start-proxy
+make start-proxy
 ```
 
 ## Contributing Code, Reporting Bugs and Suggesting Features
