@@ -14,7 +14,7 @@ describe('Provider Factory', () => {
 
   it('should throw unimplemented provider', () => {
     const providerFactory = new ProviderFactory();
-    const protocolName = 'drone_charging';
+    const protocolName = 'drone_charging_not';
     expect(() =>
       providerFactory.getProviderInstance({ protocol: protocolName }),
     ).toThrowError(`Protocol "${protocolName}" is not implemented`);

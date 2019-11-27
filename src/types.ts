@@ -36,6 +36,10 @@ export interface IVesselChargingProvider extends IProvider {
   dimensions?: IDimensions;
 }
 
+export interface IDroneChargingProvider extends IProvider {
+  dimensions?: IDimensions;
+}
+
 export interface IDeliveryProvider extends IProvider {
   dimensions?: IDimensions;
 }

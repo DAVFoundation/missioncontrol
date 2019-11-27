@@ -39,6 +39,27 @@ CREATE INDEX IF NOT EXISTS idx_vessel_charging_max_lat
 CREATE INDEX IF NOT EXISTS idx_vessel_charging_max_long
    ON davnn.providers_vessel_charging (max_long);
 
+CREATE TABLE IF NOT EXISTS davnn.providers_drone_charging (
+topic_id text PRIMARY KEY,
+    min_lat double,
+    min_long double,
+    max_lat double,
+    max_long double,
+    max_length double,
+    max_width double,
+    max_height double,
+    max_weight double
+);
+
+CREATE INDEX IF NOT EXISTS idx_drone_charging_min_lat
+   ON davnn.providers_drone_charging (min_lat);
+CREATE INDEX IF NOT EXISTS idx_drone_charging_min_long
+   ON davnn.providers_drone_charging (min_long);
+CREATE INDEX IF NOT EXISTS idx_drone_charging_max_lat
+   ON davnn.providers_drone_charging (max_lat);
+CREATE INDEX IF NOT EXISTS idx_drone_charging_max_long
+   ON davnn.providers_drone_charging (max_long);
+
 CREATE TABLE IF NOT EXISTS davnn.providers_ride_hailing (
     topic_id text PRIMARY KEY,
     min_lat double,
