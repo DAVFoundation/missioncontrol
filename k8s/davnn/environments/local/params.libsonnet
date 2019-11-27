@@ -7,6 +7,10 @@ local envParams = params {
     //   name: "guestbook-dev",
     //   replicas: params.global.replicas,
     // },
+    'cassandra-storage'+: {
+      storageProvisioner: 'k8s.io/minikube-hostpath',
+      storageParameters: null,
+    },
   },
 };
 

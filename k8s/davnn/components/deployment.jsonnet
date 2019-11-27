@@ -193,7 +193,13 @@ local version = std.extVar('IMAGE_VERSION');
           {
             name: 'cassandra',
             image: 'davnetwork/cassandra:' + version,
-            resources: resources.cassandra,
+            resources: {
+              limits: resources.cassandra.limits,
+              requests: {
+                cpu: resources.cassandra.requests.cpu,
+                memory: resources.cassandra.requests.memory,
+              },
+            },
             ports: [
               {
                 containerPort: 7000,
@@ -298,12 +304,26 @@ local version = std.extVar('IMAGE_VERSION');
             name: 'kafka-data',
             emptyDir: {},
           },
-          {
-            name: 'cassandra-data',
-            emptyDir: {},
-          },
         ],
       },
     },
+    volumeClaimTemplates: [
+      {
+        metadata: {
+          name: 'cassandra-data',
+        },
+        spec: {
+          accessModes: [
+            'ReadWriteOnce',
+          ],
+          storageClassName: 'cassandra-storage',
+          resources: {
+            requests: {
+              storage: resources.cassandra.requests.storage,
+            },
+          },
+        },
+      },
+    ],
   },
 }

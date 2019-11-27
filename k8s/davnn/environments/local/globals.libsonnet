@@ -1,5 +1,5 @@
 {
-  SDK_DEBUG_LOG:'true',
+  SDK_DEBUG_LOG: 'true',
   resources: {
     'davnn-init-config': {
       limits: {
@@ -49,6 +49,7 @@
       requests: {
         cpu: '100m',
         memory: '512Mi',
+        storage: '0.5Gi',
       },
     },
   },
