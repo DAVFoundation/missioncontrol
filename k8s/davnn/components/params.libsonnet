@@ -6,7 +6,7 @@ local globals = import '../components/globals.libsonnet';
     // Each object below should correspond to a component in the components/ directory
     deployment: {
       name: 'davnn',
-      resources: { nginx: '', api: '', kafka: '', cassandra: { limits: '', requests: { cpu: '', memory: '', storage: '' } }, 'davnn-init-config': '' },
+      resources: { nginx: '', api: '', kafka: { limits: '', requests: { cpu: '', memory: '', storage: '' } }, cassandra: { limits: '', requests: { cpu: '', memory: '', storage: '' } }, 'davnn-init-config': '' },
       SDK_DEBUG_LOG: false,
     },
     service: {
@@ -18,6 +18,10 @@ local globals = import '../components/globals.libsonnet';
       name: 'nginx-configmap',
     },
     'cassandra-storage': {
+      storageProvisioner: '',
+      storageParameters: '',
+    },
+    'kafka-storage': {
       storageProvisioner: '',
       storageParameters: '',
     },

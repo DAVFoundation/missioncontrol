@@ -144,7 +144,13 @@ local version = std.extVar('IMAGE_VERSION');
           {
             name: 'kafka',
             image: 'davnetwork/kafka:' + version,
-            resources: resources.kafka,
+            resources: {
+              limits: resources.kafka.limits,
+              requests: {
+                cpu: resources.kafka.requests.cpu,
+                memory: resources.kafka.requests.memory,
+              },
+            },
             env: [
               {
                 name: 'KAFKA_LOG4J_OPTS',
@@ -300,10 +306,6 @@ local version = std.extVar('IMAGE_VERSION');
             name: 'kafka-config',
             emptyDir: {},
           },
-          {
-            name: 'kafka-data',
-            emptyDir: {},
-          },
         ],
       },
     },
@@ -320,6 +322,22 @@ local version = std.extVar('IMAGE_VERSION');
           resources: {
             requests: {
               storage: resources.cassandra.requests.storage,
+            },
+          },
+        },
+      },
+      {
+        metadata: {
+          name: 'kafka-data',
+        },
+        spec: {
+          accessModes: [
+            'ReadWriteOnce',
+          ],
+          storageClassName: 'kafka-storage',
+          resources: {
+            requests: {
+              storage: resources.kafka.requests.storage,
             },
           },
         },

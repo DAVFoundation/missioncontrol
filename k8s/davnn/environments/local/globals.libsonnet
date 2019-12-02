@@ -39,6 +39,7 @@
       requests: {
         cpu: '100m',
         memory: '100Mi',
+        storage: '0.5Gi',
       },
     },
     cassandra: {
