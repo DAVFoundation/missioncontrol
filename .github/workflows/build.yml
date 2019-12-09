@@ -3,17 +3,17 @@ name: Build
 on:
   push:
     branches:
-    - master
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-    - uses: actions/checkout@v1
-      
-    - name: Run a multi-line script
-      run: |
-        make tslint tsc jest
-        make build
-        
+      - name: Checkout
+      - uses: actions/checkout@v1
+
+      - name: Run a multi-line script
+        run: |
+          make tslint tsc jest
+          make build
+          echo 'Done'
