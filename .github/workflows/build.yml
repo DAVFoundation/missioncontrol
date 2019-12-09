@@ -38,13 +38,13 @@ jobs:
         env:
           TIMESTAMP: "${{ steps.current-time.outputs.formattedTime }}"
         run: |
-          REGISTRY=docker.pkg.github.com/davfoundation/missioncontrol TIMESTAMP=$TIMESTAMP make build
+          REGISTRY=docker.pkg.github.com/davfoundation/missioncontrol TIMESTAMP=$TIMESTAMP make --always-make build
 
       - name: Push Images
         env:
           TIMESTAMP: "${{ steps.current-time.outputs.formattedTime }}"
         run: |
-          REGISTRY=docker.pkg.github.com/davfoundation/missioncontrol TIMESTAMP=$TIMESTAMP make push-images
+          REGISTRY=docker.pkg.github.com/davfoundation/missioncontrol TIMESTAMP=$TIMESTAMP make --always-make push-images
 
       - name: Commit distribution files
         env:

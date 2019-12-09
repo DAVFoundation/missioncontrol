@@ -1,6 +1,6 @@
-SHELL := /bin/bash
-
 FORCE:
+
+SHELL := /bin/bash
 
 tslint: FORCE
 	npm run tslint
@@ -30,21 +30,17 @@ build: FORCE
 		docker build . -f dockers/Dockerfile.nginx -t $(REGISTRY)/nginx:$(TIMESTAMP) &&\
 		docker build . -f dockers/Dockerfile.zookeeper -t $(REGISTRY)/zookeeper:$(TIMESTAMP) &&\
 		docker build . -f dockers/Dockerfile.zookeeper-init -t $(REGISTRY)/zookeeper-init:$(TIMESTAMP)
-
 	pushd k8s/zookeeper && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/zookeeper-$(TIMESTAMP).json && popd
 	pushd k8s/davnn && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/davnn-$(TIMESTAMP).json && popd
 
 push-images: FORCE
-  docker push $(REGISTRY)/api:$(TIMESTAMP)
-  docker push $(REGISTRY)/cassandra:$(TIMESTAMP)
-  docker push $(REGISTRY)/kafka:$(TIMESTAMP)
-  docker push $(REGISTRY)/kafka-init:$(TIMESTAMP)
-  docker push $(REGISTRY)/nginx:$(TIMESTAMP)
-  docker push $(REGISTRY)/zookeeper:$(TIMESTAMP)
-  docker push $(REGISTRY)/zookeeper-init:$(TIMESTAMP)
-
-	pushd k8s/zookeeper && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/zookeeper-$(TIMESTAMP).json && popd
-	pushd k8s/davnn && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/davnn-$(TIMESTAMP).json && popd
+	docker push $(REGISTRY)/api:$(TIMESTAMP)
+	docker push $(REGISTRY)/cassandra:$(TIMESTAMP)
+	docker push $(REGISTRY)/kafka:$(TIMESTAMP)
+	docker push $(REGISTRY)/kafka-init:$(TIMESTAMP)
+	docker push $(REGISTRY)/nginx:$(TIMESTAMP)
+	docker push $(REGISTRY)/zookeeper:$(TIMESTAMP)
+	docker push $(REGISTRY)/zookeeper-init:$(TIMESTAMP)
 
 deploy-zookeeper: FORCE
 	kubectl apply -f k8s/dist/zookeeper.json
