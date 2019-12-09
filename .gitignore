@@ -3,5 +3,3 @@ build
 data
 coverage
 package-lock.json
-k8s/dist/davnn.json
-k8s/dist/zookeeper.json
