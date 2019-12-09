@@ -12,8 +12,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Run a multi-line script
+      - name: Setup
+        run: |
+          npm i
+
+      - name: Test
         run: |
           make tslint tsc jest
+
+      - name: Build
+        run: |
           make build
-          echo 'Done'
