@@ -35,7 +35,7 @@ build: FORCE
 	pushd k8s/davnn && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/davnn.json && popd
 
 build-ci: TIMESTAMP=$(shell date +%y%m%d-%H%M -u)
-build-ci: REGISTRY=docker.pkg.github.com/DAVFoundation/missioncontrol
+build-ci: REGISTRY=docker.pkg.github.com/davfoundation/missioncontrol
 build-ci: FORCE
 	@echo Building with timestamp $(TIMESTAMP)
 
