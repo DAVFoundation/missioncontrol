@@ -34,6 +34,18 @@ build: FORCE
 	pushd k8s/zookeeper && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/zookeeper-$(TIMESTAMP).json && popd
 	pushd k8s/davnn && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/davnn-$(TIMESTAMP).json && popd
 
+push-images: FORCE
+  docker push $(REGISTRY)/api:$(TIMESTAMP)
+  docker push $(REGISTRY)/cassandra:$(TIMESTAMP)
+  docker push $(REGISTRY)/kafka:$(TIMESTAMP)
+  docker push $(REGISTRY)/kafka-init:$(TIMESTAMP)
+  docker push $(REGISTRY)/nginx:$(TIMESTAMP)
+  docker push $(REGISTRY)/zookeeper:$(TIMESTAMP)
+  docker push $(REGISTRY)/zookeeper-init:$(TIMESTAMP)
+
+	pushd k8s/zookeeper && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/zookeeper-$(TIMESTAMP).json && popd
+	pushd k8s/davnn && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/davnn-$(TIMESTAMP).json && popd
+
 deploy-zookeeper: FORCE
 	kubectl apply -f k8s/dist/zookeeper.json
 

@@ -9,22 +9,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Git Checkout
         uses: actions/checkout@v1
 
-      - name: Login to registry
+      - name: Login to Image Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
-      - name: Setup
+      - name: Node Setup
         uses: actions/setup-node@v1
         with:
           node-version: "11.x"
 
-      - name: Install
+      - name: NPM Install
         run: |
           npm i
 
-      - name: Test
+      - name: Test/Verify
         run: |
           make tslint tsc jest
 
@@ -39,6 +39,12 @@ jobs:
           TIMESTAMP: "${{ steps.current-time.outputs.formattedTime }}"
         run: |
           REGISTRY=docker.pkg.github.com/davfoundation/missioncontrol TIMESTAMP=$TIMESTAMP make build
+
+      - name: Push Images
+        env:
+          TIMESTAMP: "${{ steps.current-time.outputs.formattedTime }}"
+        run: |
+          REGISTRY=docker.pkg.github.com/davfoundation/missioncontrol TIMESTAMP=$TIMESTAMP make push-images
 
       - name: Commit distribution files
         env:
