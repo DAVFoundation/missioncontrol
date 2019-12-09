@@ -52,7 +52,7 @@ build-ci: FORCE
 
 	git add k8s/dist/.
 	git commit -m "Distribution $(TIMESTAMP)"
-  git push
+	git push
 
 deploy-zookeeper: FORCE
 	kubectl apply -f k8s/dist/zookeeper.json
