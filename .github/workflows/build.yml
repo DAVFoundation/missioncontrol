@@ -36,13 +36,13 @@ jobs:
 
       - name: Build
         env:
-          TIMESTAMP: "${{ steps.current-time.outputs.time }}"
+          TIMESTAMP: "${{ steps.current-time.outputs.formattedTime }}"
         run: |
           REGISTRY=docker.pkg.github.com/davfoundation/missioncontrol TIMESTAMP=$TIMESTAMP make build
 
       - name: Commit distribution files
         env:
-          TIMESTAMP: "${{ steps.current-time.outputs.time }}"
+          TIMESTAMP: "${{ steps.current-time.outputs.formattedTime }}"
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
