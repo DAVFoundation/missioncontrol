@@ -46,6 +46,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git add .
           git commit -m "Version Distribution $TIMESTAMP" -a
 
       - name: Push changes
