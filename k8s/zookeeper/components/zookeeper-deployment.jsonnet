@@ -2,6 +2,7 @@ local env = std.extVar('__ksonnet/environments');
 local params = std.extVar('__ksonnet/params').components['zookeeper-deployment'];
 local resources = params.resources;
 local version = std.extVar('IMAGE_VERSION');
+local registry = std.extVar('REGISTRY');
 {
   apiVersion: 'apps/v1',
   kind: 'StatefulSet',
@@ -29,7 +30,7 @@ local version = std.extVar('IMAGE_VERSION');
         terminationGracePeriodSeconds: 10,
         initContainers: [{
           name: 'init-config',
-          image: 'davnetwork/zookeeper-init:' + version,
+          image: registry + '/zookeeper-init:' + version,
           command: [
             '/bin/bash',
             '/etc/kafka-configmap/init.sh',
@@ -52,7 +53,7 @@ local version = std.extVar('IMAGE_VERSION');
         }],
         containers: [{
           name: 'zookeeper',
-          image: 'davnetwork/zookeeper:' + version,
+          image: registry + '/zookeeper:' + version,
           resources: resources.zookeeper,
           env: [{
             name: 'KAFKA_LOG4J_OPTS',

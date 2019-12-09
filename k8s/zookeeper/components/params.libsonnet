@@ -14,6 +14,8 @@
     'zookeeper-configmap': {
     },
     'zookeeper-deployment': {
+      davnnNamespace: '',
+      resources: { zookeeper: '', 'init-config': '' },
     },
   },
 }

@@ -12,6 +12,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
+      - name: Login to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
       - name: Setup
         uses: actions/setup-node@v1
         with:
@@ -27,5 +30,4 @@ jobs:
 
       - name: Build
         run: |
-          alias ks='docker run -e KUBECONFIG=/path/to/kube/config --mount type=bind,source=/path/to/kube/config,target=/path/to/kube/config --mount type=bind,source=/path/to/cert/dir,target=/path/to/cert/dir --mount type=bind,source="$(pwd)",target="$(pwd)" --network host -w "$(pwd)" ks:v0.12.0'
-          make build
+          make build-ci
