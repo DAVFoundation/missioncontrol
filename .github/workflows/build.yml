@@ -27,4 +27,5 @@ jobs:
 
       - name: Build
         run: |
+          alias ks='docker run -e KUBECONFIG=/path/to/kube/config --mount type=bind,source=/path/to/kube/config,target=/path/to/kube/config --mount type=bind,source=/path/to/cert/dir,target=/path/to/cert/dir --mount type=bind,source="$(pwd)",target="$(pwd)" --network host -w "$(pwd)" ks:v0.12.0'
           make build
