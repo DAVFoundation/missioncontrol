@@ -5,9 +5,6 @@ on:
     branches:
       - master
 
-env:
-  TIMESTAMP: $(shell date +%y%m%d-%H%M -u)
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,15 +28,23 @@ jobs:
         run: |
           make tslint tsc jest
 
+      - name: Get current time
+        uses: gerred/actions/current-time@master
+        id: current-time
+
       - name: Build
+        env:
+          TIMESTAMP: "${{ steps.current-time.outputs.time }}"
         run: |
-          REGISTRY=docker.pkg.github.com/davfoundation/missioncontrol TIMESTAMP=${{ TIMESTAMP }} make build
+          REGISTRY=docker.pkg.github.com/davfoundation/missioncontrol TIMESTAMP=$TIMESTAMP make build
 
       - name: Commit distribution files
+        env:
+          TIMESTAMP: "${{ steps.current-time.outputs.time }}"
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -m "Version Distribution ${{ TIMESTAMP }}" -a
+          git commit -m "Version Distribution $TIMESTAMP" -a
 
       - name: Push changes
         uses: ad-m/github-push-action@master
