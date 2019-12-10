@@ -18,7 +18,7 @@ pre-push: tslint tsc jest
 
 KS := docker run --mount type=bind,source="$$(pwd)",target="$$(pwd)" --network host -w "$$(pwd)" docker.pkg.github.com/srfrnk/ksonnet/ks:v0.13.1-19-g8c9f068f
 
-build: TIMESTAMP ?= $(shell date +%y%m%d-%H%M -u)
+build: TIMESTAMP ?= $(shell date +%Y%m%d-%H%M -u)
 build: REGISTRY ?= davnetwork
 build: FORCE
 	@echo Building with timestamp $(TIMESTAMP)
@@ -32,6 +32,8 @@ build: FORCE
 		docker build . -f dockers/Dockerfile.zookeeper-init -t $(REGISTRY)/zookeeper-init:$(TIMESTAMP)
 	pushd k8s/zookeeper && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/zookeeper-$(TIMESTAMP).json && popd
 	pushd k8s/davnn && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/davnn-$(TIMESTAMP).json && popd
+	cp k8s/dist/zookeeper-$(TIMESTAMP).json k8s/dist/zookeeper.json
+	cp k8s/dist/davnn-$(TIMESTAMP).json k8s/dist/davnn.json
 
 push-images: FORCE
 	docker push $(REGISTRY)/api:$(TIMESTAMP)
