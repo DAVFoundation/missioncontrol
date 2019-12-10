@@ -5,7 +5,19 @@
 
 Mission Control is a service running on the DAV network, and serving as a marketplace connecting DAV users, vehicles, and services.
 
-## Deploy
+## Deploy (Distributed Build)
+
+- Find your requested build version from these [Distributions](https://github.com/DAVFoundation/missioncontrol/tree/master/k8s/dist)
+- The distributions are listed with following format: `davnn-[VERSION].json`
+- Connect the kubectl environment to your K8s cluster.
+- Run just once for a DAVNN network `kubectl apply -f https://raw.githubusercontent.com/DAVFoundation/missioncontrol/master/k8s/dist/zookeeper-[VERSION].json` (Replace VERSION with any valid distribution version)
+- Run per DAVNN node cluster `kubectl apply -f https://raw.githubusercontent.com/DAVFoundation/missioncontrol/master/k8s/dist/davnn-[VERSION].json` (Replace VERSION with any valid distribution version)
+- Run just once for a DAVNN network:
+  - `kubectl exec -n davnn davnn-0 -c api -- bash -c "cqlsh -f schema/keyspace.cql"`
+  - `kubectl exec -n davnn davnn-0 -c api -- bash -c "cqlsh -f schema/endpoints.cql"`
+  - `kubectl exec -n davnn davnn-0 -c api -- bash -c "cqlsh -f schema/providers.cql"`
+
+## Deploy (Local Build)
 
 ### Kubernetes (K8S) Cluster
 
