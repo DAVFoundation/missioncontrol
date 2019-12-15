@@ -66,7 +66,6 @@ export default class Cassandra {
   }
 
   public async save(query: string, params: any[]) {
-    // save record in cassandra
     try {
       await this.client.execute(query, params, { prepare: true });
       return true;
@@ -76,7 +75,6 @@ export default class Cassandra {
   }
 
   public async query(query: string, params: any[]): Promise<types.ResultSet> {
-    // save record in cassandra
     try {
       const result = await this.client.execute(query, params, {
         prepare: true,
