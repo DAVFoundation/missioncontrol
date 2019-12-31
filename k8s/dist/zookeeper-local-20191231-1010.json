@@ -1,0 +1,229 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "kind": "Namespace",
+      "metadata": {
+        "labels": {
+          "ksonnet.io/component": "namespace",
+          "name": "davnn-zookeeper"
+        },
+        "name": "davnn-zookeeper"
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "data": {
+        "init.sh": "#!/bin/bash\nset -x\n\n[ -z \"$ID_OFFSET\" ] \u0026\u0026 ID_OFFSET=1\nexport ZOOKEEPER_SERVER_ID=$((${HOSTNAME##*-} + $ID_OFFSET))\necho \"${ZOOKEEPER_SERVER_ID:-1}\" | tee /var/lib/zookeeper/data/myid\ncp -Lur /etc/kafka-configmap/* /etc/kafka/\nsed -i \"s/server\\.$ZOOKEEPER_SERVER_ID\\=[a-z0-9.-]*/server.$ZOOKEEPER_SERVER_ID=0.0.0.0/\" /etc/kafka/zookeeper.properties",
+        "log4j.properties": "log4j.rootLogger=INFO, stdout\nlog4j.appender.stdout=org.apache.log4j.ConsoleAppender\nlog4j.appender.stdout.layout=org.apache.log4j.PatternLayout\nlog4j.appender.stdout.layout.ConversionPattern=[%d] %p %m (%c)%n\n\n# Suppress connection log messages, three lines per livenessProbe execution\nlog4j.logger.org.apache.zookeeper.server.NIOServerCnxnFactory=WARN\nlog4j.logger.org.apache.zookeeper.server.NIOServerCnxn=WARN",
+        "zookeeper.properties": "tickTime=2000\ndataDir=/var/lib/zookeeper/data\ndataLogDir=/var/lib/zookeeper/log\nclientPort=2181\ninitLimit=5\nsyncLimit=2\nserver.1=zookeeper-0.zookeeper:2888:3888:participant\nserver.2=zookeeper-1.zookeeper:2888:3888:participant\nserver.3=zookeeper-2.zookeeper:2888:3888:participant  "
+      },
+      "kind": "ConfigMap",
+      "metadata": {
+        "labels": {
+          "ksonnet.io/component": "zookeeper-configmap"
+        },
+        "name": "zookeeper-configmap",
+        "namespace": "davnn-zookeeper"
+      }
+    },
+    {
+      "apiVersion": "rbac.authorization.k8s.io/v1beta1",
+      "kind": "ClusterRoleBinding",
+      "metadata": {
+        "labels": {
+          "ksonnet.io/component": "rbac"
+        },
+        "name": "davnn-rbac",
+        "namespace": "davnn-zookeeper"
+      },
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "ClusterRole",
+        "name": "cluster-admin"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "default",
+          "namespace": "davnn-zookeeper"
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "labels": {
+          "app": "zookeeper",
+          "ksonnet.io/component": "zookeeper-service"
+        },
+        "name": "zookeeper",
+        "namespace": "davnn-zookeeper"
+      },
+      "spec": {
+        "clusterIP": "None",
+        "ports": [
+          {
+            "name": "server",
+            "port": 2888
+          },
+          {
+            "name": "leader-election",
+            "port": 3888
+          },
+          {
+            "name": "client",
+            "port": 2181
+          }
+        ],
+        "selector": {
+          "app": "zookeeper"
+        }
+      }
+    },
+    {
+      "apiVersion": "apps/v1",
+      "kind": "StatefulSet",
+      "metadata": {
+        "labels": {
+          "ksonnet.io/component": "zookeeper-deployment"
+        },
+        "name": "zookeeper",
+        "namespace": "davnn-zookeeper"
+      },
+      "spec": {
+        "replicas": 3,
+        "selector": {
+          "matchLabels": {
+            "app": "zookeeper"
+          }
+        },
+        "serviceName": "zookeeper",
+        "template": {
+          "metadata": {
+            "annotations": null,
+            "labels": {
+              "app": "zookeeper",
+              "storage": "ephemeral"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "command": [
+                  "./bin/zookeeper-server-start.sh",
+                  "/etc/kafka/zookeeper.properties"
+                ],
+                "env": [
+                  {
+                    "name": "KAFKA_LOG4J_OPTS",
+                    "value": "-Dlog4j.configuration=file:/etc/kafka/log4j.properties"
+                  }
+                ],
+                "image": "docker.pkg.github.com/davfoundation/missioncontrol/zookeeper:20191231-1010",
+                "name": "zookeeper",
+                "ports": [
+                  {
+                    "containerPort": 2181,
+                    "name": "client"
+                  },
+                  {
+                    "containerPort": 2888,
+                    "name": "peer"
+                  },
+                  {
+                    "containerPort": 3888,
+                    "name": "leader-election"
+                  }
+                ],
+                "readinessProbe": {
+                  "exec": {
+                    "command": [
+                      "/bin/sh",
+                      "-c",
+                      "[ \"imok\" = \"$(echo ruok | nc -w 1 -q 1 127.0.0.1 2181)\" ]"
+                    ]
+                  }
+                },
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "1Gi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "50Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/etc/kafka",
+                    "name": "zookeeper-configs"
+                  },
+                  {
+                    "mountPath": "/var/lib/zookeeper/data",
+                    "name": "zookeeper-data"
+                  }
+                ]
+              }
+            ],
+            "initContainers": [
+              {
+                "command": [
+                  "/bin/bash",
+                  "/etc/kafka-configmap/init.sh"
+                ],
+                "image": "docker.pkg.github.com/davfoundation/missioncontrol/zookeeper-init:20191231-1010",
+                "name": "init-config",
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "1Gi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "50Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/etc/kafka-configmap",
+                    "name": "zookeeper-configmap"
+                  },
+                  {
+                    "mountPath": "/etc/kafka",
+                    "name": "zookeeper-configs"
+                  },
+                  {
+                    "mountPath": "/var/lib/zookeeper/data",
+                    "name": "zookeeper-data"
+                  }
+                ]
+              }
+            ],
+            "terminationGracePeriodSeconds": 10,
+            "volumes": [
+              {
+                "configMap": {
+                  "name": "zookeeper-configmap"
+                },
+                "name": "zookeeper-configmap"
+              },
+              {
+                "emptyDir": {},
+                "name": "zookeeper-configs"
+              },
+              {
+                "emptyDir": {},
+                "name": "zookeeper-data"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "kind": "List"
+}
