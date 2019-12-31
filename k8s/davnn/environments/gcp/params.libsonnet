@@ -19,6 +19,11 @@ local envParams = params {
         type: 'pd-standard',
       },
     },
+    deployment+: {
+      imagePullSecrets: [{
+        name: 'registrykey',
+      }],
+    },
   },
 };
 

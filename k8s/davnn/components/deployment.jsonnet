@@ -28,6 +28,7 @@ local registry = std.extVar('REGISTRY');
         annotations: null,
       },
       spec: {
+        imagePullSecrets: params.imagePullSecrets,
         terminationGracePeriodSeconds: 30,
         initContainers: [{
           name: 'davnn-init-config',

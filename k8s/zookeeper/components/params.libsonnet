@@ -16,6 +16,7 @@
     'zookeeper-deployment': {
       davnnNamespace: '',
       resources: { zookeeper: '', 'init-config': '' },
+      imagePullSecrets: null,
     },
   },
 }

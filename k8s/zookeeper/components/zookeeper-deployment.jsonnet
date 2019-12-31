@@ -27,6 +27,7 @@ local registry = std.extVar('REGISTRY');
         annotations: null,
       },
       spec: {
+        imagePullSecrets: params.imagePullSecrets,
         terminationGracePeriodSeconds: 10,
         initContainers: [{
           name: 'init-config',

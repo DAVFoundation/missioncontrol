@@ -8,6 +8,7 @@ local globals = import '../components/globals.libsonnet';
       name: 'davnn',
       resources: { nginx: '', api: '', kafka: { limits: '', requests: { cpu: '', memory: '', storage: '' } }, cassandra: { limits: '', requests: { cpu: '', memory: '', storage: '' } }, 'davnn-init-config': '' },
       SDK_DEBUG_LOG: false,
+      imagePullSecrets: null,
     },
     service: {
     },
