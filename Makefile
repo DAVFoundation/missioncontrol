@@ -30,10 +30,12 @@ build: FORCE
 		docker build . -f dockers/Dockerfile.nginx -t $(REGISTRY)/nginx:$(TIMESTAMP) &&\
 		docker build . -f dockers/Dockerfile.zookeeper -t $(REGISTRY)/zookeeper:$(TIMESTAMP) &&\
 		docker build . -f dockers/Dockerfile.zookeeper-init -t $(REGISTRY)/zookeeper-init:$(TIMESTAMP)
-	pushd k8s/zookeeper && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/zookeeper-$(TIMESTAMP).json && popd
-	pushd k8s/davnn && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/davnn-$(TIMESTAMP).json && popd
-	cp k8s/dist/zookeeper-$(TIMESTAMP).json k8s/dist/zookeeper.json
-	cp k8s/dist/davnn-$(TIMESTAMP).json k8s/dist/davnn.json
+	pushd k8s/zookeeper && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/zookeeper-local-$(TIMESTAMP).json && popd
+	pushd k8s/davnn && $(KS) show local -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/davnn-local-$(TIMESTAMP).json && popd
+	pushd k8s/zookeeper && $(KS) show gcp -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/zookeeper-gcp-$(TIMESTAMP).json && popd
+	pushd k8s/davnn && $(KS) show gcp -o json --ext-str IMAGE_VERSION=$(TIMESTAMP) --ext-str REGISTRY=$(REGISTRY) > ../dist/davnn-gcp-$(TIMESTAMP).json && popd
+	cp k8s/dist/zookeeper-local-$(TIMESTAMP).json k8s/dist/zookeeper-local.json
+	cp k8s/dist/davnn-local-$(TIMESTAMP).json k8s/dist/davnn-local.json
 
 push-images: FORCE
 	docker push $(REGISTRY)/api:$(TIMESTAMP)

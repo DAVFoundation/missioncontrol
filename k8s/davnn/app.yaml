@@ -6,6 +6,12 @@ environments:
       server: https://192.168.39.126:8443
     k8sVersion: v1.10.0
     path: local
+  gcp:
+    destination:
+      namespace: davnn
+      server: https://192.168.39.126:8443
+    k8sVersion: v1.10.0
+    path: gcp
 kind: ksonnet.io/app
 name: davnn
 registries:
