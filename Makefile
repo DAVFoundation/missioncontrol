@@ -47,10 +47,10 @@ push-images: FORCE
 	docker push $(REGISTRY)/zookeeper-init:$(TIMESTAMP)
 
 deploy-zookeeper: FORCE
-	kubectl apply -f k8s/dist/zookeeper.json
+	kubectl apply -f k8s/dist/zookeeper-local.json
 
 deploy-davnn: FORCE
-	kubectl apply -f k8s/dist/davnn.json
+	kubectl apply -f k8s/dist/davnn-local.json
 
 deploy-schema: FORCE
 	kubectl exec -n davnn davnn-0 -c api -- bash -c "cqlsh -f schema/keyspace.cql"
