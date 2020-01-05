@@ -52,8 +52,10 @@
         "name": "cassandra-storage",
         "namespace": "davnn"
       },
-      "parameters": null,
-      "provisioner": "k8s.io/minikube-hostpath",
+      "parameters": {
+        "type": "pd-standard"
+      },
+      "provisioner": "kubernetes.io/gce-pd",
       "reclaimPolicy": "Retain"
     },
     {
@@ -66,8 +68,10 @@
         "name": "kafka-storage",
         "namespace": "davnn"
       },
-      "parameters": null,
-      "provisioner": "k8s.io/minikube-hostpath",
+      "parameters": {
+        "type": "pd-standard"
+      },
+      "provisioner": "kubernetes.io/gce-pd",
       "reclaimPolicy": "Retain"
     },
     {
@@ -153,11 +157,11 @@
                 "resources": {
                   "limits": {
                     "cpu": "1000m",
-                    "memory": "1Gi"
+                    "memory": "2Gi"
                   },
                   "requests": {
                     "cpu": "100m",
-                    "memory": "100Mi"
+                    "memory": "1Gi"
                   }
                 },
                 "volumeMounts": [
@@ -206,11 +210,11 @@
                 "resources": {
                   "limits": {
                     "cpu": "1000m",
-                    "memory": "1Gi"
+                    "memory": "2Gi"
                   },
                   "requests": {
                     "cpu": "100m",
-                    "memory": "100Mi"
+                    "memory": "1Gi"
                   }
                 }
               },
@@ -254,11 +258,11 @@
                 "resources": {
                   "limits": {
                     "cpu": "1000m",
-                    "memory": "1Gi"
+                    "memory": "2Gi"
                   },
                   "requests": {
                     "cpu": "100m",
-                    "memory": "100Mi"
+                    "memory": "1Gi"
                   }
                 },
                 "volumeMounts": [
@@ -348,11 +352,11 @@
                 "resources": {
                   "limits": {
                     "cpu": "1000m",
-                    "memory": "1Gi"
+                    "memory": "2Gi"
                   },
                   "requests": {
                     "cpu": "100m",
-                    "memory": "512Mi"
+                    "memory": "1Gi"
                   }
                 },
                 "securityContext": {
@@ -370,7 +374,11 @@
                 ]
               }
             ],
-            "imagePullSecrets": null,
+            "imagePullSecrets": [
+              {
+                "name": "registrykey"
+              }
+            ],
             "initContainers": [
               {
                 "command": [
@@ -408,11 +416,11 @@
                 "resources": {
                   "limits": {
                     "cpu": "1000m",
-                    "memory": "1Gi"
+                    "memory": "2Gi"
                   },
                   "requests": {
                     "cpu": "100m",
-                    "memory": "100Mi"
+                    "memory": "1Gi"
                   }
                 },
                 "volumeMounts": [
@@ -459,7 +467,7 @@
               ],
               "resources": {
                 "requests": {
-                  "storage": "0.5Gi"
+                  "storage": "1Gi"
                 }
               },
               "storageClassName": "cassandra-storage"
@@ -475,7 +483,7 @@
               ],
               "resources": {
                 "requests": {
-                  "storage": "0.5Gi"
+                  "storage": "1Gi"
                 }
               },
               "storageClassName": "kafka-storage"
