@@ -16,10 +16,10 @@ local globals = import '../components/globals.libsonnet';
       },
       {
         port: 9092,
-        name: '9092',
+        name: 'kafka',
       },
     ],
-    clusterIP: 'None',
+    type: 'LoadBalancer',
     selector: {
       app: 'davnn',
     },
