@@ -150,11 +150,11 @@
                 "resources": {
                   "limits": {
                     "cpu": "1000m",
-                    "memory": "1Gi"
+                    "memory": "2Gi"
                   },
                   "requests": {
-                    "cpu": "10m",
-                    "memory": "50Mi"
+                    "cpu": "100m",
+                    "memory": "1Gi"
                   }
                 },
                 "volumeMounts": [
@@ -169,7 +169,11 @@
                 ]
               }
             ],
-            "imagePullSecrets": null,
+            "imagePullSecrets": [
+              {
+                "name": "registrykey"
+              }
+            ],
             "initContainers": [
               {
                 "command": [
@@ -181,11 +185,11 @@
                 "resources": {
                   "limits": {
                     "cpu": "1000m",
-                    "memory": "1Gi"
+                    "memory": "2Gi"
                   },
                   "requests": {
-                    "cpu": "10m",
-                    "memory": "50Mi"
+                    "cpu": "100m",
+                    "memory": "1Gi"
                   }
                 },
                 "volumeMounts": [
