@@ -15,6 +15,9 @@ local envParams = params {
       storageProvisioner: 'k8s.io/minikube-hostpath',
       storageParameters: null,
     },
+    'kafka-configmap'+: {
+      'server.properties': importstr '../../vendor/kafka/local.server.properties',
+    },
   },
 };
 

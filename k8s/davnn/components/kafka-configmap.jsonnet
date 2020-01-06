@@ -8,9 +8,9 @@ local globals = import '../components/globals.libsonnet';
     name: params.name,
     namespace: globals.davnnNamespace,
   },
-    data: {
-      "init.sh":importstr "../vendor/kafka/init.sh",
-      "server.properties":importstr "../vendor/kafka/server.properties",
-      "log4j.properties":importstr "../vendor/kafka/log4j.properties",
+  data: {
+    'init.sh': importstr '../vendor/kafka/init.sh',
+    'server.properties': params['server.properties'],
+    'log4j.properties': importstr '../vendor/kafka/log4j.properties',
   },
 }

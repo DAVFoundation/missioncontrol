@@ -24,6 +24,9 @@ local envParams = params {
         name: 'registrykey',
       }],
     },
+    'kafka-configmap'+: {
+      'server.properties': importstr '../../vendor/kafka/gcp.server.properties',
+    },
   },
 };
 

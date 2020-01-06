@@ -14,6 +14,7 @@ local globals = import '../components/globals.libsonnet';
     },
     'kafka-configmap': {
       name: 'kafka-configmap',
+      'server.properties': '',
     },
     'nginx-configmap': {
       name: 'nginx-configmap',
