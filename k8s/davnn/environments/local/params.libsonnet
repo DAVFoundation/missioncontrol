@@ -18,6 +18,9 @@ local envParams = params {
     'kafka-configmap'+: {
       'server.properties': importstr '../../vendor/kafka/local.server.properties',
     },
+    service: {
+      loadBalancerIP: '',
+    },
   },
 };
 

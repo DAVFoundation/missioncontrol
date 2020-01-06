@@ -20,6 +20,7 @@ local globals = import '../components/globals.libsonnet';
       },
     ],
     type: 'LoadBalancer',
+    loadBalancerIP: params.loadBalancerIP,
     selector: {
       app: 'davnn',
     },

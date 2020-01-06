@@ -11,6 +11,7 @@ local globals = import '../components/globals.libsonnet';
       imagePullSecrets: null,
     },
     service: {
+      loadBalancerIP: '',
     },
     'kafka-configmap': {
       name: 'kafka-configmap',
