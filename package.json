@@ -27,7 +27,7 @@
   "dependencies": {
     "cassandra-driver": "~3.5.0",
     "dav-js": "github:DAVFoundation/dav-js",
-    "express": "~4.16.4",
+    "express": "~4.17.3",
     "kafka-node": "~2.6.1",
     "rxjs": "~5.5.12"
   },
